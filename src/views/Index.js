@@ -15,7 +15,7 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React from "react";
+import React, { useState } from "react";
 // node.js library that concatenates classes (strings)
 import classnames from "classnames";
 // javascipt plugin for creating charts
@@ -35,7 +35,8 @@ import {
   Table,
   Container,
   Row,
-  Col
+  Col,
+  UncontrolledTooltip
 } from "reactstrap";
 
 // core components
@@ -53,7 +54,9 @@ class Index extends React.Component {
     super(props);
     this.state = {
       activeNav: 1,
-      chartExample1Data: "data1"
+      chartExample1Data: "data1",
+      heatmap:
+        "https://nc-client-video-content.s3-us-west-1.amazonaws.com/0ed387ea-89e5-444f-8b0a-3c81953e3bb0/demo.mp4"
     };
     if (window.Chart) {
       parseOptions(Chart, chartOptions());
@@ -66,6 +69,24 @@ class Index extends React.Component {
       chartExample1Data:
         this.state.chartExample1Data === "data1" ? "data2" : "data1"
     });
+  };
+  toggleHeatmap = e => {
+    if (
+      this.state.heatmap ==
+      "https://nc-client-video-content.s3-us-west-1.amazonaws.com/0ed387ea-89e5-444f-8b0a-3c81953e3bb0/demo.mp4"
+    ) {
+      console.log(this.state);
+      this.setState({
+        heatmap:
+          "https://nc-review-results.s3-us-west-1.amazonaws.com/demo/extra-heatmap.mp4"
+      });
+    } else {
+      console.log(this.state);
+      this.setState({
+        heatmap:
+          "https://nc-client-video-content.s3-us-west-1.amazonaws.com/0ed387ea-89e5-444f-8b0a-3c81953e3bb0/demo.mp4"
+      });
+    }
   };
   render() {
     return (
@@ -80,30 +101,56 @@ class Index extends React.Component {
                 <CardHeader className="mb--4 border-0">
                   <Row className="align-items-center">
                     <div className="col">
-                      <h3 className="mb-0">Study Name</h3>
+                      <h3 className="mb-0">Extra Gum A</h3>
                     </div>
-                    <div className="col text-right">
-                      <Button
-                        color="primary"
-                        href="#pablo"
-                        onClick={e => e.preventDefault()}
-                        size="sm"
+                    <Row>
+                      <div
+                        style={{ marginTop: "-5px" }}
+                        className="avatar-group col"
                       >
-                        Toggle Heatmap
-                      </Button>
-                    </div>
+                        <a
+                          className="avatar avatar-sm"
+                          href="#pablo"
+                          id="tooltip742438047"
+                          onClick={e => e.preventDefault()}
+                        >
+                          <i className={"ni ni-single-copy-04"} />
+                        </a>
+                        <UncontrolledTooltip
+                          delay={0}
+                          target="tooltip742438047"
+                        >
+                          Click to copy your reviewer link
+                        </UncontrolledTooltip>
+                      </div>
+                      <div style={{ marginRight: "12px" }} className="col">
+                        <Button
+                          color="primary"
+                          href="#pablo"
+                          onClick={e => this.toggleHeatmap(e)}
+                          size="sm"
+                        >
+                          Toggle Heatmap
+                        </Button>
+                      </div>
+                    </Row>
                   </Row>
                 </CardHeader>
                 <CardBody>
                   <div class="embed-responsive embed-responsive-16by9">
-                    <video class="embed-responsive-item" width="100%" controls>
-                      <source src="https://nc-client-video-content.s3-us-west-1.amazonaws.com/0ed387ea-89e5-444f-8b0a-3c81953e3bb0/demo.mp4" />
+                    <video
+                      key={this.state.heatmap}
+                      class="embed-responsive-item"
+                      width="100%"
+                      controls
+                    >
+                      <source src={this.state.heatmap} />
                     </video>
                   </div>
                 </CardBody>
               </Card>
             </Col>
-            <Col xl="3">
+            <Col xl="6">
               <Card style={{ height: "100%" }} className="shadow">
                 <CardHeader className="border-0">
                   <Row className="align-items-center">
@@ -218,72 +265,9 @@ class Index extends React.Component {
                 </Table>
               </Card>
             </Col>
-            <Col xl="3">
-              <Card style={{ height: "100%" }} className="shadow">
-                <CardHeader className="bg-transparent">
-                  <Row className="align-items-center">
-                    <div className="col">
-                      <h6 className="text-uppercase text-muted ls-1 mb-1">
-                        Summary
-                      </h6>
-                      <h2 className="mb-0">Survey Results</h2>
-                    </div>
-                  </Row>
-                </CardHeader>
-                <Table
-                  className="table-sm align-items-center table-flush"
-                  responsive
-                >
-                  <tbody>
-                    <tr>
-                      <th scope="row">Quality</th>
-                      <td>4.2 / 5</td>
-                    </tr>
-                    <tr>
-                      <th scope="row">Enjoyment</th>
-                      <td>2.9 / 5</td>
-                    </tr>
-                    <tr>
-                      <th scope="row">Would Buy</th>
-                      <td>3.8 / 5</td>
-                    </tr>
-                    <tr>
-                      <th scope="row">Recommend</th>
-                      <td>4.7 / 5</td>
-                    </tr>
-                  </tbody>
-                </Table>
-                <CardHeader className="bg-transparent">
-                  <Row className="align-items-center">
-                    <div className="col">
-                      <h2 className="mb-0">Reviewer Stats</h2>
-                    </div>
-                  </Row>
-                </CardHeader>
-                <Table
-                  className="table-sm align-items-center table-flush"
-                  responsive
-                >
-                  <tbody>
-                    <tr>
-                      <th scope="row">Total</th>
-                      <td>28,532</td>
-                    </tr>
-                    <tr>
-                      <th scope="row">Average Age</th>
-                      <td>23</td>
-                    </tr>
-                    <tr>
-                      <th scope="row">Watch Time</th>
-                      <td>13,000 (hours)</td>
-                    </tr>
-                  </tbody>
-                </Table>
-              </Card>
-            </Col>
           </Row>
           <Row className="mt-5">
-            <Col className="mb-5 mb-xl-0">
+            <Col className="mb-5 mb-xl-0" xl="9">
               <Card className="bg-gradient-default shadow">
                 <CardHeader className="bg-transparent">
                   <Row className="align-items-center">
@@ -360,6 +344,43 @@ class Index extends React.Component {
                     getDatasetAtEvent={e => console.log(e)}
                   />
                 </CardBody>
+              </Card>
+            </Col>
+            <Col xl="3">
+              <Card style={{ height: "100%" }} className="shadow">
+                <CardHeader className="bg-transparent">
+                  <Row className="align-items-center">
+                    <div className="col">
+                      <h6 className="text-uppercase text-muted ls-1 mb-1">
+                        Across 32,000 Reviewers
+                      </h6>
+                      <h2 className="mb-0">Survey Results</h2>
+                    </div>
+                  </Row>
+                </CardHeader>
+                <Table
+                  className="table-sm align-items-center table-flush"
+                  responsive
+                >
+                  <tbody>
+                    <tr>
+                      <th scope="row">Quality</th>
+                      <td>4.2 / 5</td>
+                    </tr>
+                    <tr>
+                      <th scope="row">Enjoyment</th>
+                      <td>2.9 / 5</td>
+                    </tr>
+                    <tr>
+                      <th scope="row">Would Buy</th>
+                      <td>3.8 / 5</td>
+                    </tr>
+                    <tr>
+                      <th scope="row">Recommend</th>
+                      <td>4.7 / 5</td>
+                    </tr>
+                  </tbody>
+                </Table>
               </Card>
             </Col>
           </Row>
