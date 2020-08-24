@@ -51,7 +51,7 @@ class Tables extends React.Component {
           {/* Table */}
           <Row>
             <div className="col">
-              <Card className="shadow">
+              <Card style={{ height: "100%" }} className="shadow">
                 <CardHeader className="border-0">
                   <h3 className="mb-0">Your Studies</h3>
                 </CardHeader>
