@@ -27,17 +27,10 @@ import Icons from "views/examples/Icons.js";
 
 var routes = [
   {
-    path: "/index",
+    path: "/study/:studyId",
     name: "Dashboard",
     icon: "ni ni-tv-2 text-primary",
     component: Index,
-    layout: "/admin"
-  },
-  {
-    path: "/profile",
-    name: "User Profile",
-    icon: "ni ni-single-02 text-yellow",
-    component: Profile,
     layout: "/admin"
   },
   {
@@ -45,6 +38,13 @@ var routes = [
     name: "Study Manager",
     icon: "ni ni-bullet-list-67 text-red",
     component: StudyManager,
+    layout: "/admin"
+  },
+  {
+    path: "/profile",
+    name: "User Profile",
+    icon: "ni ni-single-02 text-yellow",
+    component: Profile,
     layout: "/admin"
   },
   {

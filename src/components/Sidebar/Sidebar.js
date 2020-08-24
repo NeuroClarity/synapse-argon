@@ -81,19 +81,22 @@ class Sidebar extends React.Component {
   // creates the links that appear in the left menu / Sidebar
   createLinks = routes => {
     return routes.map((prop, key) => {
-      return (
-        <NavItem key={key}>
-          <NavLink
-            to={prop.layout + prop.path}
-            tag={NavLinkRRD}
-            onClick={this.closeCollapse}
-            activeClassName="active"
-          >
-            <i className={prop.icon} />
-            {prop.name}
-          </NavLink>
-        </NavItem>
-      );
+      // Bad hack
+      if (prop.name != "Dashboard") {
+        return (
+          <NavItem key={key}>
+            <NavLink
+              to={prop.layout + prop.path}
+              tag={NavLinkRRD}
+              onClick={this.closeCollapse}
+              activeClassName="active"
+            >
+              <i className={prop.icon} />
+              {prop.name}
+            </NavLink>
+          </NavItem>
+        );
+      }
     });
   };
   render() {
@@ -249,13 +252,17 @@ class Sidebar extends React.Component {
             {/* Navigation */}
             <Nav className="mb-md-3" navbar>
               <NavItem>
-                <NavLink href="/admin/studies">Old Spice Ad</NavLink>
+                <NavLink href="/admin/study/oldSpiceAd">Old Spice Ad</NavLink>
               </NavItem>
               <NavItem>
-                <NavLink href="/admin/studies">Superbowl Cohort A</NavLink>
+                <NavLink href="/admin/study/superBowlA">
+                  Superbowl Cohort A
+                </NavLink>
               </NavItem>
               <NavItem>
-                <NavLink href="/admin/studies">Superbowl Corhort B</NavLink>
+                <NavLink href="/admin/study/superBowlB">
+                  Superbowl Corhort B
+                </NavLink>
               </NavItem>
             </Nav>
           </Collapse>

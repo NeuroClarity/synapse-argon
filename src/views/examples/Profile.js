@@ -31,15 +31,15 @@ import {
   Col
 } from "reactstrap";
 // core components
-import UserHeader from "components/Headers/UserHeader.js";
+import DashboardHeader from "components/Headers/DashboardHeader.js";
 
 class Profile extends React.Component {
   render() {
     return (
       <>
-        <UserHeader />
+        <DashboardHeader />
         {/* Page content */}
-        <Container className="mt--7" fluid>
+        <Container className="mt--3" fluid>
           <Row>
             <Col className="order-xl-2 mb-5 mb-xl-0" xl="4">
               <Card className="card-profile shadow">

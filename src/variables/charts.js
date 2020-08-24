@@ -347,18 +347,42 @@ let chartExample1 = {
     return {
       labels: [
         "00:00",
+        "00:05",
         "00:10",
+        "00:15",
         "00:20",
+        "00:25",
         "00:30",
+        "00:35",
         "00:40",
+        "00:45",
         "00:50",
-        "00:60",
-        "00:70"
+        "00:55",
+        "00:60"
       ],
       datasets: [
         {
           label: "Performance",
-          data: [0, 20, 10, 30, 15, 40, 20, 60, 60]
+          data: [
+            0,
+            10,
+            10,
+            50,
+            15,
+            40,
+            20,
+            60,
+            60,
+            0,
+            10,
+            10,
+            50,
+            15,
+            40,
+            20,
+            60,
+            60
+          ]
         }
       ]
     };
@@ -408,18 +432,11 @@ let chartExample2 = {
     }
   },
   data: {
-    labels: [
-      "Saturday",
-      "Sunday",
-      "Monday",
-      "Tuesday",
-      "Wednesday",
-      "Thursday"
-    ],
+    labels: ["Tuesday", "Wednesday", "Thursday"],
     datasets: [
       {
         label: "Sales",
-        data: [25, 20, 30, 22, 17, 29],
+        data: [1800, 2800, 2600],
         maxBarThickness: 10
       }
     ]

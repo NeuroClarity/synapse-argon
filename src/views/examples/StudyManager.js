@@ -16,6 +16,7 @@
 
 */
 import React from "react";
+import { Link } from "react-router-dom";
 
 // reactstrap components
 import {
@@ -38,15 +39,15 @@ import {
   UncontrolledTooltip
 } from "reactstrap";
 // core components
-import Header from "components/Headers/Header.js";
+import DashboardHeader from "components/Headers/DashboardHeader.js";
 
 class Tables extends React.Component {
   render() {
     return (
       <>
-        <Header />
+        <DashboardHeader />
         {/* Page content */}
-        <Container className="mt--7" fluid>
+        <Container className="mt--5" fluid>
           {/* Table */}
           <Row>
             <div className="col">
@@ -70,7 +71,9 @@ class Tables extends React.Component {
                       <th scope="row">
                         <Media className="align-items-center">
                           <Media>
-                            <span className="mb-0 text-sm">Old Spice Ad</span>
+                            <Link to="/admin/study/oldSpice">
+                              <span className="mb-0 text-sm">Old Spice Ad</span>
+                            </Link>
                           </Media>
                         </Media>
                       </th>
@@ -150,9 +153,11 @@ class Tables extends React.Component {
                       <th scope="row">
                         <Media className="align-items-center">
                           <Media>
-                            <span className="mb-0 text-sm">
-                              Superbowl Cohort A
-                            </span>
+                            <Link to="/admin/study/superBowlA">
+                              <span className="mb-0 text-sm">
+                                Superbowl Cohort A
+                              </span>
+                            </Link>
                           </Media>
                         </Media>
                       </th>
@@ -232,9 +237,11 @@ class Tables extends React.Component {
                       <th scope="row">
                         <Media className="align-items-center">
                           <Media>
-                            <span className="mb-0 text-sm">
-                              Superbowl Cohort B
-                            </span>
+                            <Link to="/admin/study/superBowlB">
+                              <span className="mb-0 text-sm">
+                                Superbowl Cohort B
+                              </span>
+                            </Link>
                           </Media>
                         </Media>
                       </th>

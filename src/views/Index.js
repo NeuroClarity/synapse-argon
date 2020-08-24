@@ -46,7 +46,7 @@ import {
   chartExample2
 } from "variables/charts.js";
 
-import Header from "components/Headers/Header.js";
+import DashboardHeader from "components/Headers/DashboardHeader.js";
 
 class Index extends React.Component {
   constructor(props) {
@@ -70,96 +70,17 @@ class Index extends React.Component {
   render() {
     return (
       <>
-        <Header />
+        <DashboardHeader />
         {/* Page content */}
-        <Container className="mt--7" fluid>
+        <Container className="mt--5" fluid>
+          {" "}
           <Row>
-            <Col className="mb-5 mb-xl-0" xl="8">
-              <Card className="bg-gradient-default shadow">
-                <CardHeader className="bg-transparent">
-                  <Row className="align-items-center">
-                    <div className="col">
-                      <h6 className="text-uppercase text-light ls-1 mb-1">
-                        Overview
-                      </h6>
-                      <h2 className="text-white mb-0">Success Index</h2>
-                    </div>
-                    <div className="col">
-                      <Nav className="justify-content-end" pills>
-                        <NavItem>
-                          <NavLink
-                            className={classnames("py-2 px-3", {
-                              active: this.state.activeNav === 1
-                            })}
-                            href="#pablo"
-                            onClick={e => this.toggleNavs(e, 1)}
-                          >
-                            <span className="d-none d-md-block">
-                              Engagement
-                            </span>
-                            <span className="d-md-none">M</span>
-                          </NavLink>
-                        </NavItem>
-                        <NavItem>
-                          <NavLink
-                            className={classnames("py-2 px-3", {
-                              active: this.state.activeNav === 2
-                            })}
-                            data-toggle="tab"
-                            href="#pablo"
-                            onClick={e => this.toggleNavs(e, 2)}
-                          >
-                            <span className="d-none d-md-block">Retention</span>
-                            <span className="d-md-none">W</span>
-                          </NavLink>
-                        </NavItem>
-                      </Nav>
-                    </div>
-                  </Row>
-                </CardHeader>
-                <CardBody>
-                  {/* Chart */}
-                  <div className="chart">
-                    <Line
-                      data={chartExample1[this.state.chartExample1Data]}
-                      options={chartExample1.options}
-                      getDatasetAtEvent={e => console.log(e)}
-                    />
-                  </div>
-                </CardBody>
-              </Card>
-            </Col>
-            <Col xl="4">
+            <Col className="mb-5 mb-xl-0" xl="6">
               <Card className="shadow">
-                <CardHeader className="bg-transparent">
+                <CardHeader className="mb--4 border-0">
                   <Row className="align-items-center">
                     <div className="col">
-                      <h6 className="text-uppercase text-muted ls-1 mb-1">
-                        Activity
-                      </h6>
-                      <h2 className="mb-0">New Reviewers</h2>
-                    </div>
-                  </Row>
-                </CardHeader>
-                <CardBody>
-                  {/* Chart */}
-                  <div className="chart">
-                    <Bar
-                      data={chartExample2.data}
-                      options={chartExample2.options}
-                    />
-                  </div>
-                </CardBody>
-              </Card>
-            </Col>
-          </Row>
-          <Row className="mt-5">
-            <Col className="mb-5 mb-xl-0" xl="8">
-              <Card className="shadow">
-                <CardHeader className="border-0">
-                  <Row className="align-items-center">
-                    <div className="col">
-                      <h3 className="mb-0">Key Demographics</h3>
+                      <h3 className="mb-0">Study Name</h3>
                     </div>
                     <div className="col text-right">
                       <Button
@@ -168,76 +89,26 @@ class Index extends React.Component {
                         onClick={e => e.preventDefault()}
                         size="sm"
                       >
-                        See more
+                        Toggle Heatmap
                       </Button>
                     </div>
                   </Row>
                 </CardHeader>
-                <Table className="align-items-center table-flush" responsive>
-                  <thead className="thead-light">
-                    <tr>
-                      <th scope="col">Race</th>
-                      <th scope="col">Gender</th>
-                      <th scope="col">Income</th>
-                      <th scope="col">Success Index</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <th scope="row">black</th>
-                      <td>woman</td>
-                      <td>50k-100k</td>
-                      <td>
-                        <i className="fas fa-arrow-up text-success mr-3" />{" "}
-                        46,53%
-                      </td>
-                    </tr>
-                    <tr>
-                      <th scope="row">white</th>
-                      <td>male</td>
-                      <td>100k-200k</td>
-                      <td>
-                        <i className="fas fa-arrow-down text-warning mr-3" />{" "}
-                        46,53%
-                      </td>
-                    </tr>
-                    <tr>
-                      <th scope="row">black</th>
-                      <td>male</td>
-                      <td>200k+</td>
-                      <td>
-                        <i className="fas fa-arrow-down text-warning mr-3" />{" "}
-                        36,49%
-                      </td>
-                    </tr>
-                    <tr>
-                      <th scope="row">asian</th>
-                      <td>male</td>
-                      <td>200k+</td>
-                      <td>
-                        <i className="fas fa-arrow-up text-success mr-3" />{" "}
-                        50,87%
-                      </td>
-                    </tr>
-                    <tr>
-                      <th scope="row">asian</th>
-                      <td>woman</td>
-                      <td>50k-100k</td>
-                      <td>
-                        <i className="fas fa-arrow-down text-danger mr-3" />{" "}
-                        46,53%
-                      </td>
-                    </tr>
-                  </tbody>
-                </Table>
+                <CardBody>
+                  <div class="embed-responsive embed-responsive-16by9">
+                    <video class="embed-responsive-item" width="100%" controls>
+                      <source src="https://nc-client-video-content.s3-us-west-1.amazonaws.com/0ed387ea-89e5-444f-8b0a-3c81953e3bb0/demo.mp4" />
+                    </video>
+                  </div>
+                </CardBody>
               </Card>
             </Col>
-            <Col xl="4">
-              <Card className="shadow">
+            <Col xl="3">
+              <Card style={{ height: "100%" }} className="shadow">
                 <CardHeader className="border-0">
                   <Row className="align-items-center">
                     <div className="col">
-                      <h3 className="mb-0">Age Breakdown</h3>
+                      <h3 className="mb-0">Demographic Filter</h3>
                     </div>
                     <div className="col text-right">
                       <Button
@@ -246,12 +117,15 @@ class Index extends React.Component {
                         onClick={e => e.preventDefault()}
                         size="sm"
                       >
-                        See more
+                        Change Type
                       </Button>
                     </div>
                   </Row>
                 </CardHeader>
-                <Table className="align-items-center table-flush" responsive>
+                <Table
+                  className="table-sm align-items-center table-flush"
+                  responsive
+                >
                   <thead className="thead-light">
                     <tr>
                       <th scope="col">Group</th>
@@ -270,7 +144,7 @@ class Index extends React.Component {
                             <Progress
                               max="100"
                               value="60"
-                              barClassName="bg-gradient-danger"
+                              barClassName="bg-gradient-success"
                             />
                           </div>
                         </div>
@@ -281,12 +155,12 @@ class Index extends React.Component {
                       <td>5,480</td>
                       <td>
                         <div className="d-flex align-items-center">
-                          <span className="mr-2">70%</span>
+                          <span className="mr-2">20%</span>
                           <div>
                             <Progress
                               max="100"
-                              value="70"
-                              barClassName="bg-gradient-success"
+                              value="20"
+                              barClassName="bg-gradient-info"
                             />
                           </div>
                         </div>
@@ -297,9 +171,13 @@ class Index extends React.Component {
                       <td>4,807</td>
                       <td>
                         <div className="d-flex align-items-center">
-                          <span className="mr-2">80%</span>
+                          <span className="mr-2">10%</span>
                           <div>
-                            <Progress max="100" value="80" />
+                            <Progress
+                              max="100"
+                              value="10"
+                              barClassName="bg-gradient-warning"
+                            />
                           </div>
                         </div>
                       </td>
@@ -309,12 +187,12 @@ class Index extends React.Component {
                       <td>3,678</td>
                       <td>
                         <div className="d-flex align-items-center">
-                          <span className="mr-2">75%</span>
+                          <span className="mr-2">7%</span>
                           <div>
                             <Progress
                               max="100"
-                              value="75"
-                              barClassName="bg-gradient-info"
+                              value="7"
+                              barClassName="bg-gradient-warning"
                             />
                           </div>
                         </div>
@@ -325,11 +203,11 @@ class Index extends React.Component {
                       <td>2,645</td>
                       <td>
                         <div className="d-flex align-items-center">
-                          <span className="mr-2">30%</span>
+                          <span className="mr-2">3%</span>
                           <div>
                             <Progress
                               max="100"
-                              value="30"
+                              value="3"
                               barClassName="bg-gradient-warning"
                             />
                           </div>
@@ -338,6 +216,150 @@ class Index extends React.Component {
                     </tr>
                   </tbody>
                 </Table>
+              </Card>
+            </Col>
+            <Col xl="3">
+              <Card style={{ height: "100%" }} className="shadow">
+                <CardHeader className="bg-transparent">
+                  <Row className="align-items-center">
+                    <div className="col">
+                      <h6 className="text-uppercase text-muted ls-1 mb-1">
+                        Summary
+                      </h6>
+                      <h2 className="mb-0">Survey Results</h2>
+                    </div>
+                  </Row>
+                </CardHeader>
+                <Table
+                  className="table-sm align-items-center table-flush"
+                  responsive
+                >
+                  <tbody>
+                    <tr>
+                      <th scope="row">Quality</th>
+                      <td>4.2 / 5</td>
+                    </tr>
+                    <tr>
+                      <th scope="row">Enjoyment</th>
+                      <td>2.9 / 5</td>
+                    </tr>
+                    <tr>
+                      <th scope="row">Would Buy</th>
+                      <td>3.8 / 5</td>
+                    </tr>
+                    <tr>
+                      <th scope="row">Recommend</th>
+                      <td>4.7 / 5</td>
+                    </tr>
+                  </tbody>
+                </Table>
+                <CardHeader className="bg-transparent">
+                  <Row className="align-items-center">
+                    <div className="col">
+                      <h2 className="mb-0">Reviewer Stats</h2>
+                    </div>
+                  </Row>
+                </CardHeader>
+                <Table
+                  className="table-sm align-items-center table-flush"
+                  responsive
+                >
+                  <tbody>
+                    <tr>
+                      <th scope="row">Total</th>
+                      <td>28,532</td>
+                    </tr>
+                    <tr>
+                      <th scope="row">Average Age</th>
+                      <td>23</td>
+                    </tr>
+                    <tr>
+                      <th scope="row">Watch Time</th>
+                      <td>13,000 (hours)</td>
+                    </tr>
+                  </tbody>
+                </Table>
+              </Card>
+            </Col>
+          </Row>
+          <Row className="mt-5">
+            <Col className="mb-5 mb-xl-0">
+              <Card className="bg-gradient-default shadow">
+                <CardHeader className="bg-transparent">
+                  <Row className="align-items-center">
+                    <div className="col-3">
+                      <h6 className="text-uppercase text-light ls-1 mb-1">
+                        Your summary
+                      </h6>
+                      <h3 className="text-white mb-0">Success Index</h3>
+                    </div>
+                    <div className="col-9">
+                      <Nav className="justify-content-end" pills>
+                        <NavItem>
+                          <NavLink
+                            className={classnames("py-2 px-3", {
+                              active: this.state.activeNav === 1
+                            })}
+                            href="#pablo"
+                            onClick={e => this.toggleNavs(e, 1)}
+                          >
+                            <span className="d-none d-md-block">
+                              Engagement
+                            </span>
+                            <span className="d-md-none">E</span>
+                          </NavLink>
+                        </NavItem>
+                        <NavItem>
+                          <NavLink
+                            className={classnames("py-2 px-3", {
+                              active: this.state.activeNav === 2
+                            })}
+                            data-toggle="tab"
+                            href="#pablo"
+                            onClick={e => this.toggleNavs(e, 2)}
+                          >
+                            <span className="d-none d-md-block">Memory</span>
+                            <span className="d-md-none">R</span>
+                          </NavLink>
+                        </NavItem>
+                        <NavItem>
+                          <NavLink
+                            className={classnames("py-2 px-3", {
+                              active: this.state.activeNav === 2
+                            })}
+                            data-toggle="tab"
+                            href="#pablo"
+                            onClick={e => this.toggleNavs(e, 2)}
+                          >
+                            <span className="d-none d-md-block">Emotions</span>
+                            <span className="d-md-none">Em</span>
+                          </NavLink>
+                        </NavItem>
+                        <NavItem>
+                          <NavLink
+                            className={classnames("py-2 px-3", {
+                              active: this.state.activeNav === 2
+                            })}
+                            data-toggle="tab"
+                            href="#pablo"
+                            onClick={e => this.toggleNavs(e, 2)}
+                          >
+                            <span className="d-none d-md-block">Attention</span>
+                            <span className="d-md-none">Em</span>
+                          </NavLink>
+                        </NavItem>
+                      </Nav>
+                    </div>
+                  </Row>
+                </CardHeader>
+                <CardBody>
+                  {/* Chart */}
+                  <Line
+                    data={chartExample1[this.state.chartExample1Data]}
+                    options={chartExample1.options}
+                    getDatasetAtEvent={e => console.log(e)}
+                  />
+                </CardBody>
               </Card>
             </Col>
           </Row>
