@@ -27,6 +27,13 @@ import StudyManager from "views/examples/StudyManager.js";
 import NewStudy from "views/examples/NewStudy.js";
 import ConfigureStudy from "views/examples/ConfigureStudy.js";
 
+import NewReview from "views/review/NewReview.js";
+import ReviewInstructions from "views/review/Instructions.js";
+import SetupReview from "views/review/SetupReview.js";
+import CalibrateReview from "views/review/ConfigureReview.js";
+import WatchVideo from "views/review/WatchVideo.js";
+import ReviewResult from "views/review/ReviewResult.js";
+
 var routes = [
   {
     path: "/study/:studyId",
@@ -76,6 +83,49 @@ var routes = [
     icon: "ni ni-circle-08 text-pink",
     component: ConfigureStudy,
     layout: "/forms"
+  },
+  {
+    path: "/new",
+    name: "New Review",
+    icon: "ni ni-circle-08 text-pink",
+    component: NewReview,
+    layout: "/review"
+  },
+  {
+    path: "/calibrate",
+    name: "Calibrate Review",
+    icon: "ni ni-circle-08 text-pink",
+    component: CalibrateReview,
+    layout: "/review"
+  },
+  {
+    path: "/setup",
+    name: "Setup Review",
+    icon: "ni ni-circle-08 text-pink",
+    component: SetupReview,
+    layout: "/review"
+  },
+  {
+    path: "/watch",
+    name: "Watch Video",
+    icon: "ni ni-circle-08 text-pink",
+    component: WatchVideo,
+    layout: "/review"
+  },
+  {
+    path: "/result",
+    name: "Review Results",
+    icon: "ni ni-circle-08 text-pink",
+    component: ReviewResult,
+    layout: "/review"
+  },
+  {
+    path: "/overview",
+    name: "Review Results",
+    icon: "ni ni-circle-08 text-pink",
+    component: ReviewInstructions,
+    layout: "/review"
   }
+
 ];
 export default routes;
