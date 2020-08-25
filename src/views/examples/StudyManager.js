@@ -38,13 +38,16 @@ import {
   Row,
   UncontrolledTooltip
 } from "reactstrap";
+
 // core components
 import DashboardHeader from "components/Headers/DashboardHeader.js";
+import AdminNavbar from "components/Navbars/AdminNavbar.js";
 
 class Tables extends React.Component {
   render() {
     return (
       <>
+        <AdminNavbar {...this.props} brandText={"Neuroclarity"} />
         <DashboardHeader />
         {/* Page content */}
         <Container className="mt--5" fluid>

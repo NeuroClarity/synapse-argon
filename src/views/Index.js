@@ -93,10 +93,10 @@ class Index extends React.Component {
       <>
         <DashboardHeader />
         {/* Page content */}
-        <Container className="mt--5" fluid>
+        <Container className="mt--8" fluid>
           {" "}
           <Row>
-            <Col className="mb-5 mb-xl-0" xl="6">
+            <Col className="mb-5 mb-xl-0" xl="8">
               <Card className="shadow">
                 <CardHeader className="mb--4 border-0">
                   <Row className="align-items-center">
@@ -104,6 +104,12 @@ class Index extends React.Component {
                       <h3 className="mb-0">Extra Gum A</h3>
                     </div>
                     <Row>
+                      <h6
+                        style={{ marginTop: "5px" }}
+                        className="text-uppercase text-muted ls-1 mb-1"
+                      >
+                        Copy Link
+                      </h6>
                       <div
                         style={{ marginTop: "-5px" }}
                         className="avatar-group col"
@@ -150,7 +156,7 @@ class Index extends React.Component {
                 </CardBody>
               </Card>
             </Col>
-            <Col xl="6">
+            <Col xl="4">
               <Card style={{ height: "100%" }} className="shadow">
                 <CardHeader className="border-0">
                   <Row className="align-items-center">
@@ -267,7 +273,7 @@ class Index extends React.Component {
             </Col>
           </Row>
           <Row className="mt-5">
-            <Col className="mb-5 mb-xl-0" xl="9">
+            <Col className="mb-5 mb-xl-0" xl="8">
               <Card className="bg-gradient-default shadow">
                 <CardHeader className="bg-transparent">
                   <Row className="align-items-center">
@@ -346,7 +352,7 @@ class Index extends React.Component {
                 </CardBody>
               </Card>
             </Col>
-            <Col xl="3">
+            <Col xl="4">
               <Card style={{ height: "100%" }} className="shadow">
                 <CardHeader className="bg-transparent">
                   <Row className="align-items-center">
