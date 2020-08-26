@@ -33,8 +33,8 @@ import PrivateRoute from "./components/Routes/PrivateRoute.js";
 
 ReactDOM.render(
   <Auth0Provider
-    domain="dev-q7h0r088.us.auth0.com"
-    clientId="CmO86D0Y75i1tRd29d0yE5QbTu1dAxpq"
+    domain={process.env.REACT_APP_AUTH_DOMAIN}
+    clientId={process.env.REACT_APP_AUTH_CLIENT_ID}
     redirectUri={window.location.origin + "/admin/studies"}
   >
     <BrowserRouter>
@@ -50,7 +50,11 @@ ReactDOM.render(
           path="/forms"
           render={props => <Forms {...props} />}
         />
-      <PrivateRoute component={ReviewLayout} path="/review" render={props => <ReviewLayout {...props} />} />
+        <PrivateRoute
+          component={ReviewLayout}
+          path="/review"
+          render={props => <ReviewLayout {...props} />}
+        />
         <Redirect from="/" to="/auth/login" />
       </Switch>
     </BrowserRouter>
