@@ -16,12 +16,9 @@
 
 */
 import React from "react";
-import { Link, Redirect } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 // reactstrap components
 import {
-  Button,
-  Card,
-  CardBody,
   Col
 } from "reactstrap";
 
@@ -29,28 +26,162 @@ class WatchVideo extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      completed: false
+      calibrated: true,
+      completed: false,
+      eyeData: [],
+      recordedChunks: [],
+      facialData: null,
+      videoUrl: null
     };
 
     this.onVideoEnd = this.onVideoEnd.bind(this)
+    this.onVideoStart = this.onVideoStart.bind(this)
+    this.handleData = this.handleData.bind(this)
+    this.handleDataAvailable = this.handleDataAvailable.bind(this)
+    this.addNullResult = this.addNullResult.bind(this)
+    this.getVideoUrl = this.getVideoUrl.bind(this)
+
     this.videoRef = React.createRef();
+    this.webcamRef = React.createRef();
+    this.mediaRecorderRef = React.createRef();
+  }
+
+  onVideoStart() {
+    this.mediaRecorderRef.current = new MediaRecorder(this.webcamRef.current.srcObject, {
+      mimeType: "video/webm",
+      bitsPerSecond: 5000000,
+    });
+    this.mediaRecorderRef.current.addEventListener(
+      "dataavailable",
+      this.handleDataAvailable
+    );
+    // push data every second
+    this.mediaRecorderRef.current.start(1000);
+    console.log("Started Recording")
   }
 
   onVideoEnd() {
-    this.setState({ completed: true })
+    //window.webgazer.end();
+
+    this.mediaRecorderRef.current.stop();
+    let blob = new Blob(this.state.recordedChunks, {
+      type: "video/webm"
+    });
+
+    this.webcamRef.current.srcObject.getTracks().forEach(function(track) {
+      track.stop();
+    });
+
+    this.setState({ 
+      completed: true, 
+      facialData: blob 
+    })
+  }
+
+  handleData() {
+    if (window.webgazer == null || !window.webgazer.isReady()) {
+      console.log("not ready")
+      this.setState({ calibrated: false })
+      return
+    }
+
+
+    var prediction = window.webgazer.getCurrentPrediction();
+    if (prediction == null) {
+      this.addNullResult();
+      return;
+    }
+
+    prediction.then((result) => {
+      if (result == null) {
+        this.addNullResult();
+        return;
+      }
+      this.setState({
+        eyeData: [...this.state.eyeData, {"X": result.x, "Y": result.y}]
+      })
+    })
+  }
+
+  addNullResult() {
+    this.setState({
+      eyeData: [...this.state.eyeData, {"X": null, "Y": null}]
+    })
+  }
+
+  handleDataAvailable({ data }) {
+    if (data.size > 0) {
+      this.setState({
+        recordedChunks: this.state.recordedChunks.concat(data)
+      });
+    }
+  }
+
+  getVideoUrl() {
+    fetch("https://axon.neuroclarity.ai/api/reviewer/reviewJob", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        StudyId: this.props.match.params.studyId
+      })
+    })
+    .then(res => {
+      return res.json();
+    })
+    .then(
+      result => {
+        this.setState({ videoUrl: result.Content });
+      },
+      error => {
+        console.log("Error: ", error);
+      }
+    );
+  }
+
+  componentWillMount() {
+    // access webcam
+    navigator.mediaDevices
+        .getUserMedia({video: true})
+        .then(stream => {
+          this.webcamRef.current.srcObject = stream
+        })
+        .catch(console.log);
+  }
+
+  componentDidMount() {
+    this.getVideoUrl()
+
+    //this.interval = setInterval(this.handleData, 0.1 * 1000)
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.interval)
   }
 
   render() {
     if (this.state.completed) {
-      return <Redirect to='/review/result' />
+      return <Redirect to={{
+        pathname: '/review/result/' + this.props.match.params.studyId,
+          state: {
+            eyeData: this.state.eyeData,
+            facialData: this.state.facialData
+          }
+      }} />
+    } else if (!this.state.calibrated) {
+      console.log("webgazer not calibrated")
+      return <Redirect to={'/review/calibrate/' + this.props.match.params.studyId} />
     }
 
     return (
       <>
         <Col lg="12" md="12">
+          <video ref={ this.webcamRef } audio="false" style={{ display: 'none' }} onLoadedData={ this.onVideoStart } />
           <video
             id="full-screenVideo"
-            ref={this.videoRef}
+            ref={ this.videoRef }
+            key={ this.state.videoUrl }
             controls
             style={{
               position: "fixed",
@@ -63,6 +194,7 @@ class WatchVideo extends React.Component {
               backgroundColor: "black"
             }}
             autoPlay={true}
+            onEnded={ this.onVideoEnd }
             onLoadStart={() => {
               // TODO: Automatic full screen is hanging for some reason
               //var el = document.getElementById("full-screenVideo");
@@ -84,9 +216,8 @@ class WatchVideo extends React.Component {
               //})
 
             }}
-            onEnded={ this.onVideoEnd }
           >
-              <source src={ "https://nc-client-video-content.s3-us-west-1.amazonaws.com/0ed387ea-89e5-444f-8b0a-3c81953e3bb0/demo.mp4" } type="video/mp4"/>
+              <source src={ this.state.videoUrl } type="video/mp4"/>
           </video>
         </Col>
       </>

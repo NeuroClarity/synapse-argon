@@ -6,10 +6,11 @@ import {
   Col
 } from "reactstrap";
 
+import FaceCalibrate from "../../components/Review/FaceCalibrate.js";
+
 const Setup = ({ step }) => {
   const getContent = () => {
     let cnt
-    console.log(step)
     switch (step) {
       case 1:
         cnt = <SetupContent 
@@ -39,6 +40,16 @@ const Setup = ({ step }) => {
                     subtext="Stay in front of the screen for the whole time" 
                   />
           break
+      case 5:
+        cnt = (
+          <div>
+            <div className="text-center mb-4">
+              Is your face in the green square? 
+            </div>
+            <FaceCalibrate />
+          </div>
+        )
+        break
       default:
         return
     }

@@ -81,35 +81,35 @@ var routes = [
     layout: "/review"
   },
   {
-    path: "/calibrate",
+    path: "/calibrate/:studyId",
     name: "Calibrate Review",
     icon: "ni ni-circle-08 text-pink",
     component: CalibrateReview,
     layout: "/review"
   },
   {
-    path: "/setup",
+    path: "/setup/:studyId",
     name: "Setup Review",
     icon: "ni ni-circle-08 text-pink",
     component: SetupReview,
     layout: "/review"
   },
   {
-    path: "/watch",
+    path: "/watch/:studyId",
     name: "Watch Video",
     icon: "ni ni-circle-08 text-pink",
     component: WatchVideo,
     layout: "/review"
   },
   {
-    path: "/result",
+    path: "/result/:studyId",
     name: "Review Results",
     icon: "ni ni-circle-08 text-pink",
     component: ReviewResult,
     layout: "/review"
   },
   {
-    path: "/overview",
+    path: "/overview/:studyId",
     name: "Review Results",
     icon: "ni ni-circle-08 text-pink",
     component: ReviewInstructions,
