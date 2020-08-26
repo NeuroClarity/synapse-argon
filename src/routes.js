@@ -74,7 +74,7 @@ var routes = [
     layout: "/forms"
   },
   {
-    path: "/new",
+    path: "/new/:studyId",
     name: "New Review",
     icon: "ni ni-circle-08 text-pink",
     component: NewReview,
