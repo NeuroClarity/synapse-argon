@@ -18,7 +18,7 @@
 import React from "react";
 import { Redirect } from "react-router-dom";
 
-import Rating from "@material-ui/lab/Rating"
+import ReactStars from "react-rating-stars-component";
 // reactstrap components
 import {
   Button,
@@ -154,11 +154,12 @@ class ReviewResult extends React.Component {
                     <div>
                       <p>After watching this, how likely you are to try this product?</p>
                     </div>
-                    <Rating
-                      name="simple-controlled-1"
-                      value={this.state.q1value}
+                    <ReactStars
+                      count={5}
+                      size={30}
+                      value={this.state.q2value}
                       onChange={(event, newValue) => {
-                        this.setState({ q1value: newValue })
+                        this.setState({ q2value: newValue })
                       }}
                     />
                   </FormGroup>
@@ -166,8 +167,9 @@ class ReviewResult extends React.Component {
                     <div>
                       <p>How memorable was this ad to you?</p>
                     </div>
-                    <Rating
-                      name="simple-controlled-2"
+                    <ReactStars
+                      count={5}
+                      size={30}
                       value={this.state.q2value}
                       onChange={(event, newValue) => {
                         this.setState({ q2value: newValue })
