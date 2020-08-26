@@ -20,21 +20,18 @@ import { Route, Switch, Redirect } from "react-router-dom";
 // reactstrap components
 import { Container, Row, Col } from "reactstrap";
 
-// core components
-import AuthNavbar from "components/Navbars/AuthNavbar.js";
-import AuthFooter from "components/Footers/AuthFooter.js";
-
-import background from "../assets/img/theme/bg.png";
-
 import routes from "routes.js";
+import AuthFooter from "../components/Footers/AuthFooter.js";
 
 class Review extends React.Component {
   componentDidMount() {
     document.body.classList.add("bg-default");
   }
+
   componentWillUnmount() {
     document.body.classList.remove("bg-default");
   }
+
   getRoutes = routes => {
     return routes.map((prop, key) => {
       if (prop.layout === "/review") {
@@ -50,6 +47,7 @@ class Review extends React.Component {
       }
     });
   };
+
   render() {
     return (
       <>

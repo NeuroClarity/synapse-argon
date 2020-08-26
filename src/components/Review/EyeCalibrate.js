@@ -18,17 +18,6 @@ class EyeCalibrate extends React.Component {
     this.newCoordinates = this.newCoordinates.bind(this)
   }
 
-
-  //useEffect(() => {
-    //if (window.webgazer == null) {
-      ////navigate("/view/" + params.studyid + "/setup")
-      //ReloadScript(setLoaded);
-    //}
-    //window.saveDataAcrossSessions = true
-    //window.webgazer.begin();
-    //window.webgazer.showPredictionPoints(false)
-  //}, [navigate])
-
   newCoordinates() {
     this.setState({ 
       xCoord: Math.floor(Math.random() * 85).toString() + "%",
@@ -39,7 +28,7 @@ class EyeCalibrate extends React.Component {
 
   render() {
     if (this.TARGET_CLICKS - this.state.numClicks === 0) {
-      return <Redirect to="/review/watch" />
+      return <Redirect to={"/review/watch/" + this.props.match.params.studyId} />
     }
 
     return (

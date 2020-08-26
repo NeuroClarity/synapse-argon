@@ -17,48 +17,91 @@
 */
 import React from "react";
 
-// reactstrap components
-import {
-  Card,
-  CardBody,
-  Button,
-  Col
-} from "reactstrap";
+import { Spinner, Button } from "reactstrap";
 
 class FaceCalibrate extends React.Component {
   constructor(props) {
     super(props)
+    this.state = {
+      loaded: false
+    }
+
     this.videoTag = React.createRef()
+
   }
 
   componentDidMount() {
-      // getting access to webcam
-     navigator.mediaDevices
-          .getUserMedia({video: true})
-          .then(stream => this.videoTag.current.srcObject = stream)
-          .catch(console.log);
+    // getting access to webcam
+   navigator.mediaDevices
+      .getUserMedia({video: true})
+      .then(stream => {
+        this.videoTag.current.srcObject = stream
+      })
+      .catch(console.log);
+
+    // load wegazer script
+    const script = document.createElement('script');
+    script.src = "/scripts/webgazer.js";
+    script.async = true;
+    script.addEventListener('load', function () {
+      window.saveDataAcrossSessions = true
+      window.webgazer.showVideo(false)
+      window.webgazer.showFaceOverlay(false)
+      window.webgazer.showFaceFeedbackBox(false)
+      window.webgazer.showPredictionPoints(false)
+      window.webgazer.begin();
+      document.addEventListener('webgazerLoaded', function(e) {
+        this.setState({ loaded: true })
+      }.bind(this));
+    }.bind(this))
+
+    document.body.appendChild(script);
   }
 
   render() {
-    return (
-      <div className="row justify-content-center my-4">
-        <video ref={this.videoTag} autoplay="true"/>
-        <div
-          style={{
-            position: "absolute",
-            height: "340px",
-            width: "300px",
-            top: "200px",
-            left: "400px",
-            bg: "rgba(255, 0, 0, 0.0)",
-            border: "7px solid #33cc33"
-          }}
-        >
+      return (
+        <div>
+          <div className="text-center my-4" 
+              style={{
+                display: !this.state.loaded ? 'block' : 'none',
+              }}
+          >
+            <Spinner 
+              animation="border" 
+              size="xl" 
+              variant="primary" 
+              style={{
+              }}
+            />
+          </div>
+          <div className="row justify-content-center my-4">
+            <video 
+              ref={this.videoTag} 
+              autoPlay={true} 
+              style={{
+                display: this.state.loaded ? 'block' : 'none',
+                width: "500"
+              }}
+            />
+            <div
+              style={{
+                position: "absolute",
+                display: this.state.loaded ? 'block' : 'none',
+                height: "340px",
+                width: "300px",
+                top: "200px",
+                left: "300px",
+                bg: "rgba(255, 0, 0, 0.0)",
+                border: "7px solid #33cc33",
+               zIndex: "100"
+              }}
+            >
+            </div>
+          </div>
         </div>
-      </div>
-    );
+      );
+    }
   }
-}
 
 export default FaceCalibrate;
 

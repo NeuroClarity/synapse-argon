@@ -36,8 +36,8 @@ class SetupReview extends React.Component {
   }
 
   render() {
-    if ((this.state.step) > 4) {
-      return <Redirect to='/review/calibrate' />
+    if ((this.state.step) > 5) {
+      return <Redirect to={'/review/calibrate/' + this.props.match.params.studyId} />
     }
 
     return (

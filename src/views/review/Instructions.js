@@ -23,7 +23,6 @@ import {
   Card,
   CardBody,
   Col,
-  Row
 } from "reactstrap";
 
 class ReviewInstructions extends React.Component {
@@ -62,7 +61,7 @@ class ReviewInstructions extends React.Component {
                     More Questions?
                   </Button>
                 </a>
-                <Link to="/review/setup">
+                <Link to={"/review/setup/" + this.props.match.params.studyId}>
                   <Button className="ml-5" color="primary" type="button">
                     Get Started
                   </Button>

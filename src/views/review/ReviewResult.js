@@ -16,40 +16,208 @@
 
 */
 import React from "react";
-import { Link } from "react-router-dom";
+import { Redirect } from "react-router-dom";
+
+import Rating from "@material-ui/lab/Rating"
 // reactstrap components
 import {
   Button,
   Card,
+  CardHeader,
   CardBody,
+  FormGroup,
+  Form,
+  Input,
+  InputGroup,
   Col
 } from "reactstrap";
 
 class ReviewResult extends React.Component {
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      submitted: false,
+      eyeData: this.props.location.state ? this.props.location.state.eyeData : null,
+      facialData: this.props.location.state ? this.props.location.state.facialData : null,
+      q1value: 0,
+      q2value: 0
+    }
+    
+    this.sendData = this.sendData.bind(this)
+    this.uploadEyeToS3 = this.uploadEyeToS3.bind(this)
+    this.uploadFacialToS3 = this.uploadFacialToS3.bind(this)
+    this.submitAnalyticsJob = this.submitAnalyticsJob.bind(this)
+  }
+
+  // upload all data collected from watching the video
+  componentDidMount() {
+    if (this.state.eyeData == null || this.state.facialData == null) {
+      return 
+    }
+
+    async function f() {
+      let formattedEyeData = this.state.eyeData.map(point => point["X"] + " " + point["Y"]).join("\n");
+      let reviewId;
+      await this.sendData(formattedEyeData, this.state.facialData).then((id) =>{
+        reviewId = id
+      });
+      this.submitAnalyticsJob(reviewId);
+    }
+    f = f.bind(this)
+    f();
+  }
+
+  async sendData(eyeData, facialData) {
+    return await fetch("https://axon.neuroclarity.ai/api/reviewer/finishReviewJob", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        StudyID: "THIS SHOULD BE CHANGED" //TODO
+      })
+    })
+      .then(res => {
+        return res.json();
+      })
+      .then(
+        result => {
+          // upload data to S3
+          const eyeDataUrl = result.EyeDataUrl
+          console.log(eyeDataUrl)
+          this.uploadEyeToS3(eyeDataUrl, eyeData)
+          const facialDataUrl = result.FacialDataUrl
+          console.log(facialDataUrl)
+          this.uploadFacialToS3(facialDataUrl, facialData)
+          return result.ReviewId
+        },
+        error => {
+          console.log("Error: ", error);
+        }
+      );
+  }
+
+  async uploadFacialToS3(url, data) {
+    await fetch(url, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "video/webm"
+      },
+      body: data
+    })
+  }
+
+  async uploadEyeToS3(url, data) {
+    await fetch(url, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "text/csv"
+      },
+      body: data
+    })
+  }
+
+  async submitAnalyticsJob(reviewId) {
+    await fetch("https://axon.neuroclarity.ai/api/reviewer/submitAnalyticsJob", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        ReviewId: reviewId
+      })
+    })
+      .then(res => {
+        return res.json();
+      })
+  }
+
   render() {
-    return (
-      <>
-        <Col lg="5" md="7">
-          <Card className="bg-secondary shadow border-0 mt-3">
-            <CardBody className="px-lg-5 py-lg-4">
-              <div className="text-center mb-4">
-                <h2>Thank you for participating in this study!</h2>
-              </div>
-              <div className="text-center mb-4">
-                <p>Want to learn more about NeuroClarity?</p>
-              </div>
-              <div className="text-center">
-                <a href="https://neuroclarity.ai">
-                  <Button color="primary" type="button">
-                    Click here!
-                  </Button>
-                </a>
-              </div>
-            </CardBody>
-          </Card>
-        </Col>
-      </>
-    );
+    //if (this.state.eyeData == null || this.state.facialData == null) {
+      //return <Redirect to={"/review/new/" + this.props.match.params.studyId} />
+    //}
+
+    if (!this.state.submitted) {
+      return (
+        <>
+          <Col lg="7" md="9">
+            <Card className="bg-secondary shadow border-0 mt-3">
+              <CardHeader className="bg-transparent">
+                <div className="text-center">
+                  <h2>Quick Survey</h2>
+                </div>
+              </CardHeader>
+              <CardBody className="px-lg-5 py-lg-4">
+                <Form role="form">
+                  <FormGroup>
+                    <div>
+                      <p>After watching this, how likely you are to try this product?</p>
+                    </div>
+                    <Rating
+                      name="simple-controlled-1"
+                      value={this.state.q1value}
+                      onChange={(event, newValue) => {
+                        this.setState({ q1value: newValue })
+                      }}
+                    />
+                  </FormGroup>
+                  <FormGroup>
+                    <div>
+                      <p>How memorable was this ad to you?</p>
+                    </div>
+                    <Rating
+                      name="simple-controlled-2"
+                      value={this.state.q2value}
+                      onChange={(event, newValue) => {
+                        this.setState({ q2value: newValue })
+                      }}
+                    />
+                  </FormGroup>
+                  <FormGroup>
+                    <div>
+                      <p>Anything else you’d like to add?</p>
+                    </div>
+                    <InputGroup className="input-group-alternative mb-3">
+                      <Input type="textarea" />
+                    </InputGroup>
+                  </FormGroup>
+                  <div className="text-center">
+                    <Button className="mt-4" color="primary" type="button" onClick={() => this.setState({ submitted: true })}>
+                      Submit
+                    </Button>
+                  </div>
+                </Form>
+              </CardBody>
+            </Card>
+          </Col>
+        </>
+      )
+    } else {
+      return (
+        <>
+          <Col lg="5" md="7">
+            <Card className="bg-secondary shadow border-0 mt-3">
+              <CardBody className="px-lg-5 py-lg-4">
+                <div className="text-center mb-4">
+                  <h2>Thank you for participating in this study!</h2>
+                </div>
+                <div className="text-center mb-4">
+                  <p>Want to learn more about NeuroClarity?</p>
+                </div>
+                <div className="text-center">
+                  <a href="https://neuroclarity.ai">
+                    <Button color="primary" type="button">
+                      Click here!
+                    </Button>
+                  </a>
+                </div>
+              </CardBody>
+            </Card>
+          </Col>
+        </>
+      );
+    }
   }
 }
 

@@ -39,12 +39,12 @@ class NewReview extends React.Component {
                 2020 Old Spice Commercial
               </div>
               <div className="text-center">
-                <Link to="/review/overview">
+                <Link to={"/review/overview/" + this.props.match.params.studyId}>
                   <Button className="mr-3" color="primary" type="button">
                     First time
                   </Button>
                 </Link>
-                <Link to="/review/setup">
+                <Link to={"/review/setup/" + this.props.match.params.studyId}>
                   <Button className="ml-3" color="primary" type="button">
                     Done it before
                   </Button>
