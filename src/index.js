@@ -50,7 +50,7 @@ ReactDOM.render(
           path="/forms"
           render={props => <Forms {...props} />}
         />
-        <PrivateRoute
+        <Route
           component={ReviewLayout}
           path="/review"
           render={props => <ReviewLayout {...props} />}
