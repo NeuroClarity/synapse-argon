@@ -16,36 +16,16 @@
 
 */
 import React from "react";
-import { Link } from "react-router-dom";
 // reactstrap components
-import {
-  Button,
-  Card,
-  CardHeader,
-  CardBody,
-  FormGroup,
-  Form,
-  Input,
-  InputGroupAddon,
-  InputGroupText,
-  InputGroup,
-  Row,
-  Col
-} from "reactstrap";
+import { Row } from "reactstrap";
+import LoginButton from "../../components/Buttons/LoginButton.js";
 
 class Login extends React.Component {
   render() {
     return (
       <div className="mt--7">
         <Row className="justify-content-center">
-          <Button
-            style={{ opacity: "1" }}
-            className="my-4 center-text"
-            color="primary"
-            type="button"
-          >
-            Sign in
-          </Button>
+          <LoginButton />
         </Row>
       </div>
     );

@@ -18,6 +18,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
+import { Auth0Provider } from "@auth0/auth0-react";
 
 import "assets/plugins/nucleo/css/nucleo.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
@@ -27,14 +28,30 @@ import AdminLayout from "layouts/Admin.js";
 import AuthLayout from "layouts/Auth.js";
 import Forms from "layouts/Forms.js";
 
+import PrivateRoute from "./components/Routes/PrivateRoute.js";
+
 ReactDOM.render(
-  <BrowserRouter>
-    <Switch>
-      <Route path="/admin" render={props => <AdminLayout {...props} />} />
-      <Route path="/auth" render={props => <AuthLayout {...props} />} />
-      <Route path="/forms" render={props => <Forms {...props} />} />
-      <Redirect from="/" to="/auth/login" />
-    </Switch>
-  </BrowserRouter>,
+  <Auth0Provider
+    domain="dev-q7h0r088.us.auth0.com"
+    clientId="CmO86D0Y75i1tRd29d0yE5QbTu1dAxpq"
+    redirectUri={window.location.origin + "/admin/studies"}
+  >
+    <BrowserRouter>
+      <Switch>
+        <PrivateRoute
+          component={AdminLayout}
+          path="/admin"
+          render={props => <AdminLayout {...props} />}
+        />
+        <Route path="/auth" render={props => <AuthLayout {...props} />} />
+        <PrivateRoute
+          component={Forms}
+          path="/forms"
+          render={props => <Forms {...props} />}
+        />
+        <Redirect from="/" to="/auth/login" />
+      </Switch>
+    </BrowserRouter>
+  </Auth0Provider>,
   document.getElementById("root")
 );
