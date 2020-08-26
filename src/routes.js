@@ -22,7 +22,6 @@ import Dashboard from "views/creator/Dashboard.js";
 import Profile from "views/creator/Profile.js";
 import StudyManager from "views/creator/StudyManager.js";
 import NewStudy from "views/creator/NewStudy.js";
-import ConfigureStudy from "views/creator/ConfigureStudy.js";
 
 import NewReview from "views/review/NewReview.js";
 import ReviewInstructions from "views/review/Instructions.js";
@@ -72,13 +71,6 @@ var routes = [
     name: "New Study",
     icon: "ni ni-circle-08 text-pink",
     component: NewStudy,
-    layout: "/forms"
-  },
-  {
-    path: "/configure",
-    name: "Configure Study",
-    icon: "ni ni-circle-08 text-pink",
-    component: ConfigureStudy,
     layout: "/forms"
   },
   {

@@ -1,10 +1,8 @@
 import React, { useState, useCallback } from "react";
 import { useDropzone } from "react-dropzone";
-import { useHistory } from "react-router-dom";
 
-const Dropzone = () => {
+const Dropzone = ({ setUploaded, setBlobUrl }) => {
   const [loading, setLoading] = useState(false);
-  const history = useHistory();
 
   const onDrop = useCallback(
     acceptedFiles => {
@@ -14,13 +12,13 @@ const Dropzone = () => {
         reader.onabort = () => console.log("file reading was aborted");
         reader.onerror = () => console.log("file reading has failed");
         reader.onload = () => {
-          const binaryStr = reader.result;
-          history.push("/forms/configure");
+          setBlobUrl(URL.createObjectURL(file));
+          setUploaded(true);
         };
         reader.readAsArrayBuffer(file);
       });
     },
-    [history]
+    [setBlobUrl, setUploaded]
   );
 
   const { getRootProps, getInputProps } = useDropzone({ onDrop });
