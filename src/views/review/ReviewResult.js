@@ -43,7 +43,7 @@ class ReviewResult extends React.Component {
       q1value: 0,
       q2value: 0,
       q3value: 0,
-      q4value: null,
+      q4value: '',
     }
     
     this.processData = this.processData.bind(this)
@@ -62,7 +62,7 @@ class ReviewResult extends React.Component {
     async function f() {
       let formattedEyeData = this.state.eyeData.map(point => point["X"] + " " + point["Y"]).join("\n");
       let reviewId;
-      await this.sendData(formattedEyeData, this.state.facialData).then((id) =>{
+      await this.sendData(formattedEyeData, this.state.facialData).then((id) => {
         reviewId = id
       });
       this.submitAnalyticsJob(reviewId);
@@ -73,6 +73,7 @@ class ReviewResult extends React.Component {
   }
 
   async sendData(eyeData, facialData) {
+    console.log("here")
     return await fetch(process.env.REACT_APP_AXON_DOMAIN + "/api/reviewer/finishReviewJob", {
       method: "POST",
       headers: {
@@ -80,7 +81,7 @@ class ReviewResult extends React.Component {
       },
       body: JSON.stringify({
         StudyID: this.props.match.params.studyId,
-        StudyResults: {
+        SurveyResult: {
           Quality: this.state.q1value,
           WouldBuy: this.state.q2value,
           Memorable: this.state.q3value,
@@ -168,7 +169,7 @@ class ReviewResult extends React.Component {
                       count={5}
                       size={30}
                       value={this.state.q1value}
-                      onChange={(event, newValue) => {
+                      onChange={(newValue) => {
                         this.setState({ q1value: newValue })
                       }}
                     />
@@ -181,7 +182,7 @@ class ReviewResult extends React.Component {
                       count={5}
                       size={30}
                       value={this.state.q2value}
-                      onChange={(event, newValue) => {
+                      onChange={(newValue) => {
                         this.setState({ q2value: newValue })
                       }}
                     />
@@ -194,7 +195,7 @@ class ReviewResult extends React.Component {
                       count={5}
                       size={30}
                       value={this.state.q3value}
-                      onChange={(event, newValue) => {
+                      onChange={(newValue) => {
                         this.setState({ q3value: newValue })
                       }}
                     />
@@ -204,7 +205,14 @@ class ReviewResult extends React.Component {
                       <p>Anything else you’d like to add?</p>
                     </div>
                     <InputGroup className="input-group-alternative mb-3">
-                      <Input type="textarea" value={this.state.q4value} />
+                      <Input 
+                        type="textarea" 
+                        value={this.state.q4value} 
+                        onChange={(event) => {
+                          console.log(event)
+                          this.setState({ q4value: event.target.value })
+                        }}
+                      />
                     </InputGroup>
                   </FormGroup>
                   <div className="text-center">
