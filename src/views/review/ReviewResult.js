@@ -41,9 +41,12 @@ class ReviewResult extends React.Component {
       eyeData: this.props.location.state ? this.props.location.state.eyeData : null,
       facialData: this.props.location.state ? this.props.location.state.facialData : null,
       q1value: 0,
-      q2value: 0
+      q2value: 0,
+      q3value: 0,
+      q4value: null,
     }
     
+    this.processData = this.processData.bind(this)
     this.sendData = this.sendData.bind(this)
     this.uploadEyeToS3 = this.uploadEyeToS3.bind(this)
     this.uploadFacialToS3 = this.uploadFacialToS3.bind(this)
@@ -51,7 +54,7 @@ class ReviewResult extends React.Component {
   }
 
   // upload all data collected from watching the video
-  componentDidMount() {
+  processData() {
     if (this.state.eyeData == null || this.state.facialData == null) {
       return 
     }
@@ -66,16 +69,23 @@ class ReviewResult extends React.Component {
     }
     f = f.bind(this)
     f();
+    this.setState({ submitted: true })
   }
 
   async sendData(eyeData, facialData) {
-    return await fetch("https://axon.neuroclarity.ai/api/reviewer/finishReviewJob", {
+    return await fetch(process.env.REACT_APP_AXON_DOMAIN + "/api/reviewer/finishReviewJob", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        StudyID: "THIS SHOULD BE CHANGED" //TODO
+        StudyID: this.props.match.params.studyId,
+        StudyResults: {
+          Quality: this.state.q1value,
+          WouldBuy: this.state.q2value,
+          Memorable: this.state.q3value,
+          OpenEnded: this.state.q4value,
+        }
       })
     })
       .then(res => {
@@ -119,7 +129,7 @@ class ReviewResult extends React.Component {
   }
 
   async submitAnalyticsJob(reviewId) {
-    await fetch("https://axon.neuroclarity.ai/api/reviewer/submitAnalyticsJob", {
+    await fetch(process.env.REACT_APP_AXON_DOMAIN + "/api/reviewer/submitAnalyticsJob", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -134,9 +144,9 @@ class ReviewResult extends React.Component {
   }
 
   render() {
-    //if (this.state.eyeData == null || this.state.facialData == null) {
-      //return <Redirect to={"/review/new/" + this.props.match.params.studyId} />
-    //}
+    if (this.state.eyeData == null || this.state.facialData == null) {
+      return <Redirect to={"/review/new/" + this.props.match.params.studyId} />
+    }
 
     if (!this.state.submitted) {
       return (
@@ -150,6 +160,19 @@ class ReviewResult extends React.Component {
               </CardHeader>
               <CardBody className="px-lg-5 py-lg-4">
                 <Form role="form">
+                  <FormGroup>
+                    <div>
+                      <p>Please rate the overall quality of the video</p>
+                    </div>
+                    <ReactStars
+                      count={5}
+                      size={30}
+                      value={this.state.q1value}
+                      onChange={(event, newValue) => {
+                        this.setState({ q1value: newValue })
+                      }}
+                    />
+                  </FormGroup>
                   <FormGroup>
                     <div>
                       <p>After watching this, how likely you are to try this product?</p>
@@ -170,9 +193,9 @@ class ReviewResult extends React.Component {
                     <ReactStars
                       count={5}
                       size={30}
-                      value={this.state.q2value}
+                      value={this.state.q3value}
                       onChange={(event, newValue) => {
-                        this.setState({ q2value: newValue })
+                        this.setState({ q3value: newValue })
                       }}
                     />
                   </FormGroup>
@@ -181,11 +204,11 @@ class ReviewResult extends React.Component {
                       <p>Anything else you’d like to add?</p>
                     </div>
                     <InputGroup className="input-group-alternative mb-3">
-                      <Input type="textarea" />
+                      <Input type="textarea" value={this.state.q4value} />
                     </InputGroup>
                   </FormGroup>
                   <div className="text-center">
-                    <Button className="mt-4" color="primary" type="button" onClick={() => this.setState({ submitted: true })}>
+                    <Button className="mt-4" color="primary" type="button" onClick={ this.processData }>
                       Submit
                     </Button>
                   </div>

@@ -118,7 +118,7 @@ class WatchVideo extends React.Component {
   }
 
   getVideoUrl() {
-    fetch("https://axon.neuroclarity.ai/api/reviewer/reviewJob", {
+    fetch(process.env.REACT_APP_AXON_DOMAIN + "/api/reviewer/reviewJob", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"

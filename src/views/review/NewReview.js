@@ -26,6 +26,36 @@ import {
 } from "reactstrap";
 
 class NewReview extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      data: null
+    }
+  }
+
+  componentDidMount() {
+    fetch(process.env.REACT_APP_AXON_DOMAIN + "/api/reviewer/reviewJobMetadata", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        StudyId: this.props.match.params.studyId
+      })
+    })
+    .then(res => {
+      return res.json();
+    })
+    .then(
+      result => {
+        this.setState({ data: result })
+      },
+      error => {
+        console.log("Error: ", error);
+      }
+    );
+  }
+
   render() {
     return (
       <>
@@ -33,10 +63,10 @@ class NewReview extends React.Component {
           <Card className="bg-secondary shadow border-0 mt-3">
             <CardBody className="px-lg-5 py-lg-4">
               <div className="text-center mb-4">
-                User has invited you to give biometric feedback on a video.
+                { data ? data.Name : 'A user' } has invited you to give biometric feedback on a video.
               </div>
               <div className="text-center mb-4 font-weight-bold">
-                2020 Old Spice Commercial
+                { data ? data.Description : '' }
               </div>
               <div className="text-center">
                 <Link to={"/review/overview/" + this.props.match.params.studyId}>
