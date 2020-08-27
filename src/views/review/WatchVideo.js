@@ -61,7 +61,7 @@ class WatchVideo extends React.Component {
   }
 
   onVideoEnd() {
-    //window.webgazer.end();
+    window.webgazer.end();
 
     this.mediaRecorderRef.current.stop();
     let blob = new Blob(this.state.recordedChunks, {
@@ -153,7 +153,7 @@ class WatchVideo extends React.Component {
   componentDidMount() {
     this.getVideoUrl()
 
-    //this.interval = setInterval(this.handleData, 0.1 * 1000)
+    this.interval = setInterval(this.handleData, 0.1 * 1000)
   }
 
   componentWillUnmount() {
