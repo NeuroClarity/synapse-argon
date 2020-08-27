@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 
-export const useApi = (endpoint, options = {}) => {
+export const useApi = (endpoint, options = {}, body = {}) => {
   const { getAccessTokenSilently } = useAuth0();
   const [state, setState] = useState({
     error: null,
@@ -19,9 +19,12 @@ export const useApi = (endpoint, options = {}) => {
           ...fetchOptions,
           headers: {
             ...fetchOptions.headers,
-            // Add the Authorization header to the existing headers
-            Authorization: `Bearer ${accessToken}`
-          }
+            // Add the Authorization header to the existing headers.
+            Authorization: `Bearer ${accessToken}`,
+            // Think its same to assume all content is json.
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(body)
         });
         setState({
           ...state,
@@ -37,7 +40,8 @@ export const useApi = (endpoint, options = {}) => {
         });
       }
     })();
-  }, [getAccessTokenSilently, options, refreshIndex, state, endpoint]);
+    //eslint-disable-next-line
+  }, [refreshIndex]);
 
   return {
     ...state,
