@@ -15,8 +15,7 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect } from "react";
 
 // reactstrap components
 import {
@@ -39,18 +38,33 @@ import {
   UncontrolledTooltip
 } from "reactstrap";
 
+import { useAuth0 } from "@auth0/auth0-react";
+
 // core components
 import DashboardHeader from "components/Headers/DashboardHeader.js";
 import AdminNavbar from "components/Navbars/AdminNavbar.js";
+
+import StudyListItem from "../../components/StudyManager/StudyListItem.js";
 
 // api utility
 import { useApi } from "../../utils/request.js";
 
 // https://github.com/auth0/auth0-react/blob/master/EXAMPLES.md#4-create-a-useapi-hook-for-accessing-protected-apis-with-an-access-token
 const StudyManager = () => {
-  const opts = {};
+  const { user } = useAuth0();
+  const opts = {
+    method: "POST"
+  };
 
-  const { login, error, refresh, data } = useApi("/creator/list", opts);
+  const body = {
+    CreatorId: user.sub
+  };
+
+  const { login, error, refresh, data } = useApi(
+    "/api/creator/list",
+    opts,
+    body
+  );
 
   return (
     <>
@@ -77,88 +91,15 @@ const StudyManager = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <th scope="row">
-                      <Media className="align-items-center">
-                        <Media>
-                          <Link to="/admin/study/oldSpice">
-                            <span className="mb-0 text-sm">Old Spice Ad</span>
-                          </Link>
-                        </Media>
-                      </Media>
-                    </th>
-                    <td>15,000</td>
-                    <td>
-                      <Badge color="" className="badge-dot mr-4">
-                        <i className="bg-warning" />
-                        delayed
-                      </Badge>
-                    </td>
-                    <td>
-                      <div className="avatar-group">
-                        <a
-                          className="avatar avatar-sm"
-                          href="#pablo"
-                          id="tooltip742438047"
-                          onClick={e => e.preventDefault()}
-                        >
-                          <i className={"ni ni-single-copy-04"} />
-                        </a>
-                        <UncontrolledTooltip
-                          delay={0}
-                          target="tooltip742438047"
-                        >
-                          Click to copy
-                        </UncontrolledTooltip>
-                      </div>
-                    </td>
-                    <td>
-                      <div className="d-flex align-items-center">
-                        <span className="mr-2">60%</span>
-                        <div>
-                          <Progress
-                            max="100"
-                            value="60"
-                            barClassName="bg-danger"
-                          />
-                        </div>
-                      </div>
-                    </td>
-                    <td className="text-right">
-                      <UncontrolledDropdown>
-                        <DropdownToggle
-                          className="btn-icon-only text-light"
-                          href="#pablo"
-                          role="button"
-                          size="sm"
-                          color=""
-                          onClick={e => e.preventDefault()}
-                        >
-                          <i className="fas fa-ellipsis-v" />
-                        </DropdownToggle>
-                        <DropdownMenu className="dropdown-menu-arrow" right>
-                          <DropdownItem
-                            href="#pablo"
-                            onClick={e => e.preventDefault()}
-                          >
-                            Action
-                          </DropdownItem>
-                          <DropdownItem
-                            href="#pablo"
-                            onClick={e => e.preventDefault()}
-                          >
-                            Another action
-                          </DropdownItem>
-                          <DropdownItem
-                            href="#pablo"
-                            onClick={e => e.preventDefault()}
-                          >
-                            Something else here
-                          </DropdownItem>
-                        </DropdownMenu>
-                      </UncontrolledDropdown>
-                    </td>
-                  </tr>
+                  {data &&
+                    data.Studies &&
+                    data.Studies.map(item => (
+                      <StudyListItem
+                        studyName={item.StudyID}
+                        desired={item.DesiredReviewers}
+                        completed={item.CompletedReviewers}
+                      />
+                    ))}
                 </tbody>
               </Table>
               <CardFooter className="py-4">

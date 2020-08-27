@@ -1,7 +1,7 @@
 import React, { useState, useCallback } from "react";
 import { useDropzone } from "react-dropzone";
 
-const Dropzone = ({ setUploaded, setBlobUrl }) => {
+const Dropzone = ({ setUploaded, setBlob}) => {
   const [loading, setLoading] = useState(false);
 
   const onDrop = useCallback(
@@ -12,13 +12,13 @@ const Dropzone = ({ setUploaded, setBlobUrl }) => {
         reader.onabort = () => console.log("file reading was aborted");
         reader.onerror = () => console.log("file reading has failed");
         reader.onload = () => {
-          setBlobUrl(URL.createObjectURL(file));
+          setBlob(file);
           setUploaded(true);
         };
         reader.readAsArrayBuffer(file);
       });
     },
-    [setBlobUrl, setUploaded]
+    [setBlob, setUploaded]
   );
 
   const { getRootProps, getInputProps } = useDropzone({ onDrop });

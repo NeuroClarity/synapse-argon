@@ -15,7 +15,7 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 // node.js library that concatenates classes (strings)
 import classnames from "classnames";
 // javascipt plugin for creating charts
@@ -171,8 +171,25 @@ const chartExample1 = {
 };
 
 const Dashboard = () => {
-  const opts = {};
-  const { loading, error, refresh, data } = useApi("/api/creator/study", opts);
+  const opts = {
+    method: "POST"
+  };
+
+  const body = {
+    CreatorId: "facebook|1606726296168263",
+    StudyId: "f7270879-1f96-4761-8109-63a2f9cb9cb2"
+  };
+
+  const { loading, error, refresh, data } = useApi(
+    "/api/creator/insights",
+    opts,
+    body
+  );
+
+  useEffect(() => {
+    console.log("error: ", error);
+    console.log("data: ", data);
+  }, [data, error]);
 
   const fakeData = {
     heatmap:

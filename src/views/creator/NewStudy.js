@@ -32,15 +32,18 @@ import {
   Col
 } from "reactstrap";
 
+import { useAuth0 } from "@auth0/auth0-react";
+
 import Dropzone from "../../components/Forms/Dropzone.js";
 
 const NewStudy = () => {
   const [uploaded, setUploaded] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [blobUrl, setBlobUrl] = useState();
+  const [blob, setBlob] = useState();
   const [studyName, setStudyName] = useState();
   const [description, setDescription] = useState();
   const [reviewerCount, setReviewerCount] = useState();
+  const { user } = useAuth0();
 
   const updateStudyName = e => {
     setStudyName(e.target.value);
@@ -52,9 +55,54 @@ const NewStudy = () => {
     setReviewerCount(e.target.value);
   };
 
-  const requestNewStudy = () => {
+  const requestNewStudy = async () => {
     // validate form
-    // api request
+    console.log("user: ", user);
+    // Get our upload URL
+    const study = await fetch(
+      process.env.REACT_APP_AXON_DOMAIN + "/api/creator/study",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          CreatorId: user.sub,
+          Description: description,
+          Filename: studyName
+        })
+      }
+    )
+      .then(res => res.json())
+      .then(
+        study => {
+          console.log("study: ", study);
+          return study;
+        },
+        error => {
+          console.log("Error: ", error);
+        }
+      );
+
+    // Upload video content
+    await fetch(study.UploadUrl, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "video/mp4"
+      },
+      body: blob
+    })
+      .then(res => res.json())
+      .then(
+        result => {
+          // setUploading(false);
+          return result;
+        },
+        error => {
+          // setUploading(false);
+          console.log("Error: ", error);
+        }
+      );
   };
 
   return (
@@ -66,7 +114,7 @@ const NewStudy = () => {
               <div className="text-center text-muted mb-4">
                 Click to upload your video
               </div>
-              <Dropzone setUploaded={setUploaded} setBlobUrl={setBlobUrl} />
+              <Dropzone setUploaded={setUploaded} setBlob={setBlob} />
             </CardBody>
           </Card>
         </Col>
@@ -76,7 +124,7 @@ const NewStudy = () => {
             <CardHeader className="bg-transparent pb-5">
               <div class="embed-responsive embed-responsive-16by9">
                 <video class="embed-responsive-item" width="100%" controls>
-                  <source src={blobUrl} />
+                  <source src={URL.createObjectURL(blob)} />
                 </video>
               </div>
             </CardHeader>
