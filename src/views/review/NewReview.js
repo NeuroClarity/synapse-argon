@@ -63,23 +63,25 @@ class NewReview extends React.Component {
           <Card className="bg-secondary shadow border-0 mt-3">
             <CardBody className="px-lg-5 py-lg-4">
               <div className="text-center mb-4">
-                { this.state.data ? this.state.data.Name : 'A user' } has invited you to give biometric feedback on a video.
-              </div>
+                { this.state.data ? this.state.data.Name + " has invited you to give biometric feedback on a video."
+: 'Thanks for visiting the neuroclarity.ai video reviewer page. It looks like the link you provided has a typo or is invalid.' }               </div>
               <div className="text-center mb-4 font-weight-bold">
                 { this.state.data ? this.state.data.Description : '' }
               </div>
-              <div className="text-center">
-                <Link to={"/review/overview/" + this.props.match.params.studyId}>
-                  <Button className="mr-3" color="primary" type="button">
-                    First time
-                  </Button>
-                </Link>
-                <Link to={"/review/setup/" + this.props.match.params.studyId}>
-                  <Button className="ml-3" color="primary" type="button">
-                    Done it before
-                  </Button>
-                </Link>
-              </div>
+              { this.state.data && (
+                <div className="text-center">
+                  <Link to={"/review/overview/" + this.props.match.params.studyId}>
+                    <Button className="mr-3" color="primary" type="button">
+                      First time
+                    </Button>
+                  </Link>
+                  <Link to={"/review/setup/" + this.props.match.params.studyId}>
+                    <Button className="ml-3" color="primary" type="button">
+                      Done it before
+                    </Button>
+                  </Link>
+                </div>
+            ) }
             </CardBody>
           </Card>
         </Col>

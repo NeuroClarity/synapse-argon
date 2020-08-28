@@ -19,6 +19,7 @@ import React from "react";
 import { Redirect } from "react-router-dom";
 
 import ReactStars from "react-rating-stars-component";
+import { COLLECTION_INTERVAL } from "./WatchVideo.js";
 // reactstrap components
 import {
   Button,
@@ -60,7 +61,13 @@ class ReviewResult extends React.Component {
     }
 
     async function f() {
-      let formattedEyeData = this.state.eyeData.map(point => point["X"] + " " + point["Y"]).join("\n");
+      let formattedEyeData= JSON.stringify({
+        screenWidth: window.innerWidth,
+        screenHeight: window.innerHeight,
+        collectionInterval: COLLECTION_INTERVAL,
+        coordinates: this.state.eyeData
+      })
+
       let reviewId;
       await this.sendData(formattedEyeData, this.state.facialData).then((id) => {
         reviewId = id
@@ -123,7 +130,7 @@ class ReviewResult extends React.Component {
     await fetch(url, {
       method: "PUT",
       headers: {
-        "Content-Type": "text/csv"
+        "Content-Type": "application/json"
       },
       body: data
     })

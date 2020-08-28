@@ -22,6 +22,8 @@ import {
   Col
 } from "reactstrap";
 
+export const COLLECTION_INTERVAL = 0.1 * 1000;
+
 class WatchVideo extends React.Component {
   constructor(props) {
     super(props)
@@ -153,7 +155,7 @@ class WatchVideo extends React.Component {
   componentDidMount() {
     this.getVideoUrl()
 
-    this.interval = setInterval(this.handleData, 0.1 * 1000)
+    this.interval = setInterval(this.handleData, COLLECTION_INTERVAL)
   }
 
   componentWillUnmount() {
