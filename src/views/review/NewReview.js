@@ -63,10 +63,10 @@ class NewReview extends React.Component {
           <Card className="bg-secondary shadow border-0 mt-3">
             <CardBody className="px-lg-5 py-lg-4">
               <div className="text-center mb-4">
-                { this.state.data ? this.state.data.Name + " has invited you to give biometric feedback on a video."
+                { this.state.data ? (this.state.data.CreatorName ? this.state.data.CreatorName : "A creator") + " has invited you to give biometric feedback on a video."
 : 'Thanks for visiting the neuroclarity.ai video reviewer page. It looks like the link you provided has a typo or is invalid.' }               </div>
               <div className="text-center mb-4 font-weight-bold">
-                { this.state.data ? this.state.data.Description : '' }
+                { this.state.data ? this.state.data.StudyName : '' }
               </div>
               { this.state.data && (
                 <div className="text-center">
