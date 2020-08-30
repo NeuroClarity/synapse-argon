@@ -15,13 +15,13 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React from "react";
+import React, { useState } from "react";
 // node.js library that concatenates classes (strings)
 import classnames from "classnames";
 // javascipt plugin for creating charts
 import Chart from "chart.js";
 // react plugin used to create charts
-import { Line } from "react-chartjs-2";
+import { Line, Bar } from "react-chartjs-2";
 // reactstrap components
 import {
   Button,
@@ -44,6 +44,7 @@ import {
   chartOptions,
   parseOptions,
   chartExample1,
+  chartExample2
 } from "variables/charts.js";
 
 import DashboardHeader from "components/Headers/DashboardHeader.js";
@@ -92,10 +93,10 @@ class Index extends React.Component {
       <>
         <DashboardHeader />
         {/* Page content */}
-        <Container className="mt--8" fluid>
+        <Container className="mt--5" fluid>
           {" "}
           <Row>
-            <Col className="mb-5 mb-xl-0" xl="8">
+            <Col className="mb-5 mb-xl-0" xl="6">
               <Card className="shadow">
                 <CardHeader className="mb--4 border-0">
                   <Row className="align-items-center">
@@ -103,12 +104,6 @@ class Index extends React.Component {
                       <h3 className="mb-0">Extra Gum A</h3>
                     </div>
                     <Row>
-                      <h6
-                        style={{ marginTop: "5px" }}
-                        className="text-uppercase text-muted ls-1 mb-1"
-                      >
-                        Copy Link
-                      </h6>
                       <div
                         style={{ marginTop: "-5px" }}
                         className="avatar-group col"
@@ -155,7 +150,7 @@ class Index extends React.Component {
                 </CardBody>
               </Card>
             </Col>
-            <Col xl="4">
+            <Col xl="6">
               <Card style={{ height: "100%" }} className="shadow">
                 <CardHeader className="border-0">
                   <Row className="align-items-center">
@@ -272,7 +267,7 @@ class Index extends React.Component {
             </Col>
           </Row>
           <Row className="mt-5">
-            <Col className="mb-5 mb-xl-0" xl="8">
+            <Col className="mb-5 mb-xl-0" xl="9">
               <Card className="bg-gradient-default shadow">
                 <CardHeader className="bg-transparent">
                   <Row className="align-items-center">
@@ -351,8 +346,8 @@ class Index extends React.Component {
                 </CardBody>
               </Card>
             </Col>
-            <Col xl="4">
-              <Card style={{ height: "100%" }} className="shadow">
+            <Col xl="3">
+              <Card className="shadow">
                 <CardHeader className="bg-transparent">
                   <Row className="align-items-center">
                     <div className="col">

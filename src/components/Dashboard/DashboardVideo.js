@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import {
   Button,
@@ -9,7 +9,17 @@ import {
   UncontrolledTooltip
 } from "reactstrap";
 
-const DashboardVideo = ({ heatmap }) => {
+const DashboardVideo = ({ video, heatmap }) => {
+  const [heatmapToggle, setHeatmapToggle] = useState(false);
+
+  useEffect(() => {
+    console.log("video: ", video);
+  }, [video]);
+
+  useEffect(() => {
+    console.log("toggle: ", heatmapToggle);
+  }, [heatmapToggle]);
+
   return (
     <Card className="shadow">
       <CardHeader className="mb--4 border-0">
@@ -41,7 +51,7 @@ const DashboardVideo = ({ heatmap }) => {
               <Button
                 color="primary"
                 href="#pablo"
-                onClick={e => this.toggleHeatmap(e)}
+                onClick={e => setHeatmapToggle(!heatmapToggle)}
                 size="sm"
               >
                 Toggle Heatmap
@@ -53,12 +63,12 @@ const DashboardVideo = ({ heatmap }) => {
       <CardBody>
         <div class="embed-responsive embed-responsive-16by9">
           <video
-            key={heatmap}
+            key={heatmapToggle ? heatmap : video}
             class="embed-responsive-item"
             width="100%"
             controls
           >
-            <source src={heatmap} />
+            <source src={heatmapToggle ? heatmap : video} />
           </video>
         </div>
       </CardBody>

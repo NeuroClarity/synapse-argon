@@ -1,7 +1,38 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Card, CardHeader, Table, Row } from "reactstrap";
 
-const SurveyResults = ({ SurveyResults: surveyResults }) => {
+const SurveyResults = ({ surveyResults }) => {
+  const [rowArray, setRowArray] = useState([]);
+
+  useEffect(() => {
+    if (surveyResults !== undefined) {
+      const newRowA = [];
+      for (var key in surveyResults) {
+        if (key !== "OpenEnded") {
+          const val = surveyResults[key];
+          let num = val % 1 == 0 ? val : val.toFixed(2);
+          newRowA.push(
+            <tr>
+              <th scope="row">{key}</th>
+              <td>{num} / 5</td>
+            </tr>
+          );
+        } else {
+          // open ended
+        }
+      }
+      setRowArray(newRowA);
+    }
+  }, [surveyResults]);
+
+  useEffect(() => {
+    console.log("surveyResults: ", surveyResults);
+  }, [surveyResults]);
+
+  useEffect(() => {
+    console.log("rowArray: ", rowArray);
+  }, [rowArray]);
+
   return (
     <Card style={{ height: "100%" }} className="shadow">
       <CardHeader className="bg-transparent">
@@ -15,24 +46,7 @@ const SurveyResults = ({ SurveyResults: surveyResults }) => {
         </Row>
       </CardHeader>
       <Table className="table-sm align-items-center table-flush" responsive>
-        <tbody>
-          <tr>
-            <th scope="row">Quality</th>
-            <td>4.2 / 5</td>
-          </tr>
-          <tr>
-            <th scope="row">Enjoyment</th>
-            <td>2.9 / 5</td>
-          </tr>
-          <tr>
-            <th scope="row">Would Buy</th>
-            <td>3.8 / 5</td>
-          </tr>
-          <tr>
-            <th scope="row">Recommend</th>
-            <td>4.7 / 5</td>
-          </tr>
-        </tbody>
+        <tbody>{rowArray}</tbody>
       </Table>
     </Card>
   );
