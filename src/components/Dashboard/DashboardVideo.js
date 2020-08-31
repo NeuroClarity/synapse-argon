@@ -8,9 +8,27 @@ import {
   Row,
   UncontrolledTooltip
 } from "reactstrap";
+import { useClipboard } from "use-clipboard-copy";
 
-const DashboardVideo = ({ video, heatmap }) => {
+const DashboardVideo = ({ studyId, name, video, heatmap }) => {
   const [heatmapToggle, setHeatmapToggle] = useState(false);
+  const [link, setLink] = useState();
+  const clipboard = useClipboard();
+
+  const copyLink = React.useCallback(
+    event => {
+      clipboard.copy(link);
+    },
+    [clipboard, link]
+  );
+
+  useEffect(() => {
+    setLink(window.location.origin + "/review/new/" + studyId);
+  }, [studyId]);
+
+  useEffect(() => {
+    console.log("link: ", link);
+  });
 
   useEffect(() => {
     console.log("video: ", video);
@@ -25,7 +43,7 @@ const DashboardVideo = ({ video, heatmap }) => {
       <CardHeader className="mb--4 border-0">
         <Row className="align-items-center">
           <div className="col">
-            <h3 className="mb-0">Extra Gum A</h3>
+            <h3 className="mb-0">{name}</h3>
           </div>
           <Row>
             <h6
@@ -39,7 +57,7 @@ const DashboardVideo = ({ video, heatmap }) => {
                 className="avatar avatar-sm"
                 href="#pablo"
                 id="tooltip742438047"
-                onClick={e => e.preventDefault()}
+                onClick={e => copyLink(e)}
               >
                 <i className={"ni ni-single-copy-04"} />
               </a>

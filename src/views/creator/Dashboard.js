@@ -91,6 +91,8 @@ const Dashboard = () => {
         <Row>
           <Col className="mb-5 mb-xl-0" xl="8">
             <DashboardVideo
+              studyId={data ? data.StudyID : ""}
+              name={data ? data.Name : ""}
               video={data ? data.Insights.VideoUrl : undefined}
               heatmap={data ? data.Insights.HeatmapUrl : undefined}
             />

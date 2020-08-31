@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 // node.js library that concatenates classes (strings)
 
 import { Link } from "react-router-dom";
+import { useClipboard } from "use-clipboard-copy";
 
 import {
   Progress,
@@ -16,12 +17,18 @@ import {
 
 const StudyListItem = ({ studyId, studyName, desired, completed }) => {
   const [percent, setPercent] = useState(100);
+  const [link, setLink] = useState();
   const [statusBadge, setStatusBadge] = useState(
     <Badge color="" className="badge-dot mr-4">
       <i className="bg-warning" />
       pending
     </Badge>
   );
+  const clipboard = useClipboard();
+
+  useEffect(() => {
+    setLink(window.location.origin + "/review/new/" + studyId);
+  }, [studyId]);
 
   useEffect(() => {
     let percent = Math.trunc((desired / completed) * 100);
@@ -51,6 +58,13 @@ const StudyListItem = ({ studyId, studyName, desired, completed }) => {
     console.log("percent: ", percent);
   }, [percent]);
 
+  const copyLink = React.useCallback(
+    event => {
+      clipboard.copy(link);
+    },
+    [clipboard, link]
+  );
+
   return (
     <tr>
       <th scope="row">
@@ -70,7 +84,7 @@ const StudyListItem = ({ studyId, studyName, desired, completed }) => {
             className="avatar avatar-sm"
             href="#pablo"
             id="tooltip742438047"
-            onClick={e => e.preventDefault()}
+            onClick={e => copyLink(e)}
           >
             <i className={"ni ni-single-copy-04"} />
           </a>
