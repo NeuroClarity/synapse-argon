@@ -68,11 +68,9 @@ class ReviewResult extends React.Component {
         coordinates: this.state.eyeData
       })
 
-      let reviewId;
-      await this.sendData(formattedEyeData, this.state.facialData).then((id) => {
-        reviewId = id
+      await this.sendData(formattedEyeData, this.state.facialData).then((reviewId) => {
+        this.submitAnalyticsJob(reviewId);
       });
-      this.submitAnalyticsJob(reviewId);
     }
     f = f.bind(this)
     f();
@@ -80,7 +78,6 @@ class ReviewResult extends React.Component {
   }
 
   async sendData(eyeData, facialData) {
-    console.log("here")
     return await fetch(process.env.REACT_APP_AXON_DOMAIN + "/api/reviewer/finishReviewJob", {
       method: "POST",
       headers: {
@@ -216,7 +213,6 @@ class ReviewResult extends React.Component {
                         type="textarea" 
                         value={this.state.q4value} 
                         onChange={(event) => {
-                          console.log(event)
                           this.setState({ q4value: event.target.value })
                         }}
                       />
