@@ -14,7 +14,7 @@ import {
   Media
 } from "reactstrap";
 
-const StudyListItem = ({ studyName, desired, completed }) => {
+const StudyListItem = ({ studyId, studyName, desired, completed }) => {
   const [percent, setPercent] = useState(100);
   const [statusBadge, setStatusBadge] = useState(
     <Badge color="" className="badge-dot mr-4">
@@ -56,7 +56,7 @@ const StudyListItem = ({ studyName, desired, completed }) => {
       <th scope="row">
         <Media className="align-items-center">
           <Media>
-            <Link to={"/admin/study/" + studyName}>
+            <Link to={"/admin/study/" + studyId}>
               <span className="mb-0 text-sm">{studyName}</span>
             </Link>
           </Media>
