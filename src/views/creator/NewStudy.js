@@ -68,8 +68,9 @@ const NewStudy = () => {
         },
         body: JSON.stringify({
           CreatorId: user.sub,
+          Name: studyName, 
           Description: description,
-          Filename: studyName
+          Filename: "video-content.mp4"
         })
       }
     )
