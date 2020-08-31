@@ -99,6 +99,11 @@ const Dashboard = () => {
           </Col>
           <Col xl="4">
             <SurveyResults
+              desired={
+                data && data.Demographics
+                  ? data.Demographics.Groups[0].Reviewers
+                  : undefined
+              }
               surveyResults={data ? data.Insights.SurveyResults : undefined}
             />
           </Col>
@@ -107,6 +112,7 @@ const Dashboard = () => {
           <Col className="mb-5 mb-xl-0" xl="8">
             <DashboardChart
               emotionResults={data && data.Insights.EmotionResults}
+              engagementResults={data && data.Insights.EngagementResults.Result}
             />
           </Col>
           <Col xl="4">

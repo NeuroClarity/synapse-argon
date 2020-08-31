@@ -17,28 +17,20 @@ import Chart from "chart.js";
 import { Line } from "react-chartjs-2";
 
 // core components
-import {
-  chartOptions,
-  parseOptions,
-  chartExample1
-} from "../../utils/chart.js";
+import { chartOptions, parseOptions } from "../../utils/chart.js";
 
-const DashboardChart = ({ emotionResults }) => {
+const DashboardChart = ({ emotionResults, engagementResults }) => {
   const [emotionChartData, setEmotionChartData] = useState({});
+  const [engagementChartData, setEngagementChartData] = useState({});
   const [filteredEmotionChart, setFilteredEmotionChart] = useState();
   const [emotionButtons, setEmotionButtons] = useState();
   const [activeEmotion, setActiveEmotion] = useState("Angry");
-  const [activeInsight, setActiveInsight] = useState();
-
-  useEffect(() => {
-    console.log("activeEmotion: ", activeEmotion);
-  }, [activeEmotion]);
+  const [activeInsight, setActiveInsight] = useState("Emotion");
 
   // Set global defaults on wrapped chart.js object.
   useEffect(() => {
-    if (window.Chart) {
-      parseOptions(Chart, chartOptions());
-    }
+    console.log("parsed");
+    parseOptions(Chart, chartOptions());
   });
 
   // Massage raw data into chart.js amenable format.
@@ -50,6 +42,14 @@ const DashboardChart = ({ emotionResults }) => {
     }
     // eslint-disable-next-line
   }, [emotionResults]);
+
+  // Massage raw data into chart.js amenable format.
+  useEffect(() => {
+    if (engagementResults) {
+      parseEngagementData(engagementResults);
+    }
+    // eslint-disable-next-line
+  }, [engagementResults]);
 
   useEffect(() => {
     if (emotionResults) {
@@ -82,6 +82,26 @@ const DashboardChart = ({ emotionResults }) => {
 
     parseEmotionChart(activeEmotion, emotionChartData);
     setEmotionChartData(emotionChartData);
+  };
+
+  const parseEngagementData = engagementData => {
+    const engagementChartData = {};
+
+    // Create skeleton datasets.
+    engagementChartData.datasets = [{ label: "Engagement", data: [] }];
+
+    // Labels.
+    const labels = [...Array(engagementData.length).keys()];
+    labels.forEach(num => num.toString());
+    emotionChartData.labels = labels;
+
+    // Populate skeleton datasets.
+    engagementData.forEach(value => {
+      engagementChartData.datasets[0].data.push(value);
+    });
+
+    console.log("engagement data: ", engagementChartData);
+    setEngagementChartData(engagementChartData);
   };
 
   const parseEmotionChart = (activeEmotion, emotionChartData) => {
@@ -166,8 +186,11 @@ const DashboardChart = ({ emotionResults }) => {
       <CardBody>
         {/* Chart */}
         <Line
-          data={filteredEmotionChart}
-          options={chartExample1.options}
+          data={
+            activeInsight === "Emotion"
+              ? filteredEmotionChart
+              : engagementChartData
+          }
           getDatasetAtEvent={e => console.log(e)}
         />
       </CardBody>

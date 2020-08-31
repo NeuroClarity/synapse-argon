@@ -3,8 +3,9 @@ import { Carousel, Card, CardHeader, Table, Row } from "reactstrap";
 
 //import SurveyCarousel from "./SurveyCarousel.js";
 
-const SurveyResults = ({ surveyResults }) => {
+const SurveyResults = ({ desired, surveyResults }) => {
   const [rowArray, setRowArray] = useState([]);
+  const [openEnded, setOpenEnded] = useState();
 
   useEffect(() => {
     if (surveyResults !== undefined) {
@@ -19,8 +20,19 @@ const SurveyResults = ({ surveyResults }) => {
               <td>{num} / 5</td>
             </tr>
           );
-        } else {
-          // open ended
+        } else if (surveyResults["OpenEnded"]) {
+          const openEndedA = [];
+          let i = 1;
+          surveyResults["OpenEnded"].forEach(response => {
+            openEndedA.push(
+              <tr>
+                <th scope="row">{i}</th>
+                <td>{response}</td>
+              </tr>
+            );
+            i += 1;
+          });
+          setOpenEnded(openEndedA);
         }
       }
       setRowArray(newRowA);
@@ -41,7 +53,7 @@ const SurveyResults = ({ surveyResults }) => {
         <Row className="align-items-center">
           <div className="col">
             <h6 className="text-uppercase text-muted ls-1 mb-1">
-              Across 32,000 Reviewers
+              Across {desired} Reviewers
             </h6>
             <h2 className="mb-0">Survey Results</h2>
           </div>
@@ -49,6 +61,20 @@ const SurveyResults = ({ surveyResults }) => {
       </CardHeader>
       <Table className="table-sm align-items-center table-flush" responsive>
         <tbody>{rowArray}</tbody>
+      </Table>
+      <CardHeader className="bg-transparent">
+        <Row className="align-items-center">
+          <div className="col">
+            <h2 className="mb-0">Open Responses</h2>
+          </div>
+        </Row>
+      </CardHeader>
+      <Table
+        borderless
+        className="table-sm align-items-center table-flush"
+        responsive
+      >
+        <tbody>{openEnded}</tbody>
       </Table>
     </Card>
   );
