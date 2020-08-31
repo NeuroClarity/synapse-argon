@@ -246,25 +246,6 @@ class Sidebar extends React.Component {
             {/* Navigation */}
             <Nav navbar>{this.createLinks(routes)}</Nav>
             {/* Divider */}
-            <hr className="my-3" />
-            {/* Heading */}
-            <h6 className="navbar-heading text-muted">Recent Studies</h6>
-            {/* Navigation */}
-            <Nav className="mb-md-3" navbar>
-              <NavItem>
-                <NavLink href="/admin/study/oldSpiceAd">Old Spice Ad</NavLink>
-              </NavItem>
-              <NavItem>
-                <NavLink href="/admin/study/superBowlA">
-                  Superbowl Cohort A
-                </NavLink>
-              </NavItem>
-              <NavItem>
-                <NavLink href="/admin/study/superBowlB">
-                  Superbowl Corhort B
-                </NavLink>
-              </NavItem>
-            </Nav>
           </Collapse>
         </Container>
       </Navbar>

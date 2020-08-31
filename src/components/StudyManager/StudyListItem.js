@@ -98,14 +98,13 @@ const StudyListItem = ({ studyId, studyName, desired, completed }) => {
         <div className="avatar-group">
           <a
             className="avatar avatar-sm"
-            href="#pablo"
             id="tooltip742438047"
             onClick={e => copyLink(e)}
           >
             <i className={"ni ni-single-copy-04"} />
           </a>
           <UncontrolledTooltip delay={0} target="tooltip742438047">
-            Click to copy
+            Click to copy your reviewer link
           </UncontrolledTooltip>
         </div>
       </td>
@@ -125,7 +124,6 @@ const StudyListItem = ({ studyId, studyName, desired, completed }) => {
         <UncontrolledDropdown>
           <DropdownToggle
             className="btn-icon-only text-light"
-            href="#pablo"
             role="button"
             size="sm"
             color=""
