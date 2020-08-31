@@ -10,22 +10,30 @@ const DemographicFilter = ({ demographics }) => {
         const percent = Math.trunc((item.Reviewers / allReviewers) * 100);
         console.log("percent: ", percent);
         newRowA.push(
-          <tr>
-            <th scope="row">{item.Label}</th>
-            <td>{item.Reviewers}</td>
-            <td>
-              <div className="d-flex align-items-center">
-                <span className="mr-2">{percent}%</span>
-                <div>
-                  <Progress
-                    max="100"
-                    value={percent.toString()}
-                    barClassName="bg-gradient-success"
-                  />
+          <>
+            <tr>
+              <th scope="row">{item.Label}</th>
+              <td>{item.Reviewers}</td>
+              <td>
+                <div className="d-flex align-items-center">
+                  <span className="mr-2">{percent}%</span>
                 </div>
+              </td>
+            </tr>
+            <tr>
+              <div className="d-flex align-items-center">
+                <td>
+                  <div>
+                    <Progress
+                      max="100"
+                      value={percent.toString()}
+                      barClassName="bg-gradient-success"
+                    />
+                  </div>
+                </td>
               </div>
-            </td>
-          </tr>
+            </tr>
+          </>
         );
       });
       setRowArray(newRowA);

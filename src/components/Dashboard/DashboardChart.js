@@ -128,7 +128,7 @@ const DashboardChart = ({ emotionResults }) => {
             <h6 className="text-uppercase text-light ls-1 mb-1">
               Your summary
             </h6>
-            <h3 className="text-white mb-0">Success Index</h3>
+            <h3 className="text-white mb-0">{activeEmotion}</h3>
           </div>
           <div className="col-9">
             <Nav className="justify-content-end" pills>

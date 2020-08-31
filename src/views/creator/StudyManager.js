@@ -68,6 +68,10 @@ const StudyManager = () => {
     body
   );
 
+  useEffect(() => {
+    console.log("data: ", data);
+  }, [data]);
+
   return (
     <>
       <AdminNavbar brandText={"Neuroclarity"} />
@@ -97,7 +101,7 @@ const StudyManager = () => {
                     data.Studies &&
                     data.Studies.map(item => (
                       <StudyListItem
-                        studyName={item.StudyID}
+                        studyName={item.Name}
                         desired={item.DesiredReviewers}
                         completed={item.CompletedReviewers}
                       />

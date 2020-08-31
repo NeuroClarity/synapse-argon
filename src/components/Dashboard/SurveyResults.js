@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { Card, CardHeader, Table, Row } from "reactstrap";
+import { Carousel, Card, CardHeader, Table, Row } from "reactstrap";
+
+import SurveyCarousel from "./SurveyCarousel.js";
 
 const SurveyResults = ({ surveyResults }) => {
   const [rowArray, setRowArray] = useState([]);

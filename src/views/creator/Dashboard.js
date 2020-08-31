@@ -89,8 +89,8 @@ const Dashboard = () => {
             />
           </Col>
           <Col xl="4">
-            <DemographicFilter
-              demographics={data ? data.Insights.Demographics : undefined}
+            <SurveyResults
+              surveyResults={data ? data.Insights.SurveyResults : undefined}
             />
           </Col>
         </Row>
@@ -101,8 +101,8 @@ const Dashboard = () => {
             />
           </Col>
           <Col xl="4">
-            <SurveyResults
-              surveyResults={data ? data.Insights.SurveyResults : undefined}
+            <DemographicFilter
+              demographics={data ? data.Insights.Demographics : undefined}
             />
           </Col>
         </Row>

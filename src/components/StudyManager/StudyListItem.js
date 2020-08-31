@@ -16,10 +16,40 @@ import {
 
 const StudyListItem = ({ studyName, desired, completed }) => {
   const [percent, setPercent] = useState(100);
+  const [statusBadge, setStatusBadge] = useState(
+    <Badge color="" className="badge-dot mr-4">
+      <i className="bg-warning" />
+      pending
+    </Badge>
+  );
+
+  useEffect(() => {
+    let percent = Math.trunc((desired / completed) * 100);
+    percent = isNaN(percent) ? 0 : percent;
+    setPercent(percent);
+  }, [desired, completed]);
+
+  useEffect(() => {
+    if (percent === 100) {
+      setStatusBadge(
+        <Badge color="" className="badge-dot mr-4">
+          <i className="bg-success" />
+          completed
+        </Badge>
+      );
+    } else {
+      setStatusBadge(
+        <Badge color="" className="badge-dot mr-4">
+          <i className="bg-warning" />
+          pending
+        </Badge>
+      );
+    }
+  }, [percent]);
 
   useEffect(() => {
     console.log("percent: ", percent);
-  });
+  }, [percent]);
 
   return (
     <tr>
@@ -33,12 +63,7 @@ const StudyListItem = ({ studyName, desired, completed }) => {
         </Media>
       </th>
       <td>{desired}</td>
-      <td>
-        <Badge color="" className="badge-dot mr-4">
-          <i className="bg-warning" />
-          delayed
-        </Badge>
-      </td>
+      <td>{statusBadge}</td>
       <td>
         <div className="avatar-group">
           <a
@@ -56,9 +81,13 @@ const StudyListItem = ({ studyName, desired, completed }) => {
       </td>
       <td>
         <div className="d-flex align-items-center">
-          <span className="mr-2">60%</span>
+          <span className="mr-2">{percent}%</span>
           <div>
-            <Progress max="100" value="60" barClassName="bg-danger" />
+            <Progress
+              max="100"
+              value={percent.toString()}
+              barClassName="bg-danger"
+            />
           </div>
         </div>
       </td>
