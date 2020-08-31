@@ -65,6 +65,22 @@ const StudyListItem = ({ studyId, studyName, desired, completed }) => {
     [clipboard, link]
   );
 
+  const deleteStudy = React.useCallback(
+    event => {
+      fetch(process.env.REACT_APP_AXON_DOMAIN + "/api/creator/delete", {
+        method: "POST",
+        headers: {
+          // TODO: access token
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          StudyID: studyId
+        })
+      });
+    },
+    [studyId]
+  );
+
   return (
     <tr>
       <th scope="row">
@@ -118,13 +134,10 @@ const StudyListItem = ({ studyId, studyName, desired, completed }) => {
             <i className="fas fa-ellipsis-v" />
           </DropdownToggle>
           <DropdownMenu className="dropdown-menu-arrow" right>
-            <DropdownItem href="#pablo" onClick={e => e.preventDefault()}>
+            <DropdownItem onClick={e => deleteStudy()}>
               Delete Study
             </DropdownItem>
-            <DropdownItem href="#pablo" onClick={e => e.preventDefault()}>
-              Edit Study
-            </DropdownItem>
-            <DropdownItem href="#pablo" onClick={e => e.preventDefault()}>
+            <DropdownItem onClick={e => e.preventDefault()}>
               Contact Us
             </DropdownItem>
           </DropdownMenu>
