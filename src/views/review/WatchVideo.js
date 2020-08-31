@@ -145,7 +145,7 @@ class WatchVideo extends React.Component {
   componentWillMount() {
     // access webcam
     navigator.mediaDevices
-        .getUserMedia({video: true})
+        .getUserMedia({video: { frameRate: { ideal: 30, max: 30 } } })
         .then(stream => {
           this.webcamRef.current.srcObject = stream
         })
