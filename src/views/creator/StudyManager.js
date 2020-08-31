@@ -101,6 +101,7 @@ const StudyManager = () => {
                     data.Studies &&
                     data.Studies.map(item => (
                       <StudyListItem
+                        studyId={item.StudyID}
                         studyName={item.Name}
                         desired={item.DesiredReviewers}
                         completed={item.CompletedReviewers}

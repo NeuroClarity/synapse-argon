@@ -55,14 +55,21 @@ import SurveyResults from "../../components/Dashboard/SurveyResults.js";
 import { useApi } from "../../utils/request.js";
 
 const Dashboard = () => {
+  const [studyID, setStudyID] = useState(
+    window.location.pathname.split("/").pop()
+  );
   const { user } = useAuth0();
   const opts = {
     method: "POST"
   };
 
+  useEffect(() => {
+    setStudyID(window.location.pathname.split("/").pop());
+  }, []);
+
   const body = {
     CreatorId: user.sub,
-    StudyId: "2966fec7-148d-498a-a7c1-4cb07af5e5d9"
+    StudyId: studyID
   };
 
   const { loading, error, refresh, data } = useApi(
@@ -84,6 +91,8 @@ const Dashboard = () => {
         <Row>
           <Col className="mb-5 mb-xl-0" xl="8">
             <DashboardVideo
+              studyId={data ? data.StudyID : ""}
+              name={data ? data.Name : ""}
               video={data ? data.Insights.VideoUrl : undefined}
               heatmap={data ? data.Insights.HeatmapUrl : undefined}
             />

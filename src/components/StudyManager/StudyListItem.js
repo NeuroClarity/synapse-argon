@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 // node.js library that concatenates classes (strings)
 
 import { Link } from "react-router-dom";
+import { useClipboard } from "use-clipboard-copy";
 
 import {
   Progress,
@@ -14,14 +15,20 @@ import {
   Media
 } from "reactstrap";
 
-const StudyListItem = ({ studyName, desired, completed }) => {
+const StudyListItem = ({ studyId, studyName, desired, completed }) => {
   const [percent, setPercent] = useState(100);
+  const [link, setLink] = useState();
   const [statusBadge, setStatusBadge] = useState(
     <Badge color="" className="badge-dot mr-4">
       <i className="bg-warning" />
       pending
     </Badge>
   );
+  const clipboard = useClipboard();
+
+  useEffect(() => {
+    setLink(window.location.origin + "/review/new/" + studyId);
+  }, [studyId]);
 
   useEffect(() => {
     let percent = Math.trunc((desired / completed) * 100);
@@ -51,12 +58,35 @@ const StudyListItem = ({ studyName, desired, completed }) => {
     console.log("percent: ", percent);
   }, [percent]);
 
+  const copyLink = React.useCallback(
+    event => {
+      clipboard.copy(link);
+    },
+    [clipboard, link]
+  );
+
+  const deleteStudy = React.useCallback(
+    event => {
+      fetch(process.env.REACT_APP_AXON_DOMAIN + "/api/creator/delete", {
+        method: "POST",
+        headers: {
+          // TODO: access token
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          StudyID: studyId
+        })
+      });
+    },
+    [studyId]
+  );
+
   return (
     <tr>
       <th scope="row">
         <Media className="align-items-center">
           <Media>
-            <Link to={"/admin/study/" + studyName}>
+            <Link to={"/admin/study/" + studyId}>
               <span className="mb-0 text-sm">{studyName}</span>
             </Link>
           </Media>
@@ -70,7 +100,7 @@ const StudyListItem = ({ studyName, desired, completed }) => {
             className="avatar avatar-sm"
             href="#pablo"
             id="tooltip742438047"
-            onClick={e => e.preventDefault()}
+            onClick={e => copyLink(e)}
           >
             <i className={"ni ni-single-copy-04"} />
           </a>
@@ -104,13 +134,10 @@ const StudyListItem = ({ studyName, desired, completed }) => {
             <i className="fas fa-ellipsis-v" />
           </DropdownToggle>
           <DropdownMenu className="dropdown-menu-arrow" right>
-            <DropdownItem href="#pablo" onClick={e => e.preventDefault()}>
+            <DropdownItem onClick={e => deleteStudy()}>
               Delete Study
             </DropdownItem>
-            <DropdownItem href="#pablo" onClick={e => e.preventDefault()}>
-              Edit Study
-            </DropdownItem>
-            <DropdownItem href="#pablo" onClick={e => e.preventDefault()}>
+            <DropdownItem onClick={e => e.preventDefault()}>
               Contact Us
             </DropdownItem>
           </DropdownMenu>

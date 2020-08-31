@@ -61,7 +61,7 @@ const Profile = () => {
   }, [profileData]);
 
   useEffect(() => {
-    if (listData) {
+    if (listData && listData.Studies) {
       setTotalStudies(listData.Studies.length);
       let totalReviews = 0;
       let desiredReviews = 0;
@@ -71,6 +71,10 @@ const Profile = () => {
       });
       setTotalReviews(totalReviews);
       setDesiredReviews(desiredReviews);
+    } else {
+      setTotalStudies(0);
+      setTotalReviews(0);
+      setDesiredReviews(0);
     }
     console.log("listData: ", listData);
   }, [listData]);
