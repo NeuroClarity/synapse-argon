@@ -184,7 +184,6 @@ class WatchVideo extends React.Component {
             id="full-screenVideo"
             ref={ this.videoRef }
             key={ this.state.videoUrl }
-            controls
             style={{
               position: "fixed",
               top: "0",

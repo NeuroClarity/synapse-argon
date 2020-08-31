@@ -96,17 +96,16 @@ class ReviewResult extends React.Component {
       .then(res => {
         return res.json();
       })
-      .then(
-        result => {
+      .then(async function(result){
           // upload data to S3
           const eyeDataUrl = result.EyeDataUrl
           console.log(eyeDataUrl)
-          this.uploadEyeToS3(eyeDataUrl, eyeData)
+          await this.uploadEyeToS3(eyeDataUrl, eyeData)
           const facialDataUrl = result.FacialDataUrl
           console.log(facialDataUrl)
-          this.uploadFacialToS3(facialDataUrl, facialData)
+          await this.uploadFacialToS3(facialDataUrl, facialData)
           return result.ReviewId
-        },
+        }.bind(this),
         error => {
           console.log("Error: ", error);
         }
