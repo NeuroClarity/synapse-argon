@@ -70,7 +70,8 @@ const NewStudy = () => {
           CreatorId: user.sub,
           Name: studyName, 
           Description: description,
-          Filename: "video-content.mp4"
+          Filename: "video-content.mp4",
+          DesiredReviewers: reviewerCount,
         })
       }
     )
