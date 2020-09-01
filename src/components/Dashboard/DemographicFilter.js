@@ -63,7 +63,7 @@ const DemographicFilter = ({ demographics }) => {
           <tr>
             <th scope="col">Group</th>
             <th scope="col">Reviewers</th>
-            <th scope="col" />
+            <th scope="col">Completion</th>
           </tr>
         </thead>
         <tbody>{rowArray}</tbody>

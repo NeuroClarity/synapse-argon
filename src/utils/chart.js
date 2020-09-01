@@ -15,7 +15,7 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-const Chart = require("chart.js");
+import Chart from "chart.js";
 
 //
 // Chart extension for making the bars rounded
@@ -183,7 +183,7 @@ var colors = {
 // Methods
 
 // Chart.js global options
-function chartOptions() {
+export function chartOptions() {
   // Options
   var options = {
     defaults: {
@@ -297,7 +297,7 @@ function chartOptions() {
 }
 
 // Parse global options
-function parseOptions(parent, options) {
+export function parseOptions(parent, options) {
   for (var item in options) {
     if (typeof options[item] !== "object") {
       parent[item] = options[item];
@@ -306,67 +306,3 @@ function parseOptions(parent, options) {
     }
   }
 }
-
-// Example 1 of Chart inside src/views/Index.js (Sales value - Card)
-let chartExample1 = {
-  options: {
-    scales: {
-      yAxes: [
-        {
-          gridLines: {
-            color: colors.gray[900],
-            zeroLineColor: colors.gray[900]
-          }
-        }
-      ]
-    },
-    tooltips: {
-      callbacks: {
-        label: function(item, data) {
-          var label = data.datasets[item.datasetIndex].label || "";
-          var yLabel = item.yLabel;
-          var content = "";
-
-          if (data.datasets.length > 1) {
-            content += label;
-          }
-
-          content += yLabel;
-          return content;
-        }
-      }
-    }
-  },
-  data1: canvas => {
-    return {
-      labels: ["May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-      datasets: [
-        {
-          label: "Performance",
-          data: [0, 20, 10, 30, 15, 40, 20, 60, 60]
-        },
-        {
-          label: "Hmmm",
-          data: [0, 10, 20, 30, 15, 40, 20, 60, 60]
-        }
-      ]
-    };
-  },
-  data2: canvas => {
-    return {
-      labels: ["May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-      datasets: [
-        {
-          label: "Performance",
-          data: [0, 20, 5, 25, 10, 30, 15, 40, 40]
-        }
-      ]
-    };
-  }
-};
-
-module.exports = {
-  chartOptions, // used inside src/views/Index.js
-  parseOptions, // used inside src/views/Index.js
-  chartExample1 // used inside src/views/Index.js
-};
