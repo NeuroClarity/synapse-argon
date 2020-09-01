@@ -52,7 +52,7 @@ const NewStudy = () => {
     setDescription(e.target.value);
   };
   const updateReviewerCountForm = e => {
-    setReviewerCount(e.target.value);
+    setReviewerCount(parseInt(e.target.value));
   };
 
   const requestNewStudy = async () => {
