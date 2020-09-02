@@ -41,8 +41,10 @@ const DashboardChart = ({ emotionResults, engagementResults }) => {
 
   useEffect(() => {
     console.log("activechart: ", filteredEmotionChart, engagementChartData);
-    setActiveChartData("Emotion" ? filteredEmotionChart : engagementChartData);
-  }, [filteredEmotionChart, engagementChartData]);
+    setActiveChartData(
+      activeInsight === "Emotion" ? filteredEmotionChart : engagementChartData
+    );
+  }, [activeInsight, filteredEmotionChart, engagementChartData]);
 
   // Massage raw data into chart.js amenable format.
   useEffect(() => {
