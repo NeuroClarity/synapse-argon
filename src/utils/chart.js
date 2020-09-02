@@ -37,7 +37,7 @@ var colors = {
   },
   theme: {
     default: "#172b4d",
-    primary: "#5e72e4",
+    primary: "#38b6ff",
     secondary: "#f4f5f7",
     info: "#11cdef",
     success: "#2dce89",
@@ -77,6 +77,8 @@ export function chartOptions() {
         elements: {
           point: {
             radius: 0,
+            hoverRadius: 8,
+            hitRadius: 10,
             backgroundColor: colors.theme["primary"]
           },
           line: {
@@ -99,27 +101,6 @@ export function chartOptions() {
           enabled: true,
           mode: "index",
           intersect: false
-        }
-      },
-      doughnut: {
-        cutoutPercentage: 83,
-        legendCallback: function(chart) {
-          var data = chart.data;
-          var content = "";
-
-          data.labels.forEach(function(label, index) {
-            var bgColor = data.datasets[0].backgroundColor[index];
-
-            content += '<span class="chart-legend-item">';
-            content +=
-              '<i class="chart-legend-indicator" style="background-color: ' +
-              bgColor +
-              '"></i>';
-            content += label;
-            content += "</span>";
-          });
-
-          return content;
         }
       }
     }

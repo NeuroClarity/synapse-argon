@@ -27,7 +27,11 @@ const useConstructor = (callBack = () => {}) => {
   setHasBeenCalled(true);
 };
 
-const DashboardChart = ({ emotionResults, engagementResults }) => {
+const DashboardChart = ({
+  emotionResults,
+  engagementResults,
+  setGlobalTime
+}) => {
   useConstructor(() => {
     parseOptions(Chart, chartOptions());
   });
@@ -113,7 +117,6 @@ const DashboardChart = ({ emotionResults, engagementResults }) => {
       engagementChartData.datasets[0].data.push(value);
     });
 
-    console.log("engagement data: ", engagementChartData);
     setEngagementChartData(engagementChartData);
   };
 
@@ -131,7 +134,6 @@ const DashboardChart = ({ emotionResults, engagementResults }) => {
         setFilteredEmotionChart(filteredEmotionChart);
       }
     });
-    console.log("FILTERED: ", filteredEmotionChart);
   };
 
   const createEmotionButtons = emotionData => {
@@ -152,6 +154,13 @@ const DashboardChart = ({ emotionResults, engagementResults }) => {
       );
     }
     setEmotionButtons(emotionButtons);
+  };
+
+  const updateTimeFromChart = elementA => {
+    if (elementA[0] && elementA[0]._index) {
+      console.log("selected time: ", elementA[0]._index);
+      setGlobalTime(elementA[0]._index);
+    }
   };
 
   return (
@@ -199,7 +208,10 @@ const DashboardChart = ({ emotionResults, engagementResults }) => {
       </CardHeader>
       <CardBody>
         {/* Chart */}
-        <Line data={activeChartData} getDatasetAtEvent={e => console.log(e)} />
+        <Line
+          data={activeChartData}
+          getElementAtEvent={e => updateTimeFromChart(e)}
+        />
       </CardBody>
     </Card>
   );
