@@ -26,18 +26,6 @@ const DashboardVideo = ({ studyId, name, video, heatmap }) => {
     setLink(window.location.origin + "/review/new/" + studyId);
   }, [studyId]);
 
-  useEffect(() => {
-    console.log("link: ", link);
-  });
-
-  useEffect(() => {
-    console.log("video: ", video);
-  }, [video]);
-
-  useEffect(() => {
-    console.log("toggle: ", heatmapToggle);
-  }, [heatmapToggle]);
-
   return (
     <Card className="shadow">
       <CardHeader className="mb--4 border-0">
@@ -79,10 +67,10 @@ const DashboardVideo = ({ studyId, name, video, heatmap }) => {
         </Row>
       </CardHeader>
       <CardBody>
-        <div class="embed-responsive embed-responsive-16by9">
+        <div className="embed-responsive embed-responsive-16by9">
           <video
             key={heatmapToggle ? heatmap : video}
-            class="embed-responsive-item"
+            className="embed-responsive-item"
             width="100%"
             controls
           >

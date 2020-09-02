@@ -55,7 +55,7 @@ ReactDOM.render(
           path="/review"
           render={props => <ReviewLayout {...props} />}
         />
-        <Redirect from="/" to="/auth/login" />
+        <Redirect from="/*" to="/auth/login" />
       </Switch>
     </BrowserRouter>
   </Auth0Provider>,

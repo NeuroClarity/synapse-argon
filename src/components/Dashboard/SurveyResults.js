@@ -10,30 +10,37 @@ const SurveyResults = ({ desired, surveyResults }) => {
   useEffect(() => {
     if (surveyResults !== undefined) {
       const newRowA = [];
+      let reactKey = 0;
       for (var key in surveyResults) {
         if (key !== "OpenEnded") {
           const val = surveyResults[key];
           let num = val % 1 == 0 ? val : val.toFixed(2);
           newRowA.push(
-            <tr>
-              <th scope="row">{key}</th>
-              <td>{num} / 5</td>
-            </tr>
+            <React.Fragment key={reactKey}>
+              <tr>
+                <th scope="row">{key}</th>
+                <td>{num} / 5</td>
+              </tr>
+            </React.Fragment>
           );
         } else if (surveyResults["OpenEnded"]) {
           const openEndedA = [];
           let i = 1;
           surveyResults["OpenEnded"].forEach(response => {
             openEndedA.push(
-              <tr>
-                <th scope="row">{i}</th>
-                <td>{response}</td>
-              </tr>
+              <React.Fragment key={reactKey}>
+                <tr>
+                  <th scope="row">{i}</th>
+                  <td>{response}</td>
+                </tr>
+              </React.Fragment>
             );
             i += 1;
+            reactKey += 1;
           });
           setOpenEnded(openEndedA);
         }
+        reactKey += 1;
       }
       setRowArray(newRowA);
     }

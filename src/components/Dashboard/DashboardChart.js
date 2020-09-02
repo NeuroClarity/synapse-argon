@@ -18,20 +18,31 @@ import { Line } from "react-chartjs-2";
 
 // core components
 import { chartOptions, parseOptions } from "../../utils/chart.js";
+import { withRouter } from "react-router";
+
+const useConstructor = (callBack = () => {}) => {
+  const [hasBeenCalled, setHasBeenCalled] = useState(false);
+  if (hasBeenCalled) return;
+  callBack();
+  setHasBeenCalled(true);
+};
 
 const DashboardChart = ({ emotionResults, engagementResults }) => {
+  useConstructor(() => {
+    parseOptions(Chart, chartOptions());
+  });
   const [emotionChartData, setEmotionChartData] = useState({});
   const [engagementChartData, setEngagementChartData] = useState({});
-  const [filteredEmotionChart, setFilteredEmotionChart] = useState();
+  const [filteredEmotionChart, setFilteredEmotionChart] = useState({});
   const [emotionButtons, setEmotionButtons] = useState();
   const [activeEmotion, setActiveEmotion] = useState("Angry");
   const [activeInsight, setActiveInsight] = useState("Emotion");
+  const [activeChartData, setActiveChartData] = useState({});
 
-  // Set global defaults on wrapped chart.js object.
   useEffect(() => {
-    console.log("parsed");
-    parseOptions(Chart, chartOptions());
-  });
+    console.log("activechart: ", filteredEmotionChart, engagementChartData);
+    setActiveChartData("Emotion" ? filteredEmotionChart : engagementChartData);
+  }, [filteredEmotionChart, engagementChartData]);
 
   // Massage raw data into chart.js amenable format.
   useEffect(() => {
@@ -129,6 +140,7 @@ const DashboardChart = ({ emotionResults, engagementResults }) => {
           className={classnames("py-2 px-3", {
             active: true
           })}
+          key={label}
           style={{ backgroundColor: "#38b6ff" }}
           onClick={e => setActiveEmotion(label)}
         >
@@ -185,17 +197,10 @@ const DashboardChart = ({ emotionResults, engagementResults }) => {
       </CardHeader>
       <CardBody>
         {/* Chart */}
-        <Line
-          data={
-            activeInsight === "Emotion"
-              ? filteredEmotionChart
-              : engagementChartData
-          }
-          getDatasetAtEvent={e => console.log(e)}
-        />
+        <Line data={activeChartData} getDatasetAtEvent={e => console.log(e)} />
       </CardBody>
     </Card>
   );
 };
 
-export default DashboardChart;
+export default withRouter(DashboardChart);
