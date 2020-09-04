@@ -95,8 +95,6 @@ const NewStudy = () => {
         }
       );
 
-    // Refresh w/in the study manager async.
-    refresh();
     // Upload video content
     await fetch(study.UploadUrl, {
       method: "PUT",
@@ -116,6 +114,9 @@ const NewStudy = () => {
           console.log("Error: ", error);
         }
       );
+
+    // Refresh w/in the study manager async.
+    refresh();
   };
 
   return (
