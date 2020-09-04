@@ -15,7 +15,7 @@ import {
   Media
 } from "reactstrap";
 
-const StudyListItem = ({ studyId, studyName, desired, completed }) => {
+const StudyListItem = ({ studyId, studyName, desired, completed, refresh }) => {
   const [percent, setPercent] = useState(100);
   const [link, setLink] = useState();
   const [statusBadge, setStatusBadge] = useState(
@@ -54,10 +54,6 @@ const StudyListItem = ({ studyId, studyName, desired, completed }) => {
     }
   }, [percent]);
 
-  useEffect(() => {
-    console.log("percent: ", percent);
-  }, [percent]);
-
   const copyLink = React.useCallback(
     event => {
       clipboard.copy(link);
@@ -76,8 +72,9 @@ const StudyListItem = ({ studyId, studyName, desired, completed }) => {
         body: JSON.stringify({
           StudyID: studyId
         })
-      });
+      }).then(() => refresh());
     },
+    //eslint-disable-next-line
     [studyId]
   );
 

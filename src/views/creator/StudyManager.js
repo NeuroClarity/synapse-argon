@@ -17,7 +17,7 @@
 */
 import React, { useEffect } from "react";
 
-import { withRouter } from "react-router";
+import { withRouter, useHistory } from "react-router";
 
 // reactstrap components
 import {
@@ -54,6 +54,7 @@ import { useApi } from "../../utils/request.js";
 // https://github.com/auth0/auth0-react/blob/master/EXAMPLES.md#4-create-a-useapi-hook-for-accessing-protected-apis-with-an-access-token
 const StudyManager = () => {
   const { user } = useAuth0();
+  const history = useHistory();
   const opts = {
     method: "POST"
   };
@@ -69,8 +70,18 @@ const StudyManager = () => {
   );
 
   useEffect(() => {
-    console.log("data: ", data);
+    console.log("LIST: ", data);
   }, [data]);
+
+  // Trivial refresh when history changes. Hacky, update later.
+  useEffect(() => {
+    refresh();
+    //eslint-disable-next-line
+  }, [history]);
+
+  useEffect(() => {
+    console.log("HISTORY: ", history);
+  }, [history]);
 
   return (
     <>
@@ -102,9 +113,11 @@ const StudyManager = () => {
                     data.Studies.map(item => (
                       <StudyListItem
                         studyId={item.StudyID}
+                        key={item.StudyID}
                         studyName={item.Name}
                         desired={item.DesiredReviewers}
                         completed={item.CompletedReviewers}
+                        refresh={refresh}
                       />
                     ))}
                 </tbody>

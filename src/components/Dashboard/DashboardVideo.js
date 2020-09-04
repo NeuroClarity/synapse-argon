@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useLayoutEffect } from "react";
 
 import {
   Button,
@@ -10,10 +10,51 @@ import {
 } from "reactstrap";
 import { useClipboard } from "use-clipboard-copy";
 
-const DashboardVideo = ({ studyId, name, video, heatmap }) => {
+const DashboardVideo = ({ studyId, name, video, heatmap, globalTime }) => {
+  const [localTime, setLocalTime] = useState();
+  const [videoPlayer, setVideoPlayer] = useState();
   const [heatmapToggle, setHeatmapToggle] = useState(false);
+  const [counter, setCounter] = useState();
   const [link, setLink] = useState();
   const clipboard = useClipboard();
+
+  useEffect(() => {
+    const video = document.getElementById("video");
+    if (video) {
+      video.currentTime = globalTime;
+    }
+    // eslint-disable-next-line
+  }, [globalTime]);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setLocalTime(videoPlayer.currentTime);
+      setCounter(counter => counter + 1);
+    }, 100);
+
+    return () => {
+      clearInterval(interval);
+    };
+  });
+
+  useEffect(() => {
+    console.log("localtime: ", localTime);
+  }, [localTime]);
+
+  useEffect(() => {
+    let video = document.getElementById("video");
+    setVideoPlayer(video);
+    let cachedTime = localTime;
+    console.log("currentTime: ", cachedTime);
+    video.preload = "metadata";
+
+    video.onloadedmetadata = function() {
+      window.URL.revokeObjectURL(video.src);
+      console.log("inside: ", cachedTime);
+      video.currentTime = cachedTime;
+    };
+    //eslint-disable-next-line
+  }, [heatmapToggle]);
 
   const copyLink = React.useCallback(
     event => {
@@ -25,18 +66,6 @@ const DashboardVideo = ({ studyId, name, video, heatmap }) => {
   useEffect(() => {
     setLink(window.location.origin + "/review/new/" + studyId);
   }, [studyId]);
-
-  useEffect(() => {
-    console.log("link: ", link);
-  });
-
-  useEffect(() => {
-    console.log("video: ", video);
-  }, [video]);
-
-  useEffect(() => {
-    console.log("toggle: ", heatmapToggle);
-  }, [heatmapToggle]);
 
   return (
     <Card className="shadow">
@@ -79,10 +108,11 @@ const DashboardVideo = ({ studyId, name, video, heatmap }) => {
         </Row>
       </CardHeader>
       <CardBody>
-        <div class="embed-responsive embed-responsive-16by9">
+        <div className="embed-responsive embed-responsive-16by9">
           <video
+            id="video"
             key={heatmapToggle ? heatmap : video}
-            class="embed-responsive-item"
+            className="embed-responsive-item"
             width="100%"
             controls
           >

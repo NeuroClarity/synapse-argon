@@ -55,6 +55,7 @@ import SurveyResults from "../../components/Dashboard/SurveyResults.js";
 import { useApi } from "../../utils/request.js";
 
 const Dashboard = () => {
+  const [globalTime, setGlobalTime] = useState(0);
   const [studyID, setStudyID] = useState(
     window.location.pathname.split("/").pop()
   );
@@ -95,6 +96,7 @@ const Dashboard = () => {
               name={data ? data.Name : ""}
               video={data ? data.Insights.VideoUrl : undefined}
               heatmap={data ? data.Insights.HeatmapUrl : undefined}
+              globalTime={globalTime}
             />
           </Col>
           <Col xl="4">
@@ -113,6 +115,7 @@ const Dashboard = () => {
             <DashboardChart
               emotionResults={data && data.Insights.EmotionResults}
               engagementResults={data && data.Insights.EngagementResults.Result}
+              setGlobalTime={setGlobalTime}
             />
           </Col>
           <Col xl="4">

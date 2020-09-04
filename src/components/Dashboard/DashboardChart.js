@@ -18,20 +18,37 @@ import { Line } from "react-chartjs-2";
 
 // core components
 import { chartOptions, parseOptions } from "../../utils/chart.js";
+import { withRouter } from "react-router";
 
-const DashboardChart = ({ emotionResults, engagementResults }) => {
+const useConstructor = (callBack = () => {}) => {
+  const [hasBeenCalled, setHasBeenCalled] = useState(false);
+  if (hasBeenCalled) return;
+  callBack();
+  setHasBeenCalled(true);
+};
+
+const DashboardChart = ({
+  emotionResults,
+  engagementResults,
+  setGlobalTime
+}) => {
+  useConstructor(() => {
+    parseOptions(Chart, chartOptions());
+  });
   const [emotionChartData, setEmotionChartData] = useState({});
   const [engagementChartData, setEngagementChartData] = useState({});
-  const [filteredEmotionChart, setFilteredEmotionChart] = useState();
+  const [filteredEmotionChart, setFilteredEmotionChart] = useState({});
   const [emotionButtons, setEmotionButtons] = useState();
   const [activeEmotion, setActiveEmotion] = useState("Angry");
   const [activeInsight, setActiveInsight] = useState("Emotion");
+  const [activeChartData, setActiveChartData] = useState({});
 
-  // Set global defaults on wrapped chart.js object.
   useEffect(() => {
-    console.log("parsed");
-    parseOptions(Chart, chartOptions());
-  });
+    console.log("activechart: ", filteredEmotionChart, engagementChartData);
+    setActiveChartData(
+      activeInsight === "Emotion" ? filteredEmotionChart : engagementChartData
+    );
+  }, [activeInsight, filteredEmotionChart, engagementChartData]);
 
   // Massage raw data into chart.js amenable format.
   useEffect(() => {
@@ -100,7 +117,6 @@ const DashboardChart = ({ emotionResults, engagementResults }) => {
       engagementChartData.datasets[0].data.push(value);
     });
 
-    console.log("engagement data: ", engagementChartData);
     setEngagementChartData(engagementChartData);
   };
 
@@ -118,7 +134,6 @@ const DashboardChart = ({ emotionResults, engagementResults }) => {
         setFilteredEmotionChart(filteredEmotionChart);
       }
     });
-    console.log("FILTERED: ", filteredEmotionChart);
   };
 
   const createEmotionButtons = emotionData => {
@@ -129,6 +144,7 @@ const DashboardChart = ({ emotionResults, engagementResults }) => {
           className={classnames("py-2 px-3", {
             active: true
           })}
+          key={label}
           style={{ backgroundColor: "#38b6ff" }}
           onClick={e => setActiveEmotion(label)}
         >
@@ -138,6 +154,13 @@ const DashboardChart = ({ emotionResults, engagementResults }) => {
       );
     }
     setEmotionButtons(emotionButtons);
+  };
+
+  const updateTimeFromChart = elementA => {
+    if (elementA[0] && elementA[0]._index) {
+      console.log("selected time: ", elementA[0]._index);
+      setGlobalTime(elementA[0]._index);
+    }
   };
 
   return (
@@ -186,16 +209,12 @@ const DashboardChart = ({ emotionResults, engagementResults }) => {
       <CardBody>
         {/* Chart */}
         <Line
-          data={
-            activeInsight === "Emotion"
-              ? filteredEmotionChart
-              : engagementChartData
-          }
-          getDatasetAtEvent={e => console.log(e)}
+          data={activeChartData}
+          getElementAtEvent={e => updateTimeFromChart(e)}
         />
       </CardBody>
     </Card>
   );
 };
 
-export default DashboardChart;
+export default withRouter(DashboardChart);
