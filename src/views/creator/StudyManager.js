@@ -63,11 +63,7 @@ const StudyManager = () => {
     CreatorId: user.sub
   };
 
-  const { login, error, refresh, data } = useApi(
-    "/api/creator/list",
-    opts,
-    body
-  );
+  const { refresh, data } = useApi("/api/creator/list", opts, body);
 
   useEffect(() => {
     console.log("LIST: ", data);

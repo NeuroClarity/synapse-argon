@@ -35,6 +35,7 @@ import {
 import { useAuth0 } from "@auth0/auth0-react";
 
 import Dropzone from "../../components/Forms/Dropzone.js";
+import { useApi } from "../../utils/request.js";
 
 const NewStudy = () => {
   const [uploaded, setUploaded] = useState(false);
@@ -44,6 +45,14 @@ const NewStudy = () => {
   const [description, setDescription] = useState();
   const [reviewerCount, setReviewerCount] = useState();
   const { user } = useAuth0();
+
+  const opts = {
+    method: "POST"
+  };
+  const body = {
+    CreatorId: user.sub
+  };
+  const { refresh, data } = useApi("/api/creator/list", opts, body);
 
   const updateStudyName = e => {
     setStudyName(e.target.value);
@@ -86,6 +95,8 @@ const NewStudy = () => {
         }
       );
 
+    // Refresh w/in the study manager async.
+    refresh();
     // Upload video content
     await fetch(study.UploadUrl, {
       method: "PUT",
