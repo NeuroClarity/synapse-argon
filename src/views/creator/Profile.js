@@ -94,7 +94,7 @@ const Profile = () => {
                       <img
                         alt="..."
                         className="rounded-circle"
-                        src={"/vanderbilt.png"}
+                        src={"/default_profile.jpeg"}
                       />
                     </a>
                   </div>
