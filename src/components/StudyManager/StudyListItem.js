@@ -71,8 +71,8 @@ const StudyListItem = ({ studyId, studyName, desired, completed, refresh }) => {
         },
         body: JSON.stringify({
           StudyID: studyId
-        }).then(() => refresh())
-      });
+        })
+      }).then(() => refresh());
     },
     //eslint-disable-next-line
     [studyId]
