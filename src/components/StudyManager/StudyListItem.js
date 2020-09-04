@@ -63,7 +63,6 @@ const StudyListItem = ({ studyId, studyName, desired, completed, refresh }) => {
 
   const deleteStudy = React.useCallback(
     event => {
-      refresh();
       fetch(process.env.REACT_APP_AXON_DOMAIN + "/api/creator/delete", {
         method: "POST",
         headers: {
@@ -72,7 +71,7 @@ const StudyListItem = ({ studyId, studyName, desired, completed, refresh }) => {
         },
         body: JSON.stringify({
           StudyID: studyId
-        })
+        }).then(() => refresh())
       });
     },
     //eslint-disable-next-line
