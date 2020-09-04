@@ -38,7 +38,7 @@ class EyeCalibrate extends React.Component {
         </div>
         <div
           style={{
-            minHeight: "90vh",
+            minHeight: "75vh",
           }}
         >
             <Button 
