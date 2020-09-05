@@ -58,6 +58,12 @@ class FaceCalibrate extends React.Component {
     document.body.appendChild(script);
   }
 
+  componentWillUnmount() {
+    this.videoTag.current.srcObject.getTracks().forEach(function(track) {
+      track.stop();
+    });
+  }
+
   render() {
       return (
         <div>
