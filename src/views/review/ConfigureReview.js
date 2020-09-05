@@ -44,10 +44,10 @@ class CalibrateReview extends React.Component {
         }}>
           <Card className="bg-secondary shadow border-0 mt-3">
             <CardBody className="px-lg-5 py-lg-4">
-              <div className="text-center mb-4 font-weight-bold">
+              <div className="text-center mb-2 font-weight-bold">
                 <h2>Time to Calibrate!</h2>
               </div>
-              <div className="text-center mb-4">
+              <div className="text-center">
                 Click the button! Make sure you are facing the webcam.
               </div>
               <EyeCalibrate {...this.props} />

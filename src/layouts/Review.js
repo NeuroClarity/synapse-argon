@@ -53,14 +53,14 @@ class Review extends React.Component {
       <>
         <div className="main-content">
           <div
-            className="header bg-gradient-foo py-7 py-lg-8"
+            className="header bg-gradient-foo py-5 py-lg-6"
             style={{
               backgroundColor: "#38b6ff",
               backgroundImage: `url('/bg.png')`
             }}
           >
-            <Container style={{ height: "15vh" }}>
-              <div className="header-body text-center mb-7">
+            <Container style={{ marginTop: "0vh" }}>
+              <div className="header-body text-center mb-6">
                 <Row className="justify-content-center">
                   <Col lg="5" md="6">
                     <img
