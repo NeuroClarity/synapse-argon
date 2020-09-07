@@ -1,0 +1,78 @@
+/*!
+
+=========================================================
+* Argon Dashboard React - v1.1.0
+=========================================================
+
+* Product Page: https://www.creative-tim.com/product/argon-dashboard-react
+* Copyright 2019 Creative Tim (https://www.creative-tim.com)
+* Licensed under MIT (https://github.com/creativetimofficial/argon-dashboard-react/blob/master/LICENSE.md)
+
+* Coded by Creative Tim
+
+=========================================================
+
+* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+*/
+import React from "react";
+
+// reactstrap components
+import {
+  FormGroup,
+  Input,
+  Label,
+} from "reactstrap";
+
+class DemographicForm extends React.Component {
+  render() {
+    return (
+      <>
+        <FormGroup style={{
+          width: "50%"
+        }}>
+          <div>
+            <p>Age</p>
+          </div>
+          <Input
+            placeholder="Age"
+            type="number"
+            step="1"
+            min={0}
+            onChange={e => this.props.setAge(e)}
+          />
+        </FormGroup>
+        <FormGroup style={{
+        }}>
+          <div>
+            <p>Gender</p>
+          </div>
+          <Input type="select" name="select" onChange={e => this.props.setGender(e)}>
+            <option disabled selected value> -- select an option -- </option>
+            <option>Male</option>
+            <option>Female</option>
+            <option>Other</option>
+          </Input>
+        </FormGroup>
+        <FormGroup style={{
+        }}>
+          <div>
+            <p>Race</p>
+          </div>
+          <Input type="select" name="select" onChange={e => this.props.setRace(e)}>
+            <option disabled selected value> -- select an option -- </option>
+            <option>White</option>
+            <option>Black</option>
+            <option>American Indian/Alaskan Native</option>
+            <option>Hispanic</option>
+            <option>Asian/Pacific Islander</option>
+            <option>Other</option>
+          </Input>
+        </FormGroup>
+      </>
+    )
+  }
+}
+
+export default DemographicForm;
+

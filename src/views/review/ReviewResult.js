@@ -18,7 +18,9 @@
 import React from "react";
 import { Redirect } from "react-router-dom";
 
-import ReactStars from "react-rating-stars-component";
+import SurveyForm from "../../components/Forms/SurveyForm.js"
+import DemographicForm from "../../components/Forms/DemographicForm.js"
+
 import { COLLECTION_INTERVAL } from "./WatchVideo.js";
 // reactstrap components
 import {
@@ -26,10 +28,7 @@ import {
   Card,
   CardHeader,
   CardBody,
-  FormGroup,
   Form,
-  Input,
-  InputGroup,
   Col
 } from "reactstrap";
 
@@ -41,10 +40,14 @@ class ReviewResult extends React.Component {
       submitted: false,
       eyeData: this.props.location.state ? this.props.location.state.eyeData : null,
       facialData: this.props.location.state ? this.props.location.state.facialData : null,
-      q1value: 0,
-      q2value: 0,
-      q3value: 0,
-      q4value: '',
+      surveyStep: 0,
+      age: 0,
+      gender: null,
+      race: null,
+      surveyq1: null,
+      surveyq2: null,
+      surveyq3: null,
+      surveyq4: null,
     }
     
     this.processData = this.processData.bind(this)
@@ -52,10 +55,26 @@ class ReviewResult extends React.Component {
     this.uploadEyeToS3 = this.uploadEyeToS3.bind(this)
     this.uploadFacialToS3 = this.uploadFacialToS3.bind(this)
     this.submitAnalyticsJob = this.submitAnalyticsJob.bind(this)
+
+    // bind setter methods
+    this.setAge = this.setAge.bind(this)
+    this.setGender = this.setGender.bind(this)
+    this.setRace = this.setRace.bind(this)
+    this.setQ1 = this.setQ1.bind(this)
+    this.setQ2 = this.setQ2.bind(this)
+    this.setQ3 = this.setQ3.bind(this)
+    this.setQ4 = this.setQ4.bind(this)
   }
 
   // upload all data collected from watching the video
   processData() {
+    if (this.state.surveyStep === 0) {
+      this.setState({
+        surveyStep: this.state.surveyStep + 1
+      })
+      return 
+    }
+
     if (this.state.eyeData == null || this.state.facialData == null) {
       return 
     }
@@ -86,10 +105,15 @@ class ReviewResult extends React.Component {
       body: JSON.stringify({
         StudyID: this.props.match.params.studyId,
         SurveyResult: {
-          Quality: this.state.q1value,
-          WouldBuy: this.state.q2value,
-          Memorable: this.state.q3value,
-          OpenEnded: this.state.q4value,
+          Quality: this.state.surveyq1,
+          WouldBuy: this.state.surveyq2,
+          Memorable: this.state.surveyq3,
+          OpenEnded: this.state.surveyq4,
+        },
+        Demographic: {
+          Age: this.state.age,
+          Gender: this.state.gender,
+          Race: this.state.race,
         }
       })
     })
@@ -147,6 +171,29 @@ class ReviewResult extends React.Component {
       })
   }
 
+  // setter methods for form responses
+  setAge(age) {
+    this.setState({ age: parseInt(age.target.value) })
+  }
+  setGender(gender) {
+    this.setState({ gender: gender.target.value })
+  }
+  setRace(race) {
+    this.setState({ race: race.target.value })
+  }
+  setQ1(resp) {
+    this.setState({ surveyq1: resp })
+  }
+  setQ2(resp) {
+    this.setState({ surveyq2: resp })
+  }
+  setQ3(resp) {
+    this.setState({ surveyq3: resp })
+  }
+  setQ4(resp) {
+    this.setState({ surveyq4: resp.target.value })
+  }
+
   render() {
     if (this.state.eyeData == null || this.state.facialData == null) {
       return <Redirect to={"/review/new/" + this.props.match.params.studyId} />
@@ -163,63 +210,22 @@ class ReviewResult extends React.Component {
                 </div>
               </CardHeader>
               <CardBody className="px-lg-5 py-lg-4">
-                <Form role="form">
-                  <FormGroup>
-                    <div>
-                      <p>Please rate the overall quality of the video</p>
-                    </div>
-                    <ReactStars
-                      count={5}
-                      size={30}
-                      value={this.state.q1value}
-                      onChange={(newValue) => {
-                        this.setState({ q1value: newValue })
-                      }}
-                    />
-                  </FormGroup>
-                  <FormGroup>
-                    <div>
-                      <p>After watching this, how likely you are to try this product?</p>
-                    </div>
-                    <ReactStars
-                      count={5}
-                      size={30}
-                      value={this.state.q2value}
-                      onChange={(newValue) => {
-                        this.setState({ q2value: newValue })
-                      }}
-                    />
-                  </FormGroup>
-                  <FormGroup>
-                    <div>
-                      <p>How memorable was this ad to you?</p>
-                    </div>
-                    <ReactStars
-                      count={5}
-                      size={30}
-                      value={this.state.q3value}
-                      onChange={(newValue) => {
-                        this.setState({ q3value: newValue })
-                      }}
-                    />
-                  </FormGroup>
-                  <FormGroup>
-                    <div>
-                      <p>Anything else you’d like to add?</p>
-                    </div>
-                    <InputGroup className="input-group-alternative mb-3">
-                      <Input 
-                        type="textarea" 
-                        value={this.state.q4value} 
-                        onChange={(event) => {
-                          this.setState({ q4value: event.target.value })
-                        }}
-                      />
-                    </InputGroup>
-                  </FormGroup>
+                <Form>
+                  {(this.state.surveyStep === 0 && 
+                    <DemographicForm 
+                      setAge={ this.setAge }
+                      setGender={ this.setGender }
+                      setRace={ this.setRace }
+                    />) || 
+                    <SurveyForm 
+                      setQ1={ this.setQ1 }
+                      setQ2={ this.setQ2 }
+                      setQ3={ this.setQ3 }
+                      setQ4={ this.setQ4 }
+                    />}
                   <div className="text-center">
                     <Button className="mt-4" color="primary" type="button" onClick={ this.processData }>
-                      Submit
+                      {this.state.surveyStep < 1 ? "Next" : "Submit" }
                     </Button>
                   </div>
                 </Form>

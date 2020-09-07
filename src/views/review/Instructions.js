@@ -36,7 +36,7 @@ class ReviewInstructions extends React.Component {
                 <h2>How this works</h2>
               </div>
               <div className="mb-4">
-                Four quick and easy steps:
+                Five quick and easy steps:
               </div>
               <ol>
                 <div className="mb-2">
@@ -46,13 +46,13 @@ class ReviewInstructions extends React.Component {
                   <li>While you are watching, we will be collecting data to help the content creator improve their video</li>
                 </div>
                 <div className="mb-2">
-                  <li>Once you are done, you will be asked some quick survey questions about the video.</li>
+                  <li>Once you are done, you will be asked some quick survey questions about yourself and the video.</li>
                 </div>
                 <div className="mb-4">
                   <li>We will analyze the results and provide the data to the creator of the video.</li>
                 </div>
               <div className="text-center mb-4 text-muted">
-                Note: Your privacy is very important to us. All of your data is secure and anonymous and no data will be stored or sold after analysis. 
+                Note: Your privacy is very important to us. All of your data is secure and anonymous. 
               </div>
               </ol>
               <div className="text-center">
