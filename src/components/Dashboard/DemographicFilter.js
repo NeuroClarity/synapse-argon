@@ -5,8 +5,8 @@ const DemographicFilter = ({ demographics }) => {
   useEffect(() => {
     if (demographics !== undefined) {
       const newRowA = [];
-      const allReviewers = demographics.Groups[0].Reviewers;
-      demographics.Groups.forEach((item, i) => {
+      const allReviewers = demographics.Groups.Total[0].Reviewers;
+      demographics.Groups.Age.forEach((item, i) => {
         const percent = Math.trunc((item.Reviewers / allReviewers) * 100);
         console.log("percent: ", percent);
         newRowA.push(
@@ -55,7 +55,7 @@ const DemographicFilter = ({ demographics }) => {
       <Table className="table-sm align-items-center table-flush" responsive>
         <thead className="thead-light">
           <tr>
-            <th scope="col">Group</th>
+            <th scope="col">Age</th>
             <th scope="col">Reviewers</th>
             <th scope="col">Completion</th>
           </tr>
