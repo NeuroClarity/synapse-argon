@@ -67,7 +67,7 @@ class Auth extends React.Component {
                       src={"/white_black_logo-removebg-preview.png"}
                       style={{ width: "100%" }}
                     />
-                    <h1 className="text-white">Join our early acess beta</h1>
+                    <h1 className="text-white">Join our early access beta</h1>
                     <p className="text-lead text-light">
                       Neuromarketing needed the internet.
                     </p>
