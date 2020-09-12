@@ -218,7 +218,7 @@ class WatchVideo extends React.Component {
 
             }}
           >
-              <source src={ this.state.videoUrl } type="video/mp4"/>
+              <source src={ this.state.videoUrl } />
           </video>
         </Col>
       </>

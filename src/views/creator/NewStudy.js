@@ -44,6 +44,7 @@ const NewStudy = () => {
   const [studyName, setStudyName] = useState();
   const [description, setDescription] = useState();
   const [reviewerCount, setReviewerCount] = useState();
+  const [contentType, setContentType] = useState();
   const { user } = useAuth0();
 
   const opts = {
@@ -63,6 +64,9 @@ const NewStudy = () => {
   const updateReviewerCountForm = e => {
     setReviewerCount(parseInt(e.target.value));
   };
+  const updateContentType = e => {
+    setContentType(e.target.value);
+  }
 
   const requestNewStudy = async () => {
     // validate form
@@ -80,7 +84,8 @@ const NewStudy = () => {
           Name: studyName,
           Description: description,
           Filename: "video-content.mp4",
-          DesiredReviewers: reviewerCount
+          DesiredReviewers: reviewerCount,
+          ContentType: contentType,
         })
       }
     )
@@ -99,7 +104,7 @@ const NewStudy = () => {
     await fetch(study.UploadUrl, {
       method: "PUT",
       headers: {
-        "Content-Type": "video/mp4"
+        "Content-Type": contentType === "Static" ? "image/jpeg" : "video/mp4"
       },
       body: blob
     })
@@ -115,6 +120,31 @@ const NewStudy = () => {
         }
       );
 
+    if (contentType === "Static") {
+      // Make request to neuron to upload content
+      await fetch(
+        process.env.REACT_APP_AXON_DOMAIN + "/api/creator/convert",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            StudyID: study.StudyID,
+          })
+        })
+        .then(res => res.json())
+        .then(
+          resp => {
+            console.log("Success: ", resp.Success);
+            return study;
+          },
+          error => {
+            console.log("Error: ", error);
+          }
+        );
+    } 
+
     // Refresh w/in the study manager async.
     refresh();
   };
@@ -126,7 +156,10 @@ const NewStudy = () => {
           <Card className="bg-secondary shadow border-0">
             <CardBody className="px-lg-5 py-lg-5">
               <div className="text-center text-muted mb-4">
-                Click to upload your video
+                Click to upload your content <br />
+                <div className="small text-center text-muted mt-1">
+                  Supported Types: (.mp4, .jpg)
+                </div>
               </div>
               <Dropzone setUploaded={setUploaded} setBlob={setBlob} />
             </CardBody>
@@ -137,9 +170,14 @@ const NewStudy = () => {
           <Card className="bg-secondary shadow border-0">
             <CardHeader className="bg-transparent pb-5">
               <div class="embed-responsive embed-responsive-16by9">
-                <video class="embed-responsive-item" width="100%" controls>
-                  <source src={URL.createObjectURL(blob)} />
-                </video>
+                { contentType === "Static" && (
+                    <img class="embed-responsive-item" width="100%" src={URL.createObjectURL(blob)} />
+                  ) || (
+                    <video class="embed-responsive-item" width="100%" controls>
+                      <source src={URL.createObjectURL(blob)} />
+                    </video>
+                  )
+                }
               </div>
             </CardHeader>
             <CardBody className="px-lg-5 py-lg-5">
@@ -160,6 +198,16 @@ const NewStudy = () => {
                       onChange={e => updateStudyName(e)}
                     />
                   </InputGroup>
+                </FormGroup>
+                <FormGroup>
+                  <Input 
+                    type="select" 
+                    onChange={e => updateContentType(e)}
+                  >
+                    <option disabled selected value> Study Type</option>
+                    <option>Static</option>
+                    <option>Video</option>
+                  </Input>
                 </FormGroup>
                 <FormGroup>
                   <InputGroup className="input-group-alternative mb-3">
