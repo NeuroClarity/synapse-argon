@@ -1,14 +1,45 @@
 import React, { useState, useEffect } from "react";
-import { Progress, Button, Card, CardHeader, Table, Row } from "reactstrap";
+import {
+  Progress,
+  ButtonDropdown,
+  DropdownToggle,
+  DropdownItem,
+  DropdownMenu,
+  Card,
+  CardHeader,
+  Table,
+  Row
+} from "reactstrap";
 const DemographicFilter = ({ demographics }) => {
   const [rowArray, setRowArray] = useState();
+  const [groups, setGroups] = useState();
+  const [groupLabels, setGroupLabels] = useState();
+  const [activeLabel, setActiveLabel] = useState();
+  const [totalReviewers, setTotalReviewers] = useState();
+
+  const [dropdownOpen, setDropdownOpen] = useState();
+
   useEffect(() => {
     if (demographics !== undefined) {
+      setTotalReviewers(demographics.Groups.Total[0].Reviewers);
+      setGroups({ ...demographics.Groups });
+      setActiveLabel([...Object.keys(demographics.Groups)][0]);
+      setGroupLabels(
+        [...Object.keys(demographics.Groups)].map(key => (
+          <DropdownItem onClick={() => setActiveLabel(key)}>
+            {" "}
+            {key}{" "}
+          </DropdownItem>
+        ))
+      );
+    }
+  }, [demographics]);
+
+  useEffect(() => {
+    if (demographics && activeLabel) {
       const newRowA = [];
-      const allReviewers = demographics.Groups.Total[0].Reviewers;
-      demographics.Groups.Age.forEach((item, i) => {
-        const percent = Math.trunc((item.Reviewers / allReviewers) * 100);
-        console.log("percent: ", percent);
+      groups[activeLabel].forEach((item, i) => {
+        const percent = Math.trunc((item.Reviewers / totalReviewers) * 100);
         newRowA.push(
           <React.Fragment key={i}>
             <tr>
@@ -32,7 +63,12 @@ const DemographicFilter = ({ demographics }) => {
       });
       setRowArray(newRowA);
     }
-  }, [demographics]);
+  }, [activeLabel, demographics, groups, totalReviewers]);
+
+  const toggle = React.useCallback(() => {
+    setDropdownOpen(!dropdownOpen);
+  }, [dropdownOpen]);
+
   return (
     <Card style={{ height: "100%" }} className="shadow">
       <CardHeader className="border-0">
@@ -41,14 +77,15 @@ const DemographicFilter = ({ demographics }) => {
             <h3 className="mb-0">Demographic Filter</h3>
           </div>
           <div className="col text-right">
-            <Button
+            <ButtonDropdown
               color="primary"
-              href="#pablo"
-              onClick={e => e.preventDefault()}
               size="sm"
+              isOpen={dropdownOpen}
+              toggle={toggle}
             >
-              Change Type
-            </Button>
+              <DropdownToggle caret>Change Grouping</DropdownToggle>
+              <DropdownMenu>{groupLabels ? groupLabels : <></>}</DropdownMenu>
+            </ButtonDropdown>
           </div>
         </Row>
       </CardHeader>
