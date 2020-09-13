@@ -182,13 +182,13 @@ class ReviewResult extends React.Component {
     this.setState({ race: race.target.value })
   }
   setQ1(resp) {
-    this.setState({ surveyq1: resp })
+    this.setState({ surveyq1: parseInt(resp.target.value) })
   }
   setQ2(resp) {
-    this.setState({ surveyq2: resp })
+    this.setState({ surveyq2: parseInt(resp.target.value) })
   }
   setQ3(resp) {
-    this.setState({ surveyq3: resp })
+    this.setState({ surveyq3: parseInt(resp.target.value) })
   }
   setQ4(resp) {
     this.setState({ surveyq4: resp.target.value })
@@ -202,7 +202,7 @@ class ReviewResult extends React.Component {
     if (!this.state.submitted) {
       return (
         <>
-          <Col lg="7" md="9">
+          <Col lg="9" md="11">
             <Card className="bg-secondary shadow border-0 mt-3">
               <CardHeader className="bg-transparent">
                 <div className="text-center">
@@ -224,6 +224,13 @@ class ReviewResult extends React.Component {
                       setQ4={ this.setQ4 }
                     />}
                   <div className="text-center">
+                  {(this.state.surveyStep === 1 && 
+                    <Button className="mt-4 mr-5" color="primary" type="button" onClick={ () => this.setState({
+                      surveyStep: 0
+                    }) }>
+                      Back
+                    </Button>
+                  )}
                     <Button className="mt-4" color="primary" type="button" onClick={ this.processData }>
                       {this.state.surveyStep < 1 ? "Next" : "Submit" }
                     </Button>

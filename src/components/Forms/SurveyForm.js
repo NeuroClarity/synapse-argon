@@ -18,19 +18,12 @@
 import React from "react";
 
 import ReactStars from "react-rating-stars-component";
+import SurveyRating from "../../components/Forms/SurveyRating.js"
 // reactstrap components
 import {
-  Button,
-  Card,
-  CardHeader,
-  CardBody,
   FormGroup,
-  Form,
   Input,
   InputGroup,
-  InputGroupAddon,
-  InputGroupText,
-  Col
 } from "reactstrap";
 
 class SurveyForm extends React.Component {
@@ -48,35 +41,26 @@ class SurveyForm extends React.Component {
   render() {
     return (
       <>
+        <div className="mb-3">
+          <h4>Rate your agreement with the following statements:</h4>
+        </div>
         <FormGroup>
           <div>
-            <p>Please rate the overall quality of the video</p>
+            <p>After watching this video, I am more likely to purchase/use this product in the future.</p>
           </div>
-          <ReactStars
-            count={5}
-            size={30}
-            onChange={e => this.props.setQ1(e)}
-          />
+          <SurveyRating ratingKey={"PurchaseIntent"} onChange={ this.props.setQ2 }/>
         </FormGroup>
         <FormGroup>
           <div>
-            <p>After watching this, how likely you are to try this product?</p>
+            <p>This ad was highly memorable compared to ads for other products in this space.</p>
+            <SurveyRating ratingKey={"Memorable"} onChange={ this.props.setQ3 }/>
           </div>
-          <ReactStars
-            count={5}
-            size={30}
-            onChange={e => this.props.setQ2(e)}
-          />
         </FormGroup>
         <FormGroup>
           <div>
-            <p>How memorable was this ad to you?</p>
+            <p>This was a high quality video compared to other similar videos that I have watched.</p>
           </div>
-          <ReactStars
-            count={5}
-            size={30}
-            onChange={e => this.props.setQ3(e)}
-          />
+          <SurveyRating ratingKey={"Quality"} onChange={ this.props.setQ1 }/>
         </FormGroup>
         <FormGroup>
           <div>
