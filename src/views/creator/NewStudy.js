@@ -45,6 +45,7 @@ const NewStudy = () => {
   const [description, setDescription] = useState();
   const [reviewerCount, setReviewerCount] = useState();
   const [contentType, setContentType] = useState();
+  const [isAB, setIsAB] = useState(false);
   const { user } = useAuth0();
 
   const opts = {
@@ -65,8 +66,16 @@ const NewStudy = () => {
     setReviewerCount(parseInt(e.target.value));
   };
   const updateContentType = e => {
-    setContentType(e.target.value);
-  }
+    if (e.target.value == "ABTest") {
+      setIsAB(true);
+    } else {
+      setContentType(e.target.value);
+    }
+  };
+
+  React.useEffect(() => {
+    console.log("isAB:", isAB);
+  }, [isAB]);
 
   const requestNewStudy = async () => {
     // validate form
@@ -83,9 +92,11 @@ const NewStudy = () => {
           CreatorId: user.sub,
           Name: studyName,
           Description: description,
-          Filename: "video-content.mp4",
           DesiredReviewers: reviewerCount,
           ContentType: contentType,
+          IsAB: isAB,
+          Filename: "video-content.mp4",
+          secondFilename: "second-video-content.mp4"
         })
       }
     )
@@ -120,19 +131,38 @@ const NewStudy = () => {
         }
       );
 
+    if (study.SecondUploadUrl) {
+      await fetch(study.SecondUploadUrl, {
+        method: "PUT",
+        headers: {
+          "Content-Type": contentType === "Static" ? "image/jpeg" : "video/mp4"
+        },
+        body: blob
+      })
+        .then(res => res.json())
+        .then(
+          result => {
+            // setUploading(false);
+            return result;
+          },
+          error => {
+            // setUploading(false);
+            console.log("Error: ", error);
+          }
+        );
+    }
+
     if (contentType === "Static") {
       // Make request to neuron to upload content
-      await fetch(
-        process.env.REACT_APP_AXON_DOMAIN + "/api/creator/convert",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({
-            StudyID: study.StudyID,
-          })
+      await fetch(process.env.REACT_APP_AXON_DOMAIN + "/api/creator/convert", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          StudyID: study.StudyID
         })
+      })
         .then(res => res.json())
         .then(
           resp => {
@@ -143,7 +173,7 @@ const NewStudy = () => {
             console.log("Error: ", error);
           }
         );
-    } 
+    }
 
     // Refresh w/in the study manager async.
     refresh();
@@ -170,14 +200,17 @@ const NewStudy = () => {
           <Card className="bg-secondary shadow border-0">
             <CardHeader className="bg-transparent pb-5">
               <div class="embed-responsive embed-responsive-16by9">
-                { contentType === "Static" && (
-                    <img class="embed-responsive-item" width="100%" src={URL.createObjectURL(blob)} />
-                  ) || (
-                    <video class="embed-responsive-item" width="100%" controls>
-                      <source src={URL.createObjectURL(blob)} />
-                    </video>
-                  )
-                }
+                {(contentType === "Static" && (
+                  <img
+                    class="embed-responsive-item"
+                    width="100%"
+                    src={URL.createObjectURL(blob)}
+                  />
+                )) || (
+                  <video class="embed-responsive-item" width="100%" controls>
+                    <source src={URL.createObjectURL(blob)} />
+                  </video>
+                )}
               </div>
             </CardHeader>
             <CardBody className="px-lg-5 py-lg-5">
@@ -200,13 +233,14 @@ const NewStudy = () => {
                   </InputGroup>
                 </FormGroup>
                 <FormGroup>
-                  <Input 
-                    type="select" 
-                    onChange={e => updateContentType(e)}
-                  >
-                    <option disabled selected value> Study Type</option>
+                  <Input type="select" onChange={e => updateContentType(e)}>
+                    <option disabled selected value>
+                      {" "}
+                      Study Type
+                    </option>
                     <option>Static</option>
                     <option>Video</option>
+                    <option>ABTest</option>
                   </Input>
                 </FormGroup>
                 <FormGroup>
