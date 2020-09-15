@@ -1,0 +1,281 @@
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+// reactstrap components
+import {
+  Button,
+  Card,
+  CardHeader,
+  CardBody,
+  FormGroup,
+  Form,
+  Input,
+  InputGroupAddon,
+  InputGroupText,
+  InputGroup,
+  Col
+} from "reactstrap";
+
+import { useAuth0 } from "@auth0/auth0-react";
+
+import Dropzone from "./Dropzone.js";
+import { useApi } from "../../utils/request.js";
+
+const VideoUpload = ({ videoOnly, staticOnly }) => {
+  const [uploaded, setUploaded] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [blob, setBlob] = useState();
+  const [studyName, setStudyName] = useState();
+  const [description, setDescription] = useState();
+  const [reviewerCount, setReviewerCount] = useState();
+  const [contentType, setContentType] = useState();
+  const [isAB, setIsAB] = useState(false);
+  const { user } = useAuth0();
+
+  const opts = {
+    method: "POST"
+  };
+  const body = {
+    CreatorId: user.sub
+  };
+  const { refresh, data } = useApi("/api/creator/list", opts, body);
+
+  const updateStudyName = e => {
+    setStudyName(e.target.value);
+  };
+  const updateDescriptionForm = e => {
+    setDescription(e.target.value);
+  };
+  const updateReviewerCountForm = e => {
+    setReviewerCount(parseInt(e.target.value));
+  };
+  const updateContentType = e => {
+    if (e.target.value == "ABTest") {
+      setIsAB(true);
+    } else {
+      setContentType(e.target.value);
+    }
+  };
+
+  React.useEffect(() => {
+    console.log("isAB:", isAB);
+  }, [isAB]);
+
+  const requestNewStudy = async () => {
+    // validate form
+    console.log("user: ", user);
+    // Get our upload URL
+    const study = await fetch(
+      process.env.REACT_APP_AXON_DOMAIN + "/api/creator/study",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          CreatorId: user.sub,
+          Name: studyName,
+          Description: description,
+          DesiredReviewers: reviewerCount,
+          ContentType: contentType,
+          IsAB: isAB,
+          Filename: "video-content.mp4",
+          secondFilename: "second-video-content.mp4"
+        })
+      }
+    )
+      .then(res => res.json())
+      .then(
+        study => {
+          console.log("study: ", study);
+          return study;
+        },
+        error => {
+          console.log("Error: ", error);
+        }
+      );
+
+    // Upload video content
+    await fetch(study.UploadUrl, {
+      method: "PUT",
+      headers: {
+        "Content-Type": contentType === "Static" ? "image/jpeg" : "video/mp4"
+      },
+      body: blob
+    })
+      .then(res => res.json())
+      .then(
+        result => {
+          // setUploading(false);
+          return result;
+        },
+        error => {
+          // setUploading(false);
+          console.log("Error: ", error);
+        }
+      );
+
+    if (study.SecondUploadUrl) {
+      await fetch(study.SecondUploadUrl, {
+        method: "PUT",
+        headers: {
+          "Content-Type": contentType === "Static" ? "image/jpeg" : "video/mp4"
+        },
+        body: blob
+      })
+        .then(res => res.json())
+        .then(
+          result => {
+            // setUploading(false);
+            return result;
+          },
+          error => {
+            // setUploading(false);
+            console.log("Error: ", error);
+          }
+        );
+    }
+
+    if (contentType === "Static") {
+      // Make request to neuron to upload content
+      await fetch(process.env.REACT_APP_AXON_DOMAIN + "/api/creator/convert", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          StudyID: study.StudyID
+        })
+      })
+        .then(res => res.json())
+        .then(
+          resp => {
+            console.log("Success: ", resp.Success);
+            return study;
+          },
+          error => {
+            console.log("Error: ", error);
+          }
+        );
+    }
+
+    // Refresh w/in the study manager async.
+    refresh();
+  };
+
+  return (
+    <>
+      {!uploaded ? (
+        <Col lg="5" md="7">
+          <Card className="bg-secondary shadow border-0">
+            <CardBody className="px-lg-5 py-lg-5">
+              <div className="text-center text-muted mb-4">
+                Click to upload your content <br />
+                <div className="small text-center text-muted mt-1">
+                  Supported Types: (.mp4, .jpg)
+                </div>
+              </div>
+              <Dropzone setUploaded={setUploaded} setBlob={setBlob} />
+            </CardBody>
+          </Card>
+        </Col>
+      ) : (
+        <Col lg="5" md="7">
+          <Card className="bg-secondary shadow border-0">
+            <CardHeader className="bg-transparent pb-5">
+              <div class="embed-responsive embed-responsive-16by9">
+                {(contentType === "Static" && (
+                  <img
+                    class="embed-responsive-item"
+                    width="100%"
+                    src={URL.createObjectURL(blob)}
+                  />
+                )) || (
+                  <video class="embed-responsive-item" width="100%" controls>
+                    <source src={URL.createObjectURL(blob)} />
+                  </video>
+                )}
+              </div>
+            </CardHeader>
+            <CardBody className="px-lg-5 py-lg-5">
+              <div className="text-center text-muted mb-4">
+                <small>Add some metadata about your new study.</small>
+              </div>
+              <Form role="form">
+                <FormGroup>
+                  <InputGroup className="input-group-alternative mb-3">
+                    <InputGroupAddon addonType="prepend">
+                      <InputGroupText>
+                        <i className="ni ni-collection" />
+                      </InputGroupText>
+                    </InputGroupAddon>
+                    <Input
+                      placeholder="Study Name"
+                      type="text"
+                      onChange={e => updateStudyName(e)}
+                    />
+                  </InputGroup>
+                </FormGroup>
+                <FormGroup>
+                  <Input type="select" onChange={e => updateContentType(e)}>
+                    <option disabled selected value>
+                      {" "}
+                      Study Type
+                    </option>
+                    <option>Static</option>
+                    <option>Video</option>
+                    <option>ABTest</option>
+                  </Input>
+                </FormGroup>
+                <FormGroup>
+                  <InputGroup className="input-group-alternative mb-3">
+                    <InputGroupAddon addonType="prepend">
+                      <InputGroupText>
+                        <i className="ni ni-ungroup" />
+                      </InputGroupText>
+                    </InputGroupAddon>
+                    <Input
+                      placeholder="Brief Description"
+                      type="text"
+                      onChange={e => updateDescriptionForm(e)}
+                    />
+                  </InputGroup>
+                </FormGroup>
+                <FormGroup>
+                  <InputGroup className="input-group-alternative mb-3">
+                    <InputGroupAddon addonType="prepend">
+                      <InputGroupText>
+                        <i className="ni ni-single-02" />
+                      </InputGroupText>
+                    </InputGroupAddon>
+                    <Input
+                      placeholder="Reviewer Count"
+                      type="number"
+                      step="1"
+                      min={0}
+                      max={20}
+                      onChange={e => updateReviewerCountForm(e)}
+                    />
+                  </InputGroup>
+                </FormGroup>
+                <div className="text-center">
+                  <Link to="/admin/studies">
+                    <Button
+                      onClick={requestNewStudy}
+                      className="mt-4"
+                      color="primary"
+                      type="button"
+                    >
+                      Launch Study
+                    </Button>
+                  </Link>
+                </div>
+              </Form>
+            </CardBody>
+          </Card>
+        </Col>
+      )}
+    </>
+  );
+};
+
+export default VideoUpload;
