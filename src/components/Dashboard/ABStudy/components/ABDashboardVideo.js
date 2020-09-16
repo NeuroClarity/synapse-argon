@@ -10,8 +10,15 @@ import {
 } from "reactstrap";
 import { useClipboard } from "use-clipboard-copy";
 
-const DashboardVideo = ({ studyId, name, video, heatmap, globalTime }) => {
-  const [localTime, setLocalTime] = useState();
+export const ABDashboardVideo = ({
+  isA,
+  studyId,
+  name,
+  video,
+  heatmap,
+  globalTime
+}) => {
+  const [localTime, setLocalTime] = useState(0);
   const [videoPlayer, setVideoPlayer] = useState();
   const [heatmapToggle, setHeatmapToggle] = useState(false);
   const [counter, setCounter] = useState();
@@ -72,7 +79,7 @@ const DashboardVideo = ({ studyId, name, video, heatmap, globalTime }) => {
       <CardHeader className="mb--4 border-0">
         <Row className="align-items-center">
           <div className="col">
-            <h3 className="mb-0">{name}</h3>
+            <h3 className="mb-0">{name + (isA ? " A" : " B")}</h3>
           </div>
           <Row>
             <h6
@@ -123,5 +130,3 @@ const DashboardVideo = ({ studyId, name, video, heatmap, globalTime }) => {
     </Card>
   );
 };
-
-export default DashboardVideo;

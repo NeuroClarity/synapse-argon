@@ -16,46 +16,19 @@
 
 */
 import React, { useState, useEffect } from "react";
-// node.js library that concatenates classes (strings)
-import classnames from "classnames";
-// javascipt plugin for creating charts
-import Chart from "chart.js";
-// react plugin used to create charts
-// reactstrap components
-import {
-  Button,
-  Card,
-  CardHeader,
-  CardBody,
-  NavItem,
-  NavLink,
-  Nav,
-  Progress,
-  Table,
-  Container,
-  Row,
-  Col,
-  UncontrolledTooltip
-} from "reactstrap";
 
 import { useAuth0 } from "@auth0/auth0-react";
 import { withRouter } from "react-router";
 
 // core components
-
 import DashboardHeader from "components/Headers/DashboardHeader.js";
-
-// Constituent components.
-import DashboardVideo from "../../components/Dashboard/DashboardVideo.js";
-import DemographicFilter from "../../components/Dashboard/DemographicFilter.js";
-import DashboardChart from "../../components/Dashboard/DashboardChart.js";
-import SurveyResults from "../../components/Dashboard/SurveyResults.js";
+import { Study } from "components/Dashboard/Study/Study.js";
+import { ABStudy } from "components/Dashboard/ABStudy/ABStudy.js";
 
 // Api fetch utility
 import { useApi } from "../../utils/request.js";
 
 const Dashboard = () => {
-  const [globalTime, setGlobalTime] = useState(0);
   const [studyID, setStudyID] = useState(
     window.location.pathname.split("/").pop()
   );
@@ -87,44 +60,9 @@ const Dashboard = () => {
   return (
     <>
       <DashboardHeader />
+      <Study data={data} loading={loading} />
+      )}
       {/* Page content */}
-      <Container className="mt--8" fluid>
-        <Row>
-          <Col className="mb-5 mb-xl-0" xl="8">
-            <DashboardVideo
-              studyId={data ? data.StudyID : ""}
-              name={data ? data.Name : ""}
-              video={data ? data.Insights.VideoUrl : undefined}
-              heatmap={data ? data.Insights.HeatmapUrl : undefined}
-              globalTime={globalTime}
-            />
-          </Col>
-          <Col xl="4">
-            <SurveyResults
-              desired={
-                data && data.Demographics
-                  ? data.Demographics.Groups[0].Reviewers
-                  : undefined
-              }
-              surveyResults={data ? data.Insights.SurveyResults : undefined}
-            />
-          </Col>
-        </Row>
-        <Row className="mt-5">
-          <Col className="mb-5 mb-xl-0" xl="8">
-            <DashboardChart
-              emotionResults={data && data.Insights.EmotionResults}
-              engagementResults={data && data.Insights.EngagementResults.Result}
-              setGlobalTime={setGlobalTime}
-            />
-          </Col>
-          <Col xl="4">
-            <DemographicFilter
-              demographics={data ? data.Insights.Demographics : undefined}
-            />
-          </Col>
-        </Row>
-      </Container>
     </>
   );
 };

@@ -17,7 +17,7 @@ import Chart from "chart.js";
 import { Line } from "react-chartjs-2";
 
 // core components
-import { chartOptions, parseOptions } from "../../utils/chart.js";
+import { chartOptions, parseOptions } from "../../../../utils/chart.js";
 import { withRouter } from "react-router";
 
 const useConstructor = (callBack = () => {}) => {
