@@ -46,26 +46,26 @@ class DemographicForm extends React.Component {
           />
         </FormGroup>
         <FormGroup style={{
-          width: "75%"
+          width: "50%"
         }}>
           <div>
             <p>Gender</p>
           </div>
           <Input type="select" name="select" onChange={e => this.props.setGender(e)}>
-            <option disabled selected value> -- select -- </option>
+            <option disabled selected value> Gender </option>
             <option>Male</option>
             <option>Female</option>
             <option>Other</option>
           </Input>
         </FormGroup>
         <FormGroup style={{
-          width: "75%"
+          width: "50%"
         }}>
           <div>
-            <p>Race</p>
+            <p>Ethnicity</p>
           </div>
           <Input type="select" name="select" onChange={e => this.props.setRace(e)}>
-            <option disabled selected value> -- select -- </option>
+            <option disabled selected value> Ethnicity </option>
             <option>White</option>
             <option>Black</option>
             <option>American Indian/Alaskan Native</option>

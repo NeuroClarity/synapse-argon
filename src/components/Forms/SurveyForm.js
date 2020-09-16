@@ -64,7 +64,7 @@ class SurveyForm extends React.Component {
         </FormGroup>
         <FormGroup>
           <div>
-            <p>Anything else you’d like to add?</p>
+            <p>{this.props.surveyQuestion}</p>
           </div>
           <InputGroup className="input-group-alternative mb-3">
             <Input 

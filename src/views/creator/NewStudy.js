@@ -44,6 +44,7 @@ const NewStudy = () => {
   const [studyName, setStudyName] = useState();
   const [description, setDescription] = useState();
   const [reviewerCount, setReviewerCount] = useState();
+  const [surveyQuestion, setSurveyQuestion] = useState("");
   const [contentType, setContentType] = useState();
   const { user } = useAuth0();
 
@@ -64,6 +65,9 @@ const NewStudy = () => {
   const updateReviewerCountForm = e => {
     setReviewerCount(parseInt(e.target.value));
   };
+  const updateSurveyQuestionForm = e => {
+    setSurveyQuestion(e.target.value);
+  }
   const updateContentType = e => {
     setContentType(e.target.value);
   }
@@ -86,6 +90,7 @@ const NewStudy = () => {
           Filename: "video-content.mp4",
           DesiredReviewers: reviewerCount,
           ContentType: contentType,
+          SurveyQuestion: surveyQuestion, 
         })
       }
     )
@@ -237,6 +242,18 @@ const NewStudy = () => {
                       min={0}
                       max={20}
                       onChange={e => updateReviewerCountForm(e)}
+                    />
+                  </InputGroup>
+                </FormGroup>
+                <FormGroup>
+                  <div className="text-muted mb-2">
+                    <small>Add a custom survey question:</small>
+                  </div>
+                  <InputGroup className="input-group-alternative mb-3">
+                    <Input
+                      placeholder="Is there anything else you would like to add about the content?"
+                      type="textarea"
+                      onChange={e => updateSurveyQuestionForm(e)}
                     />
                   </InputGroup>
                 </FormGroup>
