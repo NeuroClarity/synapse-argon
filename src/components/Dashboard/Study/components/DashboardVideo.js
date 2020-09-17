@@ -64,7 +64,7 @@ const DashboardVideo = ({ studyId, name, video, heatmap, globalTime }) => {
   );
 
   useEffect(() => {
-    setLink(window.location.origin + "/review/new/" + studyId);
+    setLink(window.location.origin + "/review/" + studyId);
   }, [studyId]);
 
   return (
