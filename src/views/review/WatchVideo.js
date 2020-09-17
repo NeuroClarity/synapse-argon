@@ -21,7 +21,7 @@ import {
   Col
 } from "reactstrap";
 
-export const COLLECTION_INTERVAL = 0.1 * 1000;
+export const COLLECTION_INTERVAL = 0.2 * 1000;
 
 const WatchVideo = ({ setStep, step, video, setUserFacialData, setUserEyeData }) => {
   const [ calibrated, setCalibrated ] = useState(true)
@@ -58,7 +58,9 @@ const WatchVideo = ({ setStep, step, video, setUserFacialData, setUserEyeData })
       track.stop();
     });
 
+    console.log(blob)
     setUserFacialData(blob)
+    console.log(eyeData)
     setUserEyeData(eyeData)
     setStep(step + 1)
   }
@@ -83,11 +85,12 @@ const WatchVideo = ({ setStep, step, video, setUserFacialData, setUserEyeData })
         return;
       }
 
-      setEyeData([...eyeData, {"X": result.x, "Y": result.y}])
+      eyeData.push({"X": result.x, "Y": result.y})
     })
   }
 
   const addNullResult = () => {
+    eyeData.push({"X": null, "Y": null})
     setEyeData([...eyeData, {"X": null, "Y": null}])
   }
 
@@ -106,8 +109,10 @@ const WatchVideo = ({ setStep, step, video, setUserFacialData, setUserEyeData })
         })
         .catch(console.log);
 
+    console.log("Started eye tracking data collection")
+    console.log(COLLECTION_INTERVAL)
     let interval = setInterval(handleData, COLLECTION_INTERVAL)
-    return () => clearInterval(interval)
+    return () => { clearInterval(interval) }
   }, [])
 
   if (!calibrated) {
@@ -135,6 +140,7 @@ const WatchVideo = ({ setStep, step, video, setUserFacialData, setUserEyeData })
           }}
           autoPlay={true}
           onEnded={ onVideoEnd }
+          controls
         >
             <source src={ URL.createObjectURL(video) } />
         </video>
