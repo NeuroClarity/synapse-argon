@@ -23,10 +23,10 @@ export const ABStudy = ({ data, loading }) => {
         <Col className="mb-5 mb-xl-0" xl="6">
           <ABDashboardVideo
             isA={false}
-            studyId={data ? data.StudyID : ""}
+            studyId={data ? data.SecondStudyID : ""}
             name={data ? data.Name : ""}
-            video={data ? data.Insights.VideoUrl : undefined}
-            heatmap={data ? data.Insights.HeatmapUrl : undefined}
+            video={data ? data.SecondInsights.VideoUrl : undefined}
+            heatmap={data ? data.SecondInsights.HeatmapUrl : undefined}
             globalTime={globalTime}
           />
         </Col>
@@ -41,8 +41,10 @@ export const ABStudy = ({ data, loading }) => {
         </Col>
         <Col className="mb-5 mb-xl-0" xl="6">
           <DashboardChart
-            emotionResults={data && data.Insights.EmotionResults}
-            engagementResults={data && data.Insights.EngagementResults.Result}
+            emotionResults={data && data.SecondInsights.EmotionResults}
+            engagementResults={
+              data && data.SecondInsights.EngagementResults.Result
+            }
             setGlobalTime={setGlobalTime}
           />
         </Col>

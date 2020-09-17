@@ -1,13 +1,9 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
 // reactstrap components
 import { Button, Card, CardTitle, CardText, Row, Col } from "reactstrap";
 
-import { useAuth0 } from "@auth0/auth0-react";
-
-import Dropzone from "../../components/Forms/Dropzone.js";
 import VideoUpload from "../../components/Forms/VideoUpload.js";
-import { useApi } from "../../utils/request.js";
+import ABUpload from "../../components/Forms/ABUpload.js";
 
 const NewStudy = () => {
   const [studyType, setStudyType] = useState();
@@ -32,11 +28,12 @@ const NewStudy = () => {
     <>
       {studyType && studyType === "ab" ? (
         <Row>
-          <VideoUpload />
-          <VideoUpload />
+          <ABUpload />
         </Row>
       ) : studyType ? (
-        <VideoUpload videoOnly={videoOnly} staticOnly={staticOnly} />
+        <Col sm="6">
+          <VideoUpload videoOnly={videoOnly} staticOnly={staticOnly} />
+        </Col>
       ) : (
         <Row>
           <Col sm="4">

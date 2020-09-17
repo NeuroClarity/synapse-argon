@@ -60,7 +60,10 @@ const Dashboard = () => {
   return (
     <>
       <DashboardHeader />
-      <Study data={data} loading={loading} />
+      {data && data.SecondStudyID ? (
+        <ABStudy data={data} loading={loading} />
+      ) : (
+        <Study data={data} loading={loading} />
       )}
       {/* Page content */}
     </>
