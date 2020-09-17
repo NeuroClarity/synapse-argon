@@ -15,8 +15,7 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React from "react";
-import { Redirect } from "react-router-dom";
+import React, { useState } from "react";
 // reactstrap components
 import {
   Button,
@@ -27,47 +26,52 @@ import {
 
 import Setup from "../../components/Review/Setup";
 
-class SetupReview extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      step: 1
-    };
-  }
+const SetupReview = ({ setStep, step, webgazerLoaded }) => {
+  const [ progress, setProgress ] = useState(1)
 
-  render() {
-    if ((this.state.step) > 5) {
-      return <Redirect to={'/review/calibrate/' + this.props.match.params.studyId} />
+  const back = () => {
+    if (progress <= 1) {
+      setStep(step - 1)
+      return
     }
 
-    return (
-      <>
-        <Col lg="10" md="12">
-          <Card className="bg-secondary shadow border-0 mt-3">
-            <CardBody className="px-lg-5 py-lg-4">
-              <div className="text-center mb-4">
-                <h2>Configure Your Hardware</h2>
-              </div>
-              <Setup step={this.state.step} />
-              <div className="text-center mt-3">
-                <Button className="mr-4" color="primary" onClick={() => {
-                    this.setState({ step: this.state.step > 1 ? this.state.step - 1 : 1 })
-                }}>
-                  Back
-                </Button>
-                <Button className="ml-4" color="primary" onClick={() => {
-                  this.setState({ step: this.state.step + 1 })
-                }}>
-                  Next
-                </Button>
-              </div>
-            </CardBody>
-          </Card>
-        </Col>
-      </>
-    );
+    setProgress(progress - 1)
   }
+
+  const advance = () => {
+    if (progress + 1 > 4) {
+      setStep(step + 1)
+      return
+    }
+
+    setProgress(progress + 1)
+
+  }
+
+  return (
+    <>
+      <Col lg="10" md="12">
+        <Card className="bg-secondary shadow border-0 mt-3">
+          <CardBody className="px-lg-5 py-lg-4">
+            <div className="text-center mb-4">
+              <h2>Configure Your Hardware</h2>
+            </div>
+            <Setup step={progress} webgazerLoaded={webgazerLoaded} />
+            <div className="text-center mt-3">
+              <Button className="mr-4" color="primary" onClick={back}>
+                Back
+              </Button>
+              <Button className="ml-4" color="primary" onClick={advance}>
+                Next
+              </Button>
+            </div>
+          </CardBody>
+        </Card>
+      </Col>
+    </>
+  );
 }
+
 
 export default SetupReview;
 

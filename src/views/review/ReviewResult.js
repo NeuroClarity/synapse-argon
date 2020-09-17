@@ -15,8 +15,8 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React from "react";
-import { Redirect } from "react-router-dom";
+import React, { useState } from "react";
+import { useParams } from "react-router-dom";
 
 import SurveyForm from "../../components/Forms/SurveyForm.js"
 import DemographicForm from "../../components/Forms/DemographicForm.js"
@@ -32,50 +32,27 @@ import {
   Col
 } from "reactstrap";
 
-class ReviewResult extends React.Component {
-  constructor(props) {
-    super(props)
+const ReviewResult = ({ setStep, step, surveyQuestion, eyeData, facialData }) => {
+  const [ submitted, setSubmitted ] = useState(false)
+  const [ surveyStep, setSurveyStep ] = useState(0)
+  const [ age, setAge ] = useState()
+  const [ gender, setGender ] = useState()
+  const [ race, setRace ] = useState()
+  const [ q1, setQ1 ] = useState()
+  const [ q2, setQ2 ] = useState()
+  const [ q3, setQ3 ] = useState()
+  const [ q4, setQ4 ] = useState()
 
-    this.state = {
-      submitted: false,
-      eyeData: this.props.location.state ? this.props.location.state.eyeData : null,
-      facialData: this.props.location.state ? this.props.location.state.facialData : null,
-      surveyStep: 0,
-      age: 0,
-      gender: null,
-      race: null,
-      surveyq1: null,
-      surveyq2: null,
-      surveyq3: null,
-      surveyq4: null,
-    }
-    
-    this.processData = this.processData.bind(this)
-    this.sendData = this.sendData.bind(this)
-    this.uploadEyeToS3 = this.uploadEyeToS3.bind(this)
-    this.uploadFacialToS3 = this.uploadFacialToS3.bind(this)
-    this.submitAnalyticsJob = this.submitAnalyticsJob.bind(this)
-
-    // bind setter methods
-    this.setAge = this.setAge.bind(this)
-    this.setGender = this.setGender.bind(this)
-    this.setRace = this.setRace.bind(this)
-    this.setQ1 = this.setQ1.bind(this)
-    this.setQ2 = this.setQ2.bind(this)
-    this.setQ3 = this.setQ3.bind(this)
-    this.setQ4 = this.setQ4.bind(this)
-  }
+  const { studyid } = useParams();
 
   // upload all data collected from watching the video
-  processData() {
-    if (this.state.surveyStep === 0) {
-      this.setState({
-        surveyStep: this.state.surveyStep + 1
-      })
+  const processData = () => {
+    if (surveyStep === 0) {
+      setSurveyStep(surveyStep + 1)
       return 
     }
 
-    if (this.state.eyeData == null || this.state.facialData == null) {
+    if (eyeData == null || facialData == null) {
       return 
     }
 
@@ -84,36 +61,35 @@ class ReviewResult extends React.Component {
         screenWidth: window.innerWidth,
         screenHeight: window.innerHeight,
         collectionInterval: COLLECTION_INTERVAL,
-        coordinates: this.state.eyeData
+        coordinates: eyeData
       })
 
-      await this.sendData(formattedEyeData, this.state.facialData).then((reviewId) => {
-        this.submitAnalyticsJob(reviewId);
+      await sendData(formattedEyeData, facialData).then((reviewId) => {
+        submitAnalyticsJob(reviewId);
       });
     }
-    f = f.bind(this)
     f();
-    this.setState({ submitted: true })
+    setSubmitted(true)
   }
 
-  async sendData(eyeData, facialData) {
+  const sendData = async function(eyeData, facialData) {
     return await fetch(process.env.REACT_APP_AXON_DOMAIN + "/api/reviewer/finishReviewJob", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        StudyID: this.props.match.params.studyId,
+        StudyID: studyid,
         SurveyResult: {
-          Quality: this.state.surveyq1,
-          WouldBuy: this.state.surveyq2,
-          Memorable: this.state.surveyq3,
-          OpenEnded: this.state.surveyq4,
+          Quality: q1,
+          WouldBuy: q2,
+          Memorable: q3,
+          OpenEnded: q4,
         },
         Demographic: {
-          Age: this.state.age,
-          Gender: this.state.gender,
-          Race: this.state.race,
+          Age: age,
+          Gender: gender,
+          Race: race,
         }
       })
     })
@@ -123,20 +99,18 @@ class ReviewResult extends React.Component {
       .then(async function(result){
           // upload data to S3
           const eyeDataUrl = result.EyeDataUrl
-          console.log(eyeDataUrl)
-          await this.uploadEyeToS3(eyeDataUrl, eyeData)
+          await uploadEyeToS3(eyeDataUrl, eyeData)
           const facialDataUrl = result.FacialDataUrl
-          console.log(facialDataUrl)
-          await this.uploadFacialToS3(facialDataUrl, facialData)
+          await uploadFacialToS3(facialDataUrl, facialData)
           return result.ReviewId
-        }.bind(this),
+        },
         error => {
           console.log("Error: ", error);
         }
       );
   }
 
-  async uploadFacialToS3(url, data) {
+  const uploadFacialToS3 = async function(url, data) {
     await fetch(url, {
       method: "PUT",
       headers: {
@@ -146,7 +120,7 @@ class ReviewResult extends React.Component {
     })
   }
 
-  async uploadEyeToS3(url, data) {
+  const uploadEyeToS3 = async function(url, data) {
     await fetch(url, {
       method: "PUT",
       headers: {
@@ -156,7 +130,7 @@ class ReviewResult extends React.Component {
     })
   }
 
-  async submitAnalyticsJob(reviewId) {
+  const submitAnalyticsJob = async function(reviewId) {
     await fetch(process.env.REACT_APP_AXON_DOMAIN + "/api/reviewer/submitAnalyticsJob", {
       method: "POST",
       headers: {
@@ -172,37 +146,37 @@ class ReviewResult extends React.Component {
   }
 
   // setter methods for form responses
-  setAge(age) {
-    this.setState({ age: parseInt(age.target.value) })
+  const setAgeForm = (age) => {
+    setAge(parseInt(age.target.value))
   }
-  setGender(gender) {
-    this.setState({ gender: gender.target.value })
+  const setGenderForm = (gender) => {
+    setGender(gender.target.value)
   }
-  setRace(race) {
-    this.setState({ race: race.target.value })
+  const setRaceForm = (race) => {
+    setRace(race.target.value)
   }
-  setQ1(resp) {
-    this.setState({ surveyq1: resp })
+  const setQ1Form = (resp) => {
+    setQ1(parseInt(resp.target.value))
   }
-  setQ2(resp) {
-    this.setState({ surveyq2: resp })
+  const setQ2Form = (resp) => {
+    setQ2(parseInt(resp.target.value))
   }
-  setQ3(resp) {
-    this.setState({ surveyq3: resp })
+  const setQ3Form = (resp) => {
+    setQ3(parseInt(resp.target.value))
   }
-  setQ4(resp) {
-    this.setState({ surveyq4: resp.target.value })
+  const setQ4Form = (resp) => {
+    setQ4(resp.target.value)
   }
 
-  render() {
-    if (this.state.eyeData == null || this.state.facialData == null) {
-      return <Redirect to={"/review/new/" + this.props.match.params.studyId} />
+    if (eyeData == null || facialData == null) {
+      setStep(0)
+      return
     }
 
-    if (!this.state.submitted) {
+    if (!submitted) {
       return (
         <>
-          <Col lg="7" md="9">
+          <Col lg="9" md="11">
             <Card className="bg-secondary shadow border-0 mt-3">
               <CardHeader className="bg-transparent">
                 <div className="text-center">
@@ -211,21 +185,27 @@ class ReviewResult extends React.Component {
               </CardHeader>
               <CardBody className="px-lg-5 py-lg-4">
                 <Form>
-                  {(this.state.surveyStep === 0 && 
+                  {(surveyStep === 0 && 
                     <DemographicForm 
-                      setAge={ this.setAge }
-                      setGender={ this.setGender }
-                      setRace={ this.setRace }
+                      setAge={ setAgeForm }
+                      setGender={ setGenderForm }
+                      setRace={ setRaceForm }
                     />) || 
                     <SurveyForm 
-                      setQ1={ this.setQ1 }
-                      setQ2={ this.setQ2 }
-                      setQ3={ this.setQ3 }
-                      setQ4={ this.setQ4 }
+                      setQ1={ setQ1Form }
+                      setQ2={ setQ2Form }
+                      setQ3={ setQ3Form }
+                      setQ4={ setQ4Form }
+                      surveyQuestion={surveyQuestion}
                     />}
                   <div className="text-center">
-                    <Button className="mt-4" color="primary" type="button" onClick={ this.processData }>
-                      {this.state.surveyStep < 1 ? "Next" : "Submit" }
+                  {(surveyStep === 1 && 
+                    <Button className="mt-4 mr-5" color="primary" type="button" onClick={ () => setSurveyStep(0) }>
+                      Back
+                    </Button>
+                  )}
+                    <Button className="mt-4" color="primary" type="button" onClick={ processData }>
+                      { surveyStep < 1 ? "Next" : "Submit" }
                     </Button>
                   </div>
                 </Form>
@@ -259,7 +239,6 @@ class ReviewResult extends React.Component {
         </>
       );
     }
-  }
 }
 
 export default ReviewResult;

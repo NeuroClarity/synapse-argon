@@ -21,26 +21,19 @@ const Setup = ({ step }) => {
         break
       case 2:
         cnt = <SetupContent 
-                    img="/cable.png" 
-                    text="Close all other web browser tabs"
-                    subtext="If you are using a laptop connect it to the power adapter" 
-                  />
-          break
-      case 3:
-        cnt = <SetupContent 
                     img="/bulb.png" 
-                    text="Your face has to be in good lighting"
+                    text="Keep your face in good lighting"
                     subtext="Please sit comfortably in a bright place" 
                   />
           break
-      case 4:
+      case 3:
         cnt = <SetupContent 
                     img="/face.png" 
                     text="Try to keep your head still"
                     subtext="Stay in front of the screen for the whole time" 
                   />
           break
-      case 5:
+      case 4:
         cnt = (
           <div>
             <div className="text-center mb-4">

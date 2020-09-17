@@ -52,7 +52,7 @@ ReactDOM.render(
         />
         <Route
           component={ReviewLayout}
-          path="/review"
+          path="/review/:studyid"
           render={props => <ReviewLayout {...props} />}
         />
         <Redirect from="/*" to="/auth/login" />

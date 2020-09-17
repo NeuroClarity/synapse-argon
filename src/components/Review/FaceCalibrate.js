@@ -15,27 +15,20 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React from "react";
+import React, { useState, useEffect, useRef } from "react";
 
-import { Spinner, Button } from "reactstrap";
+import { Spinner } from "reactstrap";
 
-class FaceCalibrate extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      loaded: false
-    }
+const FaceCalibrate = () => {
+  const [ loaded, setLoaded ] = useState()
+  const videoTag = useRef()
 
-    this.videoTag = React.createRef()
-
-  }
-
-  componentDidMount() {
+  useEffect(() => {
     // getting access to webcam
    navigator.mediaDevices
       .getUserMedia({video: true})
       .then(stream => {
-        this.videoTag.current.srcObject = stream
+        videoTag.current.srcObject = stream
       })
       .catch(console.log);
 
@@ -51,63 +44,62 @@ class FaceCalibrate extends React.Component {
       window.webgazer.showPredictionPoints(false)
       window.webgazer.begin();
       document.addEventListener('webgazerLoaded', function(e) {
-        this.setState({ loaded: true })
-      }.bind(this));
-    }.bind(this))
+        setLoaded(true)
+      });
+    })
 
     document.body.appendChild(script);
-  }
 
-  componentWillUnmount() {
-    this.videoTag.current.srcObject.getTracks().forEach(function(track) {
-      track.stop();
-    });
-  }
-
-  render() {
-      return (
-        <div>
-          <div className="text-center my-4" 
-              style={{
-                display: !this.state.loaded ? 'block' : 'none',
-              }}
-          >
-            <Spinner 
-              animation="border" 
-              size="xl" 
-              variant="primary" 
-              style={{
-              }}
-            />
-          </div>
-          <div className="row justify-content-center my-4">
-            <video 
-              ref={this.videoTag} 
-              autoPlay={true} 
-              style={{
-                display: this.state.loaded ? 'block' : 'none',
-                width: "500"
-              }}
-            />
-            <div
-              style={{
-                position: "absolute",
-                display: this.state.loaded ? 'block' : 'none',
-                height: "340px",
-                width: "300px",
-                top: "200px",
-                left: "300px",
-                bg: "rgba(255, 0, 0, 0.0)",
-                border: "7px solid #33cc33",
-               zIndex: "100"
-              }}
-            >
-            </div>
-          </div>
-        </div>
-      );
+    return () => {
+      videoTag.current.srcObject.getTracks().forEach(function(track) {
+        track.stop();
+      });
     }
-  }
+
+  }, [])
+
+  return (
+    <div>
+      <div className="text-center my-4" 
+          style={{
+            display: !loaded ? 'block' : 'none',
+          }}
+      >
+        <Spinner 
+          animation="border" 
+          size="xl" 
+          variant="primary" 
+          style={{
+          }}
+        />
+      </div>
+      <div className="row justify-content-center my-4">
+        <video 
+          ref={videoTag} 
+          autoPlay={true} 
+          style={{
+            display: loaded ? 'block' : 'none',
+            width: "500"
+          }}
+        />
+        <div
+          style={{
+            position: "absolute",
+            display: loaded ? 'block' : 'none',
+            height: "340px",
+            width: "300px",
+            top: "200px",
+            left: "300px",
+            bg: "rgba(255, 0, 0, 0.0)",
+            border: "7px solid #33cc33",
+           zIndex: "100"
+          }}
+        >
+        </div>
+      </div>
+    </div>
+  );
+}
 
 export default FaceCalibrate;
 
