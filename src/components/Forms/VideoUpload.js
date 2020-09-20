@@ -11,6 +11,7 @@ const VideoUpload = ({ videoOnly, staticOnly }) => {
   const [description, setDescription] = useState();
   const [reviewerCount, setReviewerCount] = useState();
   const [contentType, setContentType] = useState();
+  const [contentLength, setContentLength] = useState();
   const [isAB, setIsAB] = useState(false);
   const { user } = useAuth0();
 
@@ -33,6 +34,9 @@ const VideoUpload = ({ videoOnly, staticOnly }) => {
   };
   const updateReviewerCountForm = e => {
     setReviewerCount(parseInt(e.target.value));
+  };
+  const updateContentLengthForm = e => {
+    setContentLength(parseInt(e.target.value));
   };
   const updateContentType = e => {
     if (e.target.value === "ABTest") {
@@ -129,7 +133,8 @@ const VideoUpload = ({ videoOnly, staticOnly }) => {
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
-          StudyID: study.StudyID
+          StudyID: study.StudyID,
+          ContentLength: contentLength
         })
       })
         .then(res => res.json())
@@ -158,6 +163,7 @@ const VideoUpload = ({ videoOnly, staticOnly }) => {
         updateDescriptionForm={updateDescriptionForm}
         updateReviewerCountForm={updateReviewerCountForm}
         updateContentType={updateContentType}
+        updateContentLength={updateContentLengthForm}
         requestNewStudy={requestNewStudy}
         videoOnly={videoOnly}
         staticOnly={staticOnly}
