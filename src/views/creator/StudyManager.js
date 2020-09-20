@@ -55,6 +55,7 @@ import { useApi } from "../../utils/request.js";
 const StudyManager = () => {
   const { user } = useAuth0();
   const history = useHistory();
+  const [refreshIndex, setRefreshIndex] = React.useState(0);
   const opts = {
     method: "POST"
   };
@@ -68,6 +69,19 @@ const StudyManager = () => {
   useEffect(() => {
     console.log("LIST: ", data);
   }, [data]);
+
+  // Refresh call to list every 200ms
+  useEffect(() => {
+    const interval = setInterval(() => {
+      console.log("go");
+      setRefreshIndex(refreshIndex => refreshIndex + 1);
+      refresh();
+    }, 500);
+
+    return () => {
+      clearInterval(interval);
+    };
+  });
 
   // Trivial refresh when history changes. Hacky, update later.
   useEffect(() => {

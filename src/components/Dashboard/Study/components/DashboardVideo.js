@@ -76,7 +76,7 @@ const DashboardVideo = ({ studyId, name, video, heatmap, globalTime }) => {
           </div>
           <Row>
             <h3 style={{ marginRight: "18px" }} className="mb-0">
-              <i>Share your video with reviewers...</i>
+              Share your video with reviewers...
             </h3>
             <h6
               style={{ marginTop: "5px" }}
@@ -103,6 +103,7 @@ const DashboardVideo = ({ studyId, name, video, heatmap, globalTime }) => {
                 href="#pablo"
                 onClick={e => setHeatmapToggle(!heatmapToggle)}
                 size="sm"
+                disabled={!heatmap}
               >
                 Toggle Heatmap
               </Button>

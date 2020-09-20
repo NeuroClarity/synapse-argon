@@ -34,6 +34,7 @@ const StudyListItem = ({ studyId, studyName, desired, completed, refresh }) => {
   );
   const [deleteModal, setDeleteModal] = useState(false);
   const [changeNameModal, setChangeNameModal] = useState(false);
+  const [newStudyName, setNewStudyName] = useState();
 
   const clipboard = useClipboard();
 
@@ -72,40 +73,36 @@ const StudyListItem = ({ studyId, studyName, desired, completed, refresh }) => {
     [clipboard, link]
   );
 
-  const deleteStudy = React.useCallback(
-    event => {
-      fetch(process.env.REACT_APP_AXON_DOMAIN + "/api/creator/delete", {
-        method: "POST",
-        headers: {
-          // TODO: access token
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          StudyID: studyId
-        })
-      }).then(() => refresh());
-    },
-    //eslint-disable-next-line
-    [studyId]
-  );
+  const deleteStudy = event => {
+    fetch(process.env.REACT_APP_AXON_DOMAIN + "/api/creator/delete", {
+      method: "POST",
+      headers: {
+        // TODO: access token
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        StudyID: studyId
+      })
+    });
+    setDeleteModal(false);
+  };
 
-  const changeStudyName = React.useCallback(
-    event => {
-      fetch(process.env.REACT_APP_AXON_DOMAIN + "/api/creator/studyName", {
-        method: "POST",
-        headers: {
-          // TODO: access token
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          StudyID: studyId,
-          Name: event.target.value
-        })
-      }).then(() => refresh());
-    },
-    //eslint-disable-next-line
-    [studyId]
-  );
+  const changeStudyName = event => {
+    console.log("STUDY: ", newStudyName);
+    fetch(process.env.REACT_APP_AXON_DOMAIN + "/api/creator/studyName", {
+      method: "POST",
+      headers: {
+        // TODO: access token
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        StudyID: studyId,
+        Name: newStudyName
+      })
+    });
+    setChangeNameModal(false);
+  };
+
   return (
     <>
       <tr>
@@ -162,7 +159,7 @@ const StudyListItem = ({ studyId, studyName, desired, completed, refresh }) => {
                 Delete Study
               </DropdownItem>
               <DropdownItem onClick={() => setChangeNameModal(true)}>
-                Contact Us
+                Change Study Name
               </DropdownItem>
             </DropdownMenu>
           </UncontrolledDropdown>
@@ -174,14 +171,14 @@ const StudyListItem = ({ studyId, studyName, desired, completed, refresh }) => {
           to recover it again.
         </ModalBody>
         <ModalFooter>
-          <Button color="primary" onClick={deleteStudy()}>
+          <Button color="primary" onClick={deleteStudy}>
             Delete
           </Button>
           <Button
             color="secondary"
             onClick={() => setDeleteModal(!deleteModal)}
           >
-            Nah
+            Nope
           </Button>
         </ModalFooter>
       </Modal>
@@ -189,25 +186,26 @@ const StudyListItem = ({ studyId, studyName, desired, completed, refresh }) => {
         <ModalBody>
           <Form>
             <FormGroup>
-              <Label for="examplePassword">New Name</Label>
+              <Label for="examplePassword">Change your Study Name</Label>
               <Input
                 type="name"
                 name="name"
                 id="new name"
-                placeholder="your study name"
+                placeholder="New Name"
+                onChange={e => setNewStudyName(e.target.value)}
               />
             </FormGroup>
           </Form>
         </ModalBody>
         <ModalFooter>
-          <Button color="primary" onClick={changeStudyName()}>
-            Delete
+          <Button color="primary" onClick={changeStudyName}>
+            Change
           </Button>
           <Button
             color="secondary"
             onClick={() => setChangeNameModal(!changeNameModal)}
           >
-            Nah
+            Nope
           </Button>
         </ModalFooter>
       </Modal>
