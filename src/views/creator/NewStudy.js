@@ -45,45 +45,45 @@ const NewStudy = () => {
             <ABUpload />
           </Row>
         ) : studyType ? (
-          <Col sm="6">
-            <VideoUpload videoOnly={videoOnly} staticOnly={staticOnly} />
-          </Col>
+          <Container className="mt--6" fluid>
+            <Row className="justify-content-center">
+              <Col className="order-xl-2 mb-5 mb-xl-0" xl="4">
+                <VideoUpload videoOnly={videoOnly} staticOnly={staticOnly} />
+              </Col>
+            </Row>
+          </Container>
         ) : (
-          <Row>
-            <Col sm="4">
-              <Card body>
-                <CardTitle>AB Study</CardTitle>
-                <CardText>
-                  See clear differences between two similar pieces of content.
-                </CardText>
-                <Button color="primary" onClick={handleABSelection}>
-                  Create
-                </Button>
-              </Card>
-            </Col>
-            <Col sm="4">
-              <Card body>
-                <CardTitle>Classic Study</CardTitle>
-                <CardText>
-                  Actionable insights on standard video content.
-                </CardText>
-                <Button color="primary" onClick={handleClassicSelection}>
-                  Create
-                </Button>
-              </Card>
-            </Col>
-            <Col sm="4">
-              <Card body>
-                <CardTitle>Static Study</CardTitle>
-                <CardText>
-                  Analyze static picture, poster, or billboard material.
-                </CardText>
-                <Button color="primary" onClick={handleStaticSelection}>
-                  Create
-                </Button>
-              </Card>
-            </Col>
-          </Row>
+          <Container className="mt--6" fluid>
+            <Row className="justify-content-center">
+              <Col className="order-xl-2 mb-5 mb-xl-0" xl="4">
+                <Card body>
+                  <CardTitle>AB Study</CardTitle>
+                  <CardText>You already know what this is</CardText>
+                  <Button color="primary" onClick={handleABSelection}>
+                    Create
+                  </Button>
+                </Card>
+              </Col>
+              <Col className="order-xl-2 mb-5 mb-xl-0" xl="4">
+                <Card body>
+                  <CardTitle>Classic Study</CardTitle>
+                  <CardText>Gimme your vanilla video</CardText>
+                  <Button color="primary" onClick={handleClassicSelection}>
+                    Create
+                  </Button>
+                </Card>
+              </Col>
+              <Col className="order-xl-2 mb-5 mb-xl-0" xl="4">
+                <Card body>
+                  <CardTitle>Static Study</CardTitle>
+                  <CardText>Pictures, posters, and billboards...</CardText>
+                  <Button color="primary" onClick={handleStaticSelection}>
+                    Create
+                  </Button>
+                </Card>
+              </Col>
+            </Row>
+          </Container>
         )}
       </Container>
     </>
