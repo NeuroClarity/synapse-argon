@@ -12,7 +12,15 @@ import {
   UncontrolledDropdown,
   UncontrolledTooltip,
   Badge,
-  Media
+  Button,
+  Media,
+  Modal,
+  ModalBody,
+  ModalFooter,
+  Form,
+  FormGroup,
+  Label,
+  Input
 } from "reactstrap";
 
 const StudyListItem = ({ studyId, studyName, desired, completed, refresh }) => {
@@ -24,6 +32,9 @@ const StudyListItem = ({ studyId, studyName, desired, completed, refresh }) => {
       pending
     </Badge>
   );
+  const [deleteModal, setDeleteModal] = useState(false);
+  const [changeNameModal, setChangeNameModal] = useState(false);
+
   const clipboard = useClipboard();
 
   useEffect(() => {
@@ -78,67 +89,129 @@ const StudyListItem = ({ studyId, studyName, desired, completed, refresh }) => {
     [studyId]
   );
 
+  const changeStudyName = React.useCallback(
+    event => {
+      fetch(process.env.REACT_APP_AXON_DOMAIN + "/api/creator/studyName", {
+        method: "POST",
+        headers: {
+          // TODO: access token
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          StudyID: studyId,
+          Name: event.target.value
+        })
+      }).then(() => refresh());
+    },
+    //eslint-disable-next-line
+    [studyId]
+  );
   return (
-    <tr>
-      <th scope="row">
-        <Media className="align-items-center">
-          <Media>
-            <Link to={"/admin/study/" + studyId}>
-              <span className="mb-0 text-sm">{studyName}</span>
-            </Link>
+    <>
+      <tr>
+        <th scope="row">
+          <Media className="align-items-center">
+            <Media>
+              <Link to={"/admin/study/" + studyId}>
+                <span className="mb-0 text-sm">{studyName}</span>
+              </Link>
+            </Media>
           </Media>
-        </Media>
-      </th>
-      <td>{desired}</td>
-      <td>{statusBadge}</td>
-      <td>
-        <div className="avatar-group">
-          <a
-            className="avatar avatar-sm"
-            id="tooltip742438047"
-            onClick={e => copyLink(e)}
-          >
-            <i className={"ni ni-single-copy-04"} />
-          </a>
-          <UncontrolledTooltip delay={0} target="tooltip742438047">
-            Click to copy your reviewer link
-          </UncontrolledTooltip>
-        </div>
-      </td>
-      <td>
-        <div className="d-flex align-items-center">
-          <span className="mr-2">{percent}%</span>
-          <div>
-            <Progress
-              max="100"
-              value={percent.toString()}
-              barClassName="bg-danger"
-            />
+        </th>
+        <td>{desired}</td>
+        <td>{statusBadge}</td>
+        <td>
+          <div className="avatar-group">
+            <a
+              className="avatar avatar-sm"
+              id="tooltip742438047"
+              onClick={e => copyLink(e)}
+            >
+              <i className={"ni ni-single-copy-04"} />
+            </a>
+            <UncontrolledTooltip delay={0} target="tooltip742438047">
+              Click to copy your reviewer link
+            </UncontrolledTooltip>
           </div>
-        </div>
-      </td>
-      <td className="text-right">
-        <UncontrolledDropdown>
-          <DropdownToggle
-            className="btn-icon-only text-light"
-            role="button"
-            size="sm"
-            color=""
-            onClick={e => e.preventDefault()}
+        </td>
+        <td>
+          <div className="d-flex align-items-center">
+            <span className="mr-2">{percent}%</span>
+            <div>
+              <Progress
+                max="100"
+                value={percent.toString()}
+                barClassName="bg-danger"
+              />
+            </div>
+          </div>
+        </td>
+        <td className="text-right">
+          <UncontrolledDropdown>
+            <DropdownToggle
+              className="btn-icon-only text-light"
+              role="button"
+              size="sm"
+              color=""
+              onClick={e => e.preventDefault()}
+            >
+              <i className="fas fa-ellipsis-v" />
+            </DropdownToggle>
+            <DropdownMenu className="dropdown-menu-arrow" right>
+              <DropdownItem onClick={() => setDeleteModal(true)}>
+                Delete Study
+              </DropdownItem>
+              <DropdownItem onClick={() => setChangeNameModal(true)}>
+                Contact Us
+              </DropdownItem>
+            </DropdownMenu>
+          </UncontrolledDropdown>
+        </td>
+      </tr>
+      <Modal isOpen={deleteModal}>
+        <ModalBody>
+          Are you sure you want to delete this study? You probably won't be able
+          to recover it again.
+        </ModalBody>
+        <ModalFooter>
+          <Button color="primary" onClick={deleteStudy()}>
+            Delete
+          </Button>
+          <Button
+            color="secondary"
+            onClick={() => setDeleteModal(!deleteModal)}
           >
-            <i className="fas fa-ellipsis-v" />
-          </DropdownToggle>
-          <DropdownMenu className="dropdown-menu-arrow" right>
-            <DropdownItem onClick={e => deleteStudy()}>
-              Delete Study
-            </DropdownItem>
-            <DropdownItem onClick={e => e.preventDefault()}>
-              Contact Us
-            </DropdownItem>
-          </DropdownMenu>
-        </UncontrolledDropdown>
-      </td>
-    </tr>
+            Nah
+          </Button>
+        </ModalFooter>
+      </Modal>
+      <Modal isOpen={changeNameModal}>
+        <ModalBody>
+          <Form>
+            <FormGroup>
+              <Label for="examplePassword">New Name</Label>
+              <Input
+                type="name"
+                name="name"
+                id="new name"
+                placeholder="your study name"
+              />
+            </FormGroup>
+          </Form>
+        </ModalBody>
+        <ModalFooter>
+          <Button color="primary" onClick={changeStudyName()}>
+            Delete
+          </Button>
+          <Button
+            color="secondary"
+            onClick={() => setChangeNameModal(!changeNameModal)}
+          >
+            Nah
+          </Button>
+        </ModalFooter>
+      </Modal>
+    </>
   );
 };
 
