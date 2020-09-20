@@ -24,6 +24,7 @@ const VideoForm = ({
   updateDescriptionForm,
   updateReviewerCountForm,
   updateContentType,
+  updateSurveyQuestionForm,
   requestNewStudy,
   videoOnly,
   staticOnly
@@ -127,6 +128,17 @@ const VideoForm = ({
                     onChange={e => updateReviewerCountForm(e)}
                   />
                 </InputGroup>
+              <FormGroup>
+                <div className="mb-1">
+                  <small>(Optional) Add a custom survey question: </small>
+                </div>
+                <InputGroup className="input-group-alternative mb-3">
+                  <Input 
+                    type="textarea" 
+                    onChange={e => updateSurveyQuestionForm(e)}
+                  />
+                </InputGroup>
+              </FormGroup>
               </FormGroup>
               <div className="text-center">
                 <Link to="/admin/studies">

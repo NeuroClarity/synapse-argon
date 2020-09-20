@@ -58,9 +58,9 @@ class SurveyForm extends React.Component {
         </FormGroup>
         <FormGroup>
           <div>
-            <p>This was a high quality video compared to other similar videos that I have watched.</p>
+            <p>I would recommend this product to a friend.</p>
           </div>
-          <SurveyRating ratingKey={"Quality"} onChange={ this.props.setQ1 }/>
+          <SurveyRating ratingKey={"Recommend"} onChange={ this.props.setQ1 }/>
         </FormGroup>
         <FormGroup>
           <div>
