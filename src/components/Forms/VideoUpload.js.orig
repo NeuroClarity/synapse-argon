@@ -11,8 +11,11 @@ const VideoUpload = ({ videoOnly, staticOnly }) => {
   const [description, setDescription] = useState();
   const [reviewerCount, setReviewerCount] = useState();
   const [contentType, setContentType] = useState();
+<<<<<<< HEAD
   const [contentLength, setContentLength] = useState();
+=======
   const [surveyQuestion, setSurveyQuestion] = useState();
+>>>>>>> master
   const [isAB, setIsAB] = useState(false);
   const { user } = useAuth0();
 
@@ -168,8 +171,11 @@ const VideoUpload = ({ videoOnly, staticOnly }) => {
         updateDescriptionForm={updateDescriptionForm}
         updateReviewerCountForm={updateReviewerCountForm}
         updateContentType={updateContentType}
+<<<<<<< HEAD
         updateContentLength={updateContentLengthForm}
+=======
         updateSurveyQuestionForm={updateSurveyQuestionForm}
+>>>>>>> master
         requestNewStudy={requestNewStudy}
         videoOnly={videoOnly}
         staticOnly={staticOnly}

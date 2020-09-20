@@ -3,7 +3,14 @@ import { Carousel, Card, CardHeader, Table, Row } from "reactstrap";
 
 //import SurveyCarousel from "./SurveyCarousel.js";
 
-const SurveyResults = ({ desired, surveyResults }) => {
+const questionMap={
+  // Map from quality -> would recommend is temp until db schema is updated
+  "Quality": "Would Recommend",
+  "WouldBuy": "Purchase Intent",
+  "Memorable": "Memorable",
+}
+
+const SurveyResults = ({ desired, surveyQuestion, surveyResults }) => {
   const [rowArray, setRowArray] = useState([]);
   const [openEnded, setOpenEnded] = useState();
 
@@ -18,7 +25,7 @@ const SurveyResults = ({ desired, surveyResults }) => {
           newRowA.push(
             <React.Fragment key={reactKey}>
               <tr>
-                <th scope="row">{key}</th>
+                <th scope="row">{questionMap[key]}</th>
                 <td>{num} / 5</td>
               </tr>
             </React.Fragment>
@@ -73,6 +80,7 @@ const SurveyResults = ({ desired, surveyResults }) => {
         <Row className="align-items-center">
           <div className="col">
             <h2 className="mb-0">Open Responses</h2>
+            <small className="mb-0 text-muted">{ surveyQuestion }</small>
           </div>
         </Row>
       </CardHeader>
