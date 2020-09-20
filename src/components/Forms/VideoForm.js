@@ -26,7 +26,8 @@ const VideoForm = ({
   updateContentType,
   requestNewStudy,
   videoOnly,
-  staticOnly
+  staticOnly,
+  validated
 }) => {
   const [uploaded, setUploaded] = useState();
   return (
@@ -128,6 +129,7 @@ const VideoForm = ({
                     className="mt-4"
                     color="primary"
                     type="button"
+                    disabled={!validated}
                   >
                     Launch Study
                   </Button>

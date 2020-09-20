@@ -11,6 +11,7 @@ const VideoUpload = ({ videoOnly, staticOnly }) => {
   const [description, setDescription] = useState();
   const [reviewerCount, setReviewerCount] = useState();
   const [contentType, setContentType] = useState();
+  const [validated, setValidated] = useState(false);
   const [isAB, setIsAB] = useState(false);
   const { user } = useAuth0();
 
@@ -20,6 +21,12 @@ const VideoUpload = ({ videoOnly, staticOnly }) => {
   const body = {
     CreatorId: user.sub
   };
+
+  React.useEffect(() => {
+    if (studyName && description && reviewerCount) {
+      setValidated(true);
+    }
+  }, [studyName, description, reviewerCount]);
 
   // This is just so we can asynchronously rerender our study manager after we
   // upload.
@@ -161,6 +168,7 @@ const VideoUpload = ({ videoOnly, staticOnly }) => {
         requestNewStudy={requestNewStudy}
         videoOnly={videoOnly}
         staticOnly={staticOnly}
+        validated={validated}
       />
     </>
   );
