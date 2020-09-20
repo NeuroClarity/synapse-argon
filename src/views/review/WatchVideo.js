@@ -70,6 +70,8 @@ const WatchVideo = ({ setStep, step, video, setUserFacialData, setUserEyeData })
       console.log("not ready")
       setCalibrated(false)
       return
+    } else if (videoRef == null || videoRef.current == null) {
+      return
     }
 
 
@@ -85,13 +87,12 @@ const WatchVideo = ({ setStep, step, video, setUserFacialData, setUserEyeData })
         return;
       }
 
-      eyeData.push({"X": result.x, "Y": result.y})
+      eyeData.push({"X": result.x, "Y": result.y, "Time": videoRef.current.currentTime})
     })
   }
 
   const addNullResult = () => {
-    eyeData.push({"X": null, "Y": null})
-    setEyeData([...eyeData, {"X": null, "Y": null}])
+    eyeData.push({"X": null, "Y": null, "Time": videoRef.current.currentTime})
   }
 
   const handleDataAvailable = ({ data }) => {

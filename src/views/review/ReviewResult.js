@@ -21,7 +21,6 @@ import { useParams } from "react-router-dom";
 import SurveyForm from "../../components/Forms/SurveyForm.js"
 import DemographicForm from "../../components/Forms/DemographicForm.js"
 
-import { COLLECTION_INTERVAL } from "./WatchVideo.js";
 // reactstrap components
 import {
   Button,
@@ -60,7 +59,6 @@ const ReviewResult = ({ setStep, step, surveyQuestion, eyeData, facialData }) =>
       let formattedEyeData= JSON.stringify({
         screenWidth: window.innerWidth,
         screenHeight: window.innerHeight,
-        collectionInterval: COLLECTION_INTERVAL,
         coordinates: eyeData
       })
 
