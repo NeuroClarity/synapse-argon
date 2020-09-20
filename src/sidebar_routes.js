@@ -47,7 +47,7 @@ var routes = [
     name: "New Study",
     icon: "ni ni-fat-add",
     component: NewStudy,
-    layout: "/forms"
+    layout: "/admin"
   }
 ];
 export default routes;
