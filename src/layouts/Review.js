@@ -33,6 +33,9 @@ import ProgressBar from "../components/Review/ProgressBar.js"
 import { useApi } from "../utils/request.js";
 
 const Review = () => {
+  const [ loading , setLoading ] = useState(true)
+  const [ error , setError ] = useState(false)
+  const [ metadata , setMetadata ] = useState()
   const [ step, setStep ] = useState(0)
   const [ webgazerLoaded, setWebgazerLoaded ] = useState(false)
   const [ video, setVideo ] = useState()
@@ -41,23 +44,35 @@ const Review = () => {
   const [ userEyeData, setUserEyeData ] = useState()
   const { studyid } = useParams();
 
-  const opts = {
-    method: "POST"
-  };
-
-  const body = {
-    StudyID: studyid
-  };
-
-  const metadata = useApi(
-    "/api/reviewer/reviewJobMetadata",
-    opts,
-    body
-  );
-
   useEffect(() => {
     document.body.classList.add("bg-default");
     return () => { document.body.classList.remove("bg-default") }
+  }, [])
+
+  useEffect(() => {
+    fetch(process.env.REACT_APP_AXON_DOMAIN + "/api/reviewer/reviewJobMetadata", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        StudyID: studyid
+      })
+    })
+    .then(res => {
+      return res.json();
+    })
+    .then(result => {
+        setMetadata(result)
+        setLoading(false)
+      },
+      error => {
+        setError(true)
+        setLoading(false)
+        console.log("Error: ", error);
+      }
+    );
+
   }, [])
 
   useEffect(() => {
@@ -92,10 +107,9 @@ const Review = () => {
           <NewReview 
             setStep={setStep} 
             step={step} 
-            refresh={metadata.refresh}
-            loading={metadata.loading}
-            error={metadata.error}
-            data={metadata.data} 
+            loading={loading}
+            error={error}
+            data={metadata} 
           />
         );
       case 1:

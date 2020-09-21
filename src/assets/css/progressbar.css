@@ -59,6 +59,11 @@
   content: none;
 }
 
+.progressbar li:first-child:before {
+  background-color: #38b6ff;
+  color: white;
+}
+
 .progressbar li.active {
   color: #546A79;
 }

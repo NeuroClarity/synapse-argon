@@ -6,19 +6,19 @@ import '../../assets/css/progressbar.css';
 const buttons = [
   {
     title: "Welcome",
-    description: "A creator has requested that you review their video!",
+    description: "A creator has requested that you review their video",
   },
   {
     title: "Setup",
-    description: "Quick steps to ensure the best viewing experience.",
+    description: "Quick steps to ensure the best viewing experience",
   },
   {
     title: "Calibrate",
-    description: "Some basic calibration will be done to guarantee good results.",
+    description: "Some basic eye tracking calibration",
   },
   {
-    title: "Watch",
-    description: "Watch the video!",
+    title: "Review",
+    description: "Review the video and provide feedback",
   },
 ]
 
@@ -51,7 +51,7 @@ const ProgressBar = ({step}) => {
       <ul class="progressbar">
         {
           buttons.map((val, key) => (
-            <li class={key <= step ? "active" : ""} id={"Tooltip-"+key}>
+            <li class={key < step ? "active" : ""} id={"Tooltip-"+key}>
               <span>{val.title}</span>
               <TooltipItem key={key} id={key} text={val.description}>
                 Hello world!
