@@ -27,7 +27,8 @@ const VideoForm = ({
   updateSurveyQuestionForm,
   requestNewStudy,
   videoOnly,
-  staticOnly
+  staticOnly,
+  validated
 }) => {
   const [uploaded, setUploaded] = useState();
   return (
@@ -45,23 +46,21 @@ const VideoForm = ({
           </CardBody>
         </Card>
       ) : (
-        <Card className="bg-secondary shadow border-0">
-          <CardHeader className="bg-transparent pb-5">
+        <Card className="card-profile shadow">
+          <CardHeader className="text-center border-0 pt-8 pt-md-4 pb-0 pb-md-4">
             <div class="embed-responsive embed-responsive-16by9">
-              {(contentType === "Static" && (
-                <img
-                  class="embed-responsive-item"
-                  width="100%"
-                  src={URL.createObjectURL(blob)}
-                />
-              )) || (
+              {staticOnly ? (
+                <div class="embed-responsive-item">
+                  <img src={URL.createObjectURL(blob)} alt="" />
+                </div>
+              ) : (
                 <video class="embed-responsive-item" width="100%" controls>
                   <source src={URL.createObjectURL(blob)} />
                 </video>
               )}
             </div>
           </CardHeader>
-          <CardBody className="px-lg-5 py-lg-5">
+          <CardBody className="pt-0 pt-md-4">
             <div className="text-center text-muted mb-4">
               <small>Add some metadata about your new study.</small>
             </div>
@@ -80,24 +79,19 @@ const VideoForm = ({
                   />
                 </InputGroup>
               </FormGroup>
-              <FormGroup>
-                <Input type="select" onChange={e => updateContentType(e)}>
-                  <option disabled selected value>
-                    {" "}
-                    Study Type
-                  </option>
-                  {videoOnly ? (
+              {!videoOnly && !staticOnly ? (
+                <FormGroup>
+                  <Input type="select" onChange={e => updateContentType(e)}>
+                    <option disabled selected value>
+                      Study Type
+                    </option>
                     <option>Video</option>
-                  ) : staticOnly ? (
                     <option>Static</option>
-                  ) : (
-                    <>
-                      <option>Video</option>
-                      <option>Static</option>
-                    </>
-                  )}
-                </Input>
-              </FormGroup>
+                  </Input>
+                </FormGroup>
+              ) : (
+                <></>
+              )}
               <FormGroup>
                 <InputGroup className="input-group-alternative mb-3">
                   <InputGroupAddon addonType="prepend">
@@ -147,6 +141,7 @@ const VideoForm = ({
                     className="mt-4"
                     color="primary"
                     type="button"
+                    disabled={!validated}
                   >
                     Launch Study
                   </Button>

@@ -107,6 +107,7 @@ export const ABDashboardVideo = ({
                 href="#pablo"
                 onClick={e => setHeatmapToggle(!heatmapToggle)}
                 size="sm"
+                disabled={!heatmap}
               >
                 Toggle Heatmap
               </Button>

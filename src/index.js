@@ -26,7 +26,6 @@ import "assets/scss/argon-dashboard-react.scss";
 
 import AdminLayout from "layouts/Admin.js";
 import AuthLayout from "layouts/Auth.js";
-import Forms from "layouts/Forms.js";
 import ReviewLayout from "layouts/Review.js";
 
 import PrivateRoute from "./components/Routes/PrivateRoute.js";
@@ -45,11 +44,6 @@ ReactDOM.render(
           render={props => <AdminLayout {...props} />}
         />
         <Route path="/auth" render={props => <AuthLayout {...props} />} />
-        <PrivateRoute
-          component={Forms}
-          path="/forms"
-          render={props => <Forms {...props} />}
-        />
         <Route
           component={ReviewLayout}
           path="/review/:studyid"

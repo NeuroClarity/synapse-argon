@@ -33,7 +33,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { useApi } from "../../utils/request.js";
 
 const AdminNavbar = () => {
-  const { user } = useAuth0();
+  const { user, logout } = useAuth0();
   const opts = {
     method: "POST"
   };
@@ -68,27 +68,10 @@ const AdminNavbar = () => {
                 </Media>
               </DropdownToggle>
               <DropdownMenu className="dropdown-menu-arrow" right>
-                <DropdownItem className="noti-title" header tag="div">
-                  <h6 className="text-overflow m-0">Welcome to NeuroClarity</h6>
-                </DropdownItem>
-                <DropdownItem to="/admin/user-profile" tag={Link}>
-                  <i className="ni ni-single-02" />
-                  <span>My Studies</span>
-                </DropdownItem>
-                <DropdownItem to="/admin/user-profile" tag={Link}>
-                  <i className="ni ni-calendar-grid-58" />
-                  <span>Reviewer Activity</span>
-                </DropdownItem>
-                <DropdownItem to="/admin/user-profile" tag={Link}>
-                  <i className="ni ni-settings-gear-65" />
-                  <span>Settings</span>
-                </DropdownItem>
-                <DropdownItem to="/admin/user-profile" tag={Link}>
-                  <i className="ni ni-support-16" />
-                  <span>Support</span>
-                </DropdownItem>
-                <DropdownItem divider />
-                <DropdownItem href="#pablo" onClick={e => e.preventDefault()}>
+                <DropdownItem
+                  href="#pablo"
+                  onClick={() => logout({ returnTo: window.location.origin })}
+                >
                   <i className="ni ni-user-run" />
                   <span>Logout</span>
                 </DropdownItem>

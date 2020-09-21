@@ -64,7 +64,7 @@ var routes = [
     name: "New Study",
     icon: "ni ni-circle-08 text-pink",
     component: NewStudy,
-    layout: "/forms"
+    layout: "/admin"
   }
 ];
 export default routes;
