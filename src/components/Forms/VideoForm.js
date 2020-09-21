@@ -97,7 +97,7 @@ const VideoForm = ({
               )}
               {(staticOnly && (
                 <FormGroup>
-                  <Label for="contentLength">Video Length: {sliderValue} sec</Label>
+                  <p>Video Length: {sliderValue} sec</p>
                   <Input 
                     type="range" 
                     className="custom-range" 

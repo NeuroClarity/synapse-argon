@@ -166,77 +166,76 @@ const ReviewResult = ({ setStep, step, surveyQuestion, eyeData, facialData }) =>
     setQ4(resp.target.value)
   }
 
-    if (eyeData == null || facialData == null) {
-      setStep(0)
-      return
-    }
+  if (eyeData == null || facialData == null) {
+    setStep(0)
+  }
 
-    if (!submitted) {
-      return (
-        <>
-          <Col lg="9" md="11">
-            <Card className="bg-secondary shadow border-0 mt-3">
-              <CardHeader className="bg-transparent">
+  if (!submitted) {
+    return (
+      <>
+        <Col lg={(surveyStep === 0 ? "6" : "8")} md={(surveyStep === 0 ? "9" : "11")}>
+          <Card className="bg-secondary shadow border-0 mt-3">
+            <CardHeader className="bg-transparent">
+              <div className="text-center">
+                <h2>Quick Survey</h2>
+              </div>
+            </CardHeader>
+            <CardBody className={"px-lg-5 py-lg-4"}>
+              <Form>
+                {(surveyStep === 0 && 
+                  <DemographicForm 
+                    setAge={ setAgeForm }
+                    setGender={ setGenderForm }
+                    setRace={ setRaceForm }
+                  />) || 
+                  <SurveyForm 
+                    setQ1={ setQ1Form }
+                    setQ2={ setQ2Form }
+                    setQ3={ setQ3Form }
+                    setQ4={ setQ4Form }
+                    surveyQuestion={surveyQuestion}
+                  />}
                 <div className="text-center">
-                  <h2>Quick Survey</h2>
+                {(surveyStep === 1 && 
+                  <Button className="mt-4 mr-5" color="primary" type="button" onClick={ () => setSurveyStep(0) }>
+                    Back
+                  </Button>
+                )}
+                  <Button className="mt-4" color="primary" type="button" onClick={ processData }>
+                    { surveyStep < 1 ? "Next" : "Submit" }
+                  </Button>
                 </div>
-              </CardHeader>
-              <CardBody className="px-lg-5 py-lg-4">
-                <Form>
-                  {(surveyStep === 0 && 
-                    <DemographicForm 
-                      setAge={ setAgeForm }
-                      setGender={ setGenderForm }
-                      setRace={ setRaceForm }
-                    />) || 
-                    <SurveyForm 
-                      setQ1={ setQ1Form }
-                      setQ2={ setQ2Form }
-                      setQ3={ setQ3Form }
-                      setQ4={ setQ4Form }
-                      surveyQuestion={surveyQuestion}
-                    />}
-                  <div className="text-center">
-                  {(surveyStep === 1 && 
-                    <Button className="mt-4 mr-5" color="primary" type="button" onClick={ () => setSurveyStep(0) }>
-                      Back
-                    </Button>
-                  )}
-                    <Button className="mt-4" color="primary" type="button" onClick={ processData }>
-                      { surveyStep < 1 ? "Next" : "Submit" }
-                    </Button>
-                  </div>
-                </Form>
-              </CardBody>
-            </Card>
-          </Col>
-        </>
-      )
-    } else {
-      return (
-        <>
-          <Col lg="5" md="7">
-            <Card className="bg-secondary shadow border-0 mt-3">
-              <CardBody className="px-lg-5 py-lg-4">
-                <div className="text-center mb-4">
-                  <h2>Thank you for participating in this study!</h2>
-                </div>
-                <div className="text-center mb-4">
-                  <p>Want to learn more about NeuroClarity?</p>
-                </div>
-                <div className="text-center">
-                  <a href="https://neuroclarity.ai">
-                    <Button color="primary" type="button">
-                      Click here!
-                    </Button>
-                  </a>
-                </div>
-              </CardBody>
-            </Card>
-          </Col>
-        </>
-      );
-    }
+              </Form>
+            </CardBody>
+          </Card>
+        </Col>
+      </>
+    )
+  } else {
+    return (
+      <>
+        <Col lg="5" md="7">
+          <Card className="bg-secondary shadow border-0 mt-3">
+            <CardBody className="px-lg-5 py-lg-4">
+              <div className="text-center mb-4">
+                <h2>Thank you for participating in this study!</h2>
+              </div>
+              <div className="text-center mb-4">
+                <p>Want to learn more about NeuroClarity?</p>
+              </div>
+              <div className="text-center">
+                <a href="https://neuroclarity.ai">
+                  <Button color="primary" type="button">
+                    Click here!
+                  </Button>
+                </a>
+              </div>
+            </CardBody>
+          </Card>
+        </Col>
+      </>
+    );
+  }
 }
 
 export default ReviewResult;

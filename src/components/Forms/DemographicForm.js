@@ -32,7 +32,6 @@ class DemographicForm extends React.Component {
           <h4>Please enter your demographic information:</h4>
         </div>
         <FormGroup style={{
-          width: "50%"
         }}>
           <div>
             <p>Age</p>
@@ -46,7 +45,6 @@ class DemographicForm extends React.Component {
           />
         </FormGroup>
         <FormGroup style={{
-          width: "50%"
         }}>
           <div>
             <p>Gender</p>
@@ -59,7 +57,6 @@ class DemographicForm extends React.Component {
           </Input>
         </FormGroup>
         <FormGroup style={{
-          width: "50%"
         }}>
           <div>
             <p>Ethnicity</p>
