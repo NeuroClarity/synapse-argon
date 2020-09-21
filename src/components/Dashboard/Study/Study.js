@@ -37,6 +37,7 @@ export const Study = ({ data, loading }) => {
                   ? data.Demographics.Groups[0].Reviewers
                   : undefined
               }
+              surveyQuestion={data ? data.SurveyQuestion : undefined}
               surveyResults={data ? data.Insights.SurveyResults : undefined}
             />
           </Col>

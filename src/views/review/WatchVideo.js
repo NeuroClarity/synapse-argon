@@ -96,7 +96,7 @@ const WatchVideo = ({ setStep, step, video, setUserFacialData, setUserEyeData })
 
   const handleDataAvailable = ({ data }) => {
     if (data.size > 0) {
-      setRecordedChunks(recordedChunks.concat(data))
+      setRecordedChunks((prev) => prev.concat(data));
     }
   }
 
@@ -140,7 +140,6 @@ const WatchVideo = ({ setStep, step, video, setUserFacialData, setUserEyeData })
           }}
           autoPlay={true}
           onEnded={ onVideoEnd }
-          controls
         >
             <source src={ URL.createObjectURL(video) } />
         </video>

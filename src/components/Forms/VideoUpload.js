@@ -12,6 +12,7 @@ const VideoUpload = ({ videoOnly, staticOnly }) => {
   const [reviewerCount, setReviewerCount] = useState();
   const [contentType, setContentType] = useState();
   const [validated, setValidated] = useState(false);
+  const [surveyQuestion, setSurveyQuestion] = useState();
   const [isAB, setIsAB] = useState(false);
   const { user } = useAuth0();
 
@@ -48,6 +49,9 @@ const VideoUpload = ({ videoOnly, staticOnly }) => {
       setContentType(e.target.value);
     }
   };
+  const updateSurveyQuestionForm = e => {
+    setSurveyQuestion(e.target.value);
+  };
 
   React.useEffect(() => {
     console.log("isAB:", isAB);
@@ -70,6 +74,7 @@ const VideoUpload = ({ videoOnly, staticOnly }) => {
           Description: description,
           DesiredReviewers: reviewerCount,
           ContentType: contentType,
+          SurveyQuestion: surveyQuestion,
           IsAB: isAB,
           Filename: "video-content.mp4",
           secondFilename: "second-video-content.mp4"
@@ -165,6 +170,7 @@ const VideoUpload = ({ videoOnly, staticOnly }) => {
         updateDescriptionForm={updateDescriptionForm}
         updateReviewerCountForm={updateReviewerCountForm}
         updateContentType={updateContentType}
+        updateSurveyQuestionForm={updateSurveyQuestionForm}
         requestNewStudy={requestNewStudy}
         videoOnly={videoOnly}
         staticOnly={staticOnly}
