@@ -76,7 +76,7 @@ const StudyManager = () => {
       console.log("go");
       setRefreshIndex(refreshIndex => refreshIndex + 1);
       refresh();
-    }, 500);
+    }, 1000);
 
     return () => {
       clearInterval(interval);
