@@ -15,7 +15,7 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React from "react";
+import React, { useState, useEffect } from "react";
 
 // reactstrap components
 import {
@@ -26,7 +26,7 @@ import {
   Col
 } from "reactstrap";
 
-const NewReview = ({ step, setStep, refresh, loading, error, data }) => {
+const NewReview = ({ step, setStep, loading, error, data }) => {
   return (
     <>
       <Col lg="5" md="7">

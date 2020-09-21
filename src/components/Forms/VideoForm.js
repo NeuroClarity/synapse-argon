@@ -9,6 +9,7 @@ import {
   FormGroup,
   Form,
   Input,
+  Label,
   InputGroupAddon,
   InputGroupText,
   InputGroup
@@ -24,6 +25,7 @@ const VideoForm = ({
   updateDescriptionForm,
   updateReviewerCountForm,
   updateContentType,
+  updateContentLength,
   updateSurveyQuestionForm,
   requestNewStudy,
   videoOnly,
@@ -31,6 +33,7 @@ const VideoForm = ({
   validated
 }) => {
   const [uploaded, setUploaded] = useState();
+  const [sliderValue, setSliderValue] = useState(15);
   return (
     <>
       {!uploaded ? (
@@ -92,6 +95,26 @@ const VideoForm = ({
               ) : (
                 <></>
               )}
+              {(staticOnly && (
+                <FormGroup>
+                  <Label for="contentLength">Video Length: {sliderValue} sec</Label>
+                  <Input 
+                    type="range" 
+                    className="custom-range" 
+                    id="contentLength"
+                    min="0"
+                    max="30"
+                    onChange={e => {
+                      updateContentLength(e);
+                      setSliderValue(e.target.value)
+                    }}
+                    style={{
+                      height: "25px",
+                      border: "none",
+                    }}
+                  />
+                </FormGroup>
+              ))}
               <FormGroup>
                 <InputGroup className="input-group-alternative mb-3">
                   <InputGroupAddon addonType="prepend">

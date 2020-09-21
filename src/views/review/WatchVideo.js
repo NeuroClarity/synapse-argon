@@ -72,7 +72,6 @@ const WatchVideo = ({ setStep, step, video, setUserFacialData, setUserEyeData })
       return
     }
 
-
     var prediction = window.webgazer.getCurrentPrediction();
     if (prediction == null) {
       addNullResult();
@@ -85,13 +84,15 @@ const WatchVideo = ({ setStep, step, video, setUserFacialData, setUserEyeData })
         return;
       }
 
-      eyeData.push({"X": result.x, "Y": result.y})
+      if (videoRef == null || videoRef.current == null) {
+        return
+      }
+      eyeData.push({"X": result.x, "Y": result.y, "Time": videoRef.current.currentTime})
     })
   }
 
   const addNullResult = () => {
-    eyeData.push({"X": null, "Y": null})
-    setEyeData([...eyeData, {"X": null, "Y": null}])
+    eyeData.push({"X": null, "Y": null, "Time": videoRef.current.currentTime})
   }
 
   const handleDataAvailable = ({ data }) => {
