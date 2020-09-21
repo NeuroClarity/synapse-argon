@@ -28,6 +28,8 @@ import CalibrateReview from "../views/review/ConfigureReview.js";
 import WatchVideo from "../views/review/WatchVideo.js";
 import ReviewResult from "../views/review/ReviewResult.js";
 
+import ProgressBar from "../components/Review/ProgressBar.js"
+
 import { useApi } from "../utils/request.js";
 
 const Review = () => {
@@ -179,6 +181,9 @@ const Review = () => {
         <Container className="mt--8 pb-5">
           <Row className="justify-content-center">
             { getComponent() }
+          </Row>
+          <Row className="justify-content-center">
+            <ProgressBar step={step} />
           </Row>
         </Container>
       </div>

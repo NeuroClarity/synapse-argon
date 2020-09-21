@@ -70,10 +70,7 @@ const WatchVideo = ({ setStep, step, video, setUserFacialData, setUserEyeData })
       console.log("not ready")
       setCalibrated(false)
       return
-    } else if (videoRef == null || videoRef.current == null) {
-      return
     }
-
 
     var prediction = window.webgazer.getCurrentPrediction();
     if (prediction == null) {
@@ -87,6 +84,9 @@ const WatchVideo = ({ setStep, step, video, setUserFacialData, setUserEyeData })
         return;
       }
 
+      if (videoRef == null || videoRef.current == null) {
+        return
+      }
       eyeData.push({"X": result.x, "Y": result.y, "Time": videoRef.current.currentTime})
     })
   }
