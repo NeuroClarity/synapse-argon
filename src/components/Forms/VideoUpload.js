@@ -10,7 +10,7 @@ const VideoUpload = ({ videoOnly, staticOnly }) => {
   const [studyName, setStudyName] = useState();
   const [description, setDescription] = useState();
   const [reviewerCount, setReviewerCount] = useState();
-  const [contentType, setContentType] = useState();
+  const [contentType, setContentType] = useState(staticOnly ? "Static" : "Video");
   const [validated, setValidated] = useState(false);
   const [contentLength, setContentLength] = useState();
   const [surveyQuestion, setSurveyQuestion] = useState();
@@ -64,6 +64,7 @@ const VideoUpload = ({ videoOnly, staticOnly }) => {
   const requestNewStudy = async () => {
     // validate form
     console.log("user: ", user);
+    console.log(contentType)
     // Get our upload URL
     const study = await fetch(
       process.env.REACT_APP_AXON_DOMAIN + "/api/creator/study",
