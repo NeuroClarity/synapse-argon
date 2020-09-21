@@ -57,7 +57,7 @@ const NewStudy = () => {
             <Row className="justify-content-center">
               <Col className="order-xl-2 mb-5 mb-xl-0" xl="4">
                 <Card body>
-                  <CardTitle>AB Study</CardTitle>
+                  <CardTitle>A/B Study</CardTitle>
                   <CardText>You already know what this is</CardText>
                   <Button color="primary" onClick={handleABSelection}>
                     Create

@@ -19,7 +19,6 @@ import Dashboard from "views/creator/Dashboard.js";
 import Profile from "views/creator/Profile.js";
 import NewStudy from "views/creator/NewStudy.js";
 import StudyManager from "views/creator/StudyManager.js";
-import Payment from "views/creator/Payment.js"
 
 var routes = [
   {
@@ -43,14 +42,7 @@ var routes = [
     component: Profile,
     layout: "/admin"
   },
-	{
-    path: "/upgrade",
-    name: "Upgrade",
-    icon: "ni ni-fat-add",
-    component: Payment,
-    layout: "/admin"
-  },
-  {
+ {
     path: "/new",
     name: "New Study",
     icon: "ni ni-fat-add",

@@ -190,7 +190,7 @@ const VideoUpload = ({ videoOnly, staticOnly }) => {
         <Card className="bg-secondary shadow border-0">
           <CardBody className="px-lg-5 py-lg-5">
             <div className="text-center text-muted mb-4">
-              <small>Configure your AB study.</small>
+              <small>Configure your A/B study.</small>
             </div>
             <Form role="form">
               <FormGroup>

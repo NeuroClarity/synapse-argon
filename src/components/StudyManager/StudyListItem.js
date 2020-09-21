@@ -39,7 +39,7 @@ const StudyListItem = ({ studyId, studyName, desired, completed, refresh }) => {
   const clipboard = useClipboard();
 
   useEffect(() => {
-    setLink(window.location.origin + "/review/new/" + studyId);
+    setLink(window.location.origin + "/review/" + studyId);
   }, [studyId]);
 
   useEffect(() => {
@@ -121,6 +121,7 @@ const StudyListItem = ({ studyId, studyName, desired, completed, refresh }) => {
           <div className="avatar-group">
             <a
               className="avatar avatar-sm"
+							href="#pablo"
               id="tooltip742438047"
               onClick={e => copyLink(e)}
             >
