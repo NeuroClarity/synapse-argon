@@ -52,11 +52,6 @@ const Dashboard = () => {
     body
   );
 
-  useEffect(() => {
-    console.log("error: ", error);
-    console.log("data: ", data);
-  }, [data, error]);
-
   return (
     <>
       <DashboardHeader />

@@ -17,16 +17,20 @@
 */
 import React, { useState, useRef, useEffect } from "react";
 // reactstrap components
-import {
-  Col
-} from "reactstrap";
+import { Col } from "reactstrap";
 
 export const COLLECTION_INTERVAL = 0.2 * 1000;
 
-const WatchVideo = ({ setStep, step, video, setUserFacialData, setUserEyeData }) => {
-  const [ calibrated, setCalibrated ] = useState(true)
-  const [ eyeData, setEyeData ] = useState([])
-  const [ recordedChunks, setRecordedChunks ] = useState([])
+const WatchVideo = ({
+  setStep,
+  step,
+  video,
+  setUserFacialData,
+  setUserEyeData
+}) => {
+  const [calibrated, setCalibrated] = useState(true);
+  const [eyeData, setEyeData] = useState([]);
+  const [recordedChunks, setRecordedChunks] = useState([]);
 
   const videoRef = useRef();
   const webcamRef = useRef();
@@ -35,7 +39,7 @@ const WatchVideo = ({ setStep, step, video, setUserFacialData, setUserEyeData })
   const onVideoStart = () => {
     mediaRecorderRef.current = new MediaRecorder(webcamRef.current.srcObject, {
       mimeType: "video/webm",
-      bitsPerSecond: 5000000,
+      bitsPerSecond: 5000000
     });
     mediaRecorderRef.current.addEventListener(
       "dataavailable",
@@ -43,8 +47,7 @@ const WatchVideo = ({ setStep, step, video, setUserFacialData, setUserEyeData })
     );
     // push data every second
     mediaRecorderRef.current.start(1000);
-    console.log("Started Recording")
-  }
+  };
 
   const onVideoEnd = () => {
     window.webgazer.end();
@@ -58,18 +61,15 @@ const WatchVideo = ({ setStep, step, video, setUserFacialData, setUserEyeData })
       track.stop();
     });
 
-    console.log(blob)
-    setUserFacialData(blob)
-    console.log(eyeData)
-    setUserEyeData(eyeData)
-    setStep(step + 1)
-  }
+    setUserFacialData(blob);
+    setUserEyeData(eyeData);
+    setStep(step + 1);
+  };
 
   const handleData = () => {
     if (window.webgazer == null || !window.webgazer.isReady()) {
-      console.log("not ready")
-      setCalibrated(false)
-      return
+      setCalibrated(false);
+      return;
     }
 
     var prediction = window.webgazer.getCurrentPrediction();
@@ -78,57 +78,66 @@ const WatchVideo = ({ setStep, step, video, setUserFacialData, setUserEyeData })
       return;
     }
 
-    prediction.then((result) => {
+    prediction.then(result => {
       if (result == null) {
         addNullResult();
         return;
       }
 
       if (videoRef == null || videoRef.current == null) {
-        return
+        return;
       }
-      eyeData.push({"X": result.x, "Y": result.y, "Time": videoRef.current.currentTime})
-    })
-  }
+      eyeData.push({
+        X: result.x,
+        Y: result.y,
+        Time: videoRef.current.currentTime
+      });
+    });
+  };
 
   const addNullResult = () => {
-    eyeData.push({"X": null, "Y": null, "Time": videoRef.current.currentTime})
-  }
+    eyeData.push({ X: null, Y: null, Time: videoRef.current.currentTime });
+  };
 
   const handleDataAvailable = ({ data }) => {
     if (data.size > 0) {
-      setRecordedChunks((prev) => prev.concat(data));
+      setRecordedChunks(prev => prev.concat(data));
     }
-  }
+  };
 
   useEffect(() => {
     // access webcam
     navigator.mediaDevices
-        .getUserMedia({video: { frameRate: { ideal: 30, max: 30 } } })
-        .then(stream => {
-          webcamRef.current.srcObject = stream
-        })
-        .catch(console.log);
+      .getUserMedia({ video: { frameRate: { ideal: 30, max: 30 } } })
+      .then(stream => {
+        webcamRef.current.srcObject = stream;
+      })
+      .catch(console.log);
 
-    console.log("Started eye tracking data collection")
-    console.log(COLLECTION_INTERVAL)
-    let interval = setInterval(handleData, COLLECTION_INTERVAL)
-    return () => { clearInterval(interval) }
-  }, [])
+    let interval = setInterval(handleData, COLLECTION_INTERVAL);
+    return () => {
+      clearInterval(interval);
+    };
+  }, [handleData]);
 
   if (!calibrated) {
-    setStep(0)
-    console.log("webgazer not calibrated")
-    return
+    setStep(0);
+    console.log("webgazer not calibrated");
+    return;
   }
 
   return (
     <>
       <Col lg="12" md="12">
-        <video ref={ webcamRef } audio="false" style={{ display: 'none' }} onLoadedData={ onVideoStart } />
+        <video
+          ref={webcamRef}
+          audio="false"
+          style={{ display: "none" }}
+          onLoadedData={onVideoStart}
+        />
         <video
           id="full-screenVideo"
-          ref={ videoRef }
+          ref={videoRef}
           style={{
             position: "fixed",
             top: "0",
@@ -140,14 +149,13 @@ const WatchVideo = ({ setStep, step, video, setUserFacialData, setUserEyeData })
             backgroundColor: "black"
           }}
           autoPlay={true}
-          onEnded={ onVideoEnd }
+          onEnded={onVideoEnd}
         >
-            <source src={ URL.createObjectURL(video) } />
+          <source src={URL.createObjectURL(video)} />
         </video>
       </Col>
     </>
   );
-}
+};
 
 export default WatchVideo;
-

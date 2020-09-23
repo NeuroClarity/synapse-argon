@@ -66,14 +66,9 @@ const StudyManager = () => {
 
   const { refresh, data } = useApi("/api/creator/list", opts, body);
 
-  useEffect(() => {
-    console.log("LIST: ", data);
-  }, [data]);
-
   // Refresh call to list every 200ms
   useEffect(() => {
     const interval = setInterval(() => {
-      console.log("go");
       setRefreshIndex(refreshIndex => refreshIndex + 1);
       refresh();
     }, 1000);
@@ -87,10 +82,6 @@ const StudyManager = () => {
   useEffect(() => {
     refresh();
     //eslint-disable-next-line
-  }, [history]);
-
-  useEffect(() => {
-    console.log("HISTORY: ", history);
   }, [history]);
 
   return (

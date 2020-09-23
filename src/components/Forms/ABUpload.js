@@ -44,10 +44,6 @@ const VideoUpload = ({ videoOnly, staticOnly }) => {
     }
   }, [reviewerCountA, reviewerCountB, studyName, uploadedA, uploadedB]);
 
-  React.useEffect(() => {
-    console.log("REVIEWER COUNT: ", reviewerCountA);
-  }, [reviewerCountA]);
-
   const opts = {
     method: "POST"
   };
@@ -61,7 +57,6 @@ const VideoUpload = ({ videoOnly, staticOnly }) => {
 
   const requestNewStudy = async () => {
     // validate form
-    console.log("user: ", user);
     // Get our upload URL
     const study = await fetch(
       process.env.REACT_APP_AXON_DOMAIN + "/api/creator/study",
@@ -85,7 +80,6 @@ const VideoUpload = ({ videoOnly, staticOnly }) => {
       .then(res => res.json())
       .then(
         study => {
-          console.log("study: ", study);
           return study;
         },
         error => {
@@ -148,7 +142,6 @@ const VideoUpload = ({ videoOnly, staticOnly }) => {
         .then(res => res.json())
         .then(
           resp => {
-            console.log("Success: ", resp.Success);
             return study;
           },
           error => {
@@ -171,7 +164,6 @@ const VideoUpload = ({ videoOnly, staticOnly }) => {
         .then(res => res.json())
         .then(
           resp => {
-            console.log("Success: ", resp.Success);
             return study;
           },
           error => {

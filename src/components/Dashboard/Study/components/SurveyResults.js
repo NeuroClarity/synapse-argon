@@ -3,12 +3,12 @@ import { Carousel, Card, CardHeader, Table, Row } from "reactstrap";
 
 //import SurveyCarousel from "./SurveyCarousel.js";
 
-const questionMap={
+const questionMap = {
   // Map from quality -> would recommend is temp until db schema is updated
-  "Quality": "Would Recommend",
-  "WouldBuy": "Purchase Intent",
-  "Memorable": "Memorable",
-}
+  Quality: "Would Recommend",
+  WouldBuy: "Purchase Intent",
+  Memorable: "Memorable"
+};
 
 const SurveyResults = ({ desired, surveyQuestion, surveyResults }) => {
   const [rowArray, setRowArray] = useState([]);
@@ -53,14 +53,6 @@ const SurveyResults = ({ desired, surveyQuestion, surveyResults }) => {
     }
   }, [surveyResults]);
 
-  useEffect(() => {
-    console.log("surveyResults: ", surveyResults);
-  }, [surveyResults]);
-
-  useEffect(() => {
-    console.log("rowArray: ", rowArray);
-  }, [rowArray]);
-
   return (
     <Card style={{ height: "100%" }} className="shadow">
       <CardHeader className="bg-transparent">
@@ -80,7 +72,7 @@ const SurveyResults = ({ desired, surveyQuestion, surveyResults }) => {
         <Row className="align-items-center">
           <div className="col">
             <h2 className="mb-0">Open Responses</h2>
-            <small className="mb-0 text-muted">{ surveyQuestion }</small>
+            <small className="mb-0 text-muted">{surveyQuestion}</small>
           </div>
         </Row>
       </CardHeader>

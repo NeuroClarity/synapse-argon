@@ -44,7 +44,6 @@ const DashboardChart = ({
   const [activeChartData, setActiveChartData] = useState({});
 
   useEffect(() => {
-    console.log("activechart: ", filteredEmotionChart, engagementChartData);
     setActiveChartData(
       activeInsight === "Emotion" ? filteredEmotionChart : engagementChartData
     );
@@ -158,7 +157,6 @@ const DashboardChart = ({
 
   const updateTimeFromChart = elementA => {
     if (elementA[0] && elementA[0]._index) {
-      console.log("selected time: ", elementA[0]._index);
       setGlobalTime(elementA[0]._index);
     }
   };

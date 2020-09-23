@@ -57,10 +57,6 @@ const Profile = () => {
   const { data: listData } = useApi("/api/creator/list", opts, body);
 
   useEffect(() => {
-    console.log("profileData: ", profileData);
-  }, [profileData]);
-
-  useEffect(() => {
     if (listData && listData.Studies) {
       setTotalStudies(listData.Studies.length);
       let totalReviews = 0;
@@ -76,7 +72,6 @@ const Profile = () => {
       setTotalReviews(0);
       setDesiredReviews(0);
     }
-    console.log("listData: ", listData);
   }, [listData]);
 
   return (

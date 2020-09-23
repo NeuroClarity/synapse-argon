@@ -57,13 +57,8 @@ const VideoUpload = ({ videoOnly, staticOnly }) => {
     setSurveyQuestion(e.target.value);
   };
 
-  React.useEffect(() => {
-    console.log("isAB:", isAB);
-  }, [isAB]);
-
   const requestNewStudy = async () => {
     // validate form
-    console.log("user: ", user);
     console.log(contentType)
     // Get our upload URL
     const study = await fetch(
@@ -89,7 +84,6 @@ const VideoUpload = ({ videoOnly, staticOnly }) => {
       .then(res => res.json())
       .then(
         study => {
-          console.log("study: ", study);
           return study;
         },
         error => {
@@ -153,7 +147,6 @@ const VideoUpload = ({ videoOnly, staticOnly }) => {
         .then(res => res.json())
         .then(
           resp => {
-            console.log("Success: ", resp.Success);
             return study;
           },
           error => {

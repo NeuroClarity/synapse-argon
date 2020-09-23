@@ -38,19 +38,13 @@ const DashboardVideo = ({ studyId, name, video, heatmap, globalTime }) => {
   });
 
   useEffect(() => {
-    console.log("localtime: ", localTime);
-  }, [localTime]);
-
-  useEffect(() => {
     let video = document.getElementById("video");
     setVideoPlayer(video);
     let cachedTime = localTime;
-    console.log("currentTime: ", cachedTime);
     video.preload = "metadata";
 
     video.onloadedmetadata = function() {
       window.URL.revokeObjectURL(video.src);
-      console.log("inside: ", cachedTime);
       video.currentTime = cachedTime;
     };
     //eslint-disable-next-line
