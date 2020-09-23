@@ -126,7 +126,7 @@ const StudyManager = () => {
                         key={item.StudyID}
                         studyName={item.Name}
                         desired={item.DesiredReviewers}
-                        completed={item.CompletedReviewers}
+                        completed={item.CompletedReviews}
                         refresh={refresh}
                       />
                     ))}

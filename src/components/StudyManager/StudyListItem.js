@@ -43,7 +43,7 @@ const StudyListItem = ({ studyId, studyName, desired, completed, refresh }) => {
   }, [studyId]);
 
   useEffect(() => {
-    let percent = Math.trunc((desired / completed) * 100);
+    let percent = Math.trunc((completed / desired) * 100);
     percent = isNaN(percent) ? 0 : percent;
     setPercent(percent);
   }, [desired, completed]);
@@ -88,7 +88,6 @@ const StudyListItem = ({ studyId, studyName, desired, completed, refresh }) => {
   };
 
   const changeStudyName = event => {
-    console.log("STUDY: ", newStudyName);
     fetch(process.env.REACT_APP_AXON_DOMAIN + "/api/creator/studyName", {
       method: "POST",
       headers: {
@@ -121,7 +120,7 @@ const StudyListItem = ({ studyId, studyName, desired, completed, refresh }) => {
           <div className="avatar-group">
             <a
               className="avatar avatar-sm"
-							href="#pablo"
+              href="#pablo"
               id="tooltip742438047"
               onClick={e => copyLink(e)}
             >
