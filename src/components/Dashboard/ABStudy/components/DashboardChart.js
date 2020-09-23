@@ -44,7 +44,6 @@ export const DashboardChart = ({
   const [activeChartData, setActiveChartData] = useState({});
 
   useEffect(() => {
-    console.log("activechart: ", filteredEmotionChart, engagementChartData);
     setActiveChartData(
       activeInsight === "Emotion" ? filteredEmotionChart : engagementChartData
     );
@@ -125,15 +124,17 @@ export const DashboardChart = ({
       labels: emotionChartData.labels,
       datasets: []
     };
-    emotionChartData.datasets.forEach(dataset => {
-      if (dataset.label === activeEmotion) {
-        filteredEmotionChart.datasets.push({
-          label: dataset.label,
-          data: dataset.data
-        });
-        setFilteredEmotionChart(filteredEmotionChart);
-      }
-    });
+    if (emotionChartData.labels && emotionChartData.datasets) {
+      emotionChartData.datasets.forEach(dataset => {
+        if (dataset.label === activeEmotion) {
+          filteredEmotionChart.datasets.push({
+            label: dataset.label,
+            data: dataset.data
+          });
+          setFilteredEmotionChart(filteredEmotionChart);
+        }
+      });
+    }
   };
 
   const createEmotionButtons = emotionData => {
@@ -158,7 +159,6 @@ export const DashboardChart = ({
 
   const updateTimeFromChart = elementA => {
     if (elementA[0] && elementA[0]._index) {
-      console.log("selected time: ", elementA[0]._index);
       setGlobalTime(elementA[0]._index);
     }
   };
