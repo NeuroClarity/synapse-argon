@@ -59,7 +59,6 @@ const VideoUpload = ({ videoOnly, staticOnly }) => {
 
   const requestNewStudy = async () => {
     // validate form
-    console.log(contentType);
     // Get our upload URL
     const study = await fetch(
       process.env.REACT_APP_AXON_DOMAIN + "/api/creator/study",

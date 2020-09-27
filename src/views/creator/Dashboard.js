@@ -59,7 +59,7 @@ const Dashboard = () => {
     "/api/creator/insights",
     opts,
     body,
-		accessToken
+    accessToken
   );
 
   return (
