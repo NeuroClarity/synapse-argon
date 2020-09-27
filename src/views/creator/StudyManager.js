@@ -53,9 +53,10 @@ import { useApi } from "../../utils/request.js";
 
 // https://github.com/auth0/auth0-react/blob/master/EXAMPLES.md#4-create-a-useapi-hook-for-accessing-protected-apis-with-an-access-token
 const StudyManager = () => {
-  const { user } = useAuth0();
+  const { user, getAccessTokenSilently } = useAuth0();
   const history = useHistory();
   const [refreshIndex, setRefreshIndex] = React.useState(0);
+  const [accessToken, setAccessToken] = React.useState();
   const opts = {
     method: "POST"
   };
@@ -64,7 +65,20 @@ const StudyManager = () => {
     CreatorId: user.sub
   };
 
-  const { refresh, data } = useApi("/api/creator/list", opts, body);
+  React.useEffect(() => {
+    async function asyncWrapper() {
+      const token = await getAccessTokenSilently();
+      setAccessToken(token);
+    }
+    asyncWrapper();
+  }, [getAccessTokenSilently]);
+
+  const { refresh, data } = useApi(
+    "/api/creator/list",
+    opts,
+    body,
+    accessToken
+  );
 
   // Refresh call to list every 200ms
   useEffect(() => {

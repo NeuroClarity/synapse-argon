@@ -39,10 +39,20 @@ import { useApi } from "../../utils/request.js";
 import { useAuth0 } from "@auth0/auth0-react";
 
 const Profile = () => {
-  const { user } = useAuth0();
+  const { user, getAccessTokenSilently } = useAuth0();
   const [totalStudies, setTotalStudies] = useState();
   const [totalReviews, setTotalReviews] = useState();
   const [desiredReviews, setDesiredReviews] = useState();
+  const [accessToken, setAccessToken] = useState();
+
+  React.useEffect(() => {
+    async function asyncWrapper() {
+      const token = await getAccessTokenSilently();
+      console.log("token: ", token);
+      setAccessToken(token);
+    }
+    asyncWrapper();
+  }, [getAccessTokenSilently]);
 
   const opts = {
     method: "POST"
@@ -52,9 +62,19 @@ const Profile = () => {
     CreatorId: user.sub
   };
 
-  const { data: profileData } = useApi("/api/creator/profile", opts, body);
+  const { data: profileData } = useApi(
+    "/api/creator/profile",
+    opts,
+    body,
+    accessToken
+  );
 
-  const { data: listData } = useApi("/api/creator/list", opts, body);
+  const { data: listData } = useApi(
+    "/api/creator/list",
+    opts,
+    body,
+    accessToken
+  );
 
   useEffect(() => {
     if (listData && listData.Studies) {

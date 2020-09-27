@@ -30,7 +30,8 @@ const VideoUpload = ({ videoOnly, staticOnly }) => {
   const [blobB, setBlobB] = useState();
   const [reviewerCountA, setReviewerCountA] = useState();
   const [reviewerCountB, setReviewerCountB] = useState();
-  const { user } = useAuth0();
+  const { user, getAccessTokenSilently } = useAuth0();
+  const [accessToken, setAccessToken] = React.useState();
 
   React.useEffect(() => {
     if (
@@ -44,16 +45,13 @@ const VideoUpload = ({ videoOnly, staticOnly }) => {
     }
   }, [reviewerCountA, reviewerCountB, studyName, uploadedA, uploadedB]);
 
-  const opts = {
-    method: "POST"
-  };
-  const body = {
-    CreatorId: user.sub
-  };
-
-  // This is just so we can asynchronously rerender our study manager after we
-  // upload.
-  const { refresh } = useApi("/api/creator/list", opts, body);
+  React.useEffect(() => {
+    async function asyncWrapper() {
+      const token = await getAccessTokenSilently();
+      setAccessToken(token);
+    }
+    asyncWrapper();
+  }, [getAccessTokenSilently]);
 
   const requestNewStudy = async () => {
     // validate form
@@ -63,6 +61,7 @@ const VideoUpload = ({ videoOnly, staticOnly }) => {
       {
         method: "POST",
         headers: {
+          Authorization: `Bearer ${accessToken}`,
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
@@ -171,9 +170,6 @@ const VideoUpload = ({ videoOnly, staticOnly }) => {
           }
         );
     }
-
-    // Refresh w/in the study manager async.
-    refresh();
   };
 
   return (
