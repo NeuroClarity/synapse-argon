@@ -32,7 +32,8 @@ const Dashboard = () => {
   const [studyID, setStudyID] = useState(
     window.location.pathname.split("/").pop()
   );
-  const { user } = useAuth0();
+  const [accessToken, setAccessToken] = useState();
+  const { user, getAccessTokenSilently } = useAuth0();
   const opts = {
     method: "POST"
   };
@@ -46,10 +47,19 @@ const Dashboard = () => {
     StudyId: studyID
   };
 
+  React.useEffect(() => {
+    async function asyncWrapper() {
+      const token = await getAccessTokenSilently();
+      setAccessToken(token);
+    }
+    asyncWrapper();
+  }, [getAccessTokenSilently]);
+
   const { loading, error, refresh, data } = useApi(
     "/api/creator/insights",
     opts,
-    body
+    body,
+		accessToken
   );
 
   return (

@@ -33,7 +33,8 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { useApi } from "../../utils/request.js";
 
 const AdminNavbar = () => {
-  const { user, logout } = useAuth0();
+  const { user, logout, getAccessTokenSilently } = useAuth0();
+  const [accessToken, setAccessToken] = React.useState();
   const opts = {
     method: "POST"
   };
@@ -42,7 +43,20 @@ const AdminNavbar = () => {
     CreatorId: user.sub
   };
 
-  const { data: profileData } = useApi("/api/creator/profile", opts, body);
+  React.useEffect(() => {
+    async function asyncWrapper() {
+      const token = await getAccessTokenSilently();
+      setAccessToken(token);
+    }
+    asyncWrapper();
+  }, [getAccessTokenSilently]);
+
+  const { data: profileData } = useApi(
+    "/api/creator/profile",
+    opts,
+    body,
+    accessToken
+  );
 
   return (
     <>

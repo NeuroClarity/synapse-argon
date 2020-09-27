@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
-import { useAuth0 } from "@auth0/auth0-react";
 
-export const useApi = (endpoint, options = {}, body = {}) => {
-  const { getAccessTokenSilently } = useAuth0();
+export const useApi = (endpoint, options = {}, body = {}, accessToken) => {
   const [state, setState] = useState({
     error: null,
     loading: true,
@@ -14,7 +12,6 @@ export const useApi = (endpoint, options = {}, body = {}) => {
     (async () => {
       try {
         const { audience, scope, ...fetchOptions } = options;
-        const accessToken = await getAccessTokenSilently({ audience, scope });
         const res = await fetch(process.env.REACT_APP_AXON_DOMAIN + endpoint, {
           ...fetchOptions,
           headers: {
@@ -41,7 +38,7 @@ export const useApi = (endpoint, options = {}, body = {}) => {
       }
     })();
     //eslint-disable-next-line
-  }, [refreshIndex]);
+  }, [refreshIndex, accessToken]);
 
   return {
     ...state,

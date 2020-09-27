@@ -10,29 +10,29 @@ const VideoUpload = ({ videoOnly, staticOnly }) => {
   const [studyName, setStudyName] = useState();
   const [description, setDescription] = useState();
   const [reviewerCount, setReviewerCount] = useState();
-  const [contentType, setContentType] = useState(staticOnly ? "Static" : "Video");
+  const [contentType, setContentType] = useState(
+    staticOnly ? "Static" : "Video"
+  );
   const [validated, setValidated] = useState(false);
   const [contentLength, setContentLength] = useState();
   const [surveyQuestion, setSurveyQuestion] = useState();
   const [isAB, setIsAB] = useState(false);
-  const { user } = useAuth0();
+  const [accessToken, setAccessToken] = useState();
+  const { user, getAccessTokenSilently } = useAuth0();
 
-  const opts = {
-    method: "POST"
-  };
-  const body = {
-    CreatorId: user.sub
-  };
+  React.useEffect(() => {
+    async function asyncWrapper() {
+      const token = await getAccessTokenSilently();
+      setAccessToken(token);
+    }
+    asyncWrapper();
+  }, [getAccessTokenSilently]);
 
   React.useEffect(() => {
     if (studyName && description && reviewerCount) {
       setValidated(true);
     }
   }, [studyName, description, reviewerCount]);
-
-  // This is just so we can asynchronously rerender our study manager after we
-  // upload.
-  const { refresh } = useApi("/api/creator/list", opts, body);
 
   const updateStudyName = e => {
     setStudyName(e.target.value);
@@ -59,14 +59,15 @@ const VideoUpload = ({ videoOnly, staticOnly }) => {
 
   const requestNewStudy = async () => {
     // validate form
-    console.log(contentType)
+    console.log(contentType);
     // Get our upload URL
     const study = await fetch(
       process.env.REACT_APP_AXON_DOMAIN + "/api/creator/study",
       {
         method: "POST",
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`
         },
         body: JSON.stringify({
           CreatorId: user.sub,
@@ -137,7 +138,8 @@ const VideoUpload = ({ videoOnly, staticOnly }) => {
       await fetch(process.env.REACT_APP_AXON_DOMAIN + "/api/creator/convert", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`
         },
         body: JSON.stringify({
           StudyID: study.StudyID,
@@ -154,9 +156,6 @@ const VideoUpload = ({ videoOnly, staticOnly }) => {
           }
         );
     }
-
-    // Refresh w/in the study manager async.
-    refresh();
   };
 
   return (
