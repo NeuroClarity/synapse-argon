@@ -118,7 +118,7 @@ const WatchVideo = ({
     return () => {
       clearInterval(interval);
     };
-  }, [handleData]);
+  }, []);
 
   if (!calibrated) {
     setStep(0);
