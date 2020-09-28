@@ -106,6 +106,8 @@ const WatchVideo = ({
   };
 
   useEffect(() => {
+    let interval = setInterval(handleData, COLLECTION_INTERVAL);
+
     // access webcam
     navigator.mediaDevices
       .getUserMedia({ video: { frameRate: { ideal: 30, max: 30 } } })
@@ -114,7 +116,6 @@ const WatchVideo = ({
       })
       .catch(console.log);
 
-    let interval = setInterval(handleData, COLLECTION_INTERVAL);
     return () => {
       clearInterval(interval);
     };
@@ -123,7 +124,6 @@ const WatchVideo = ({
 
   if (!calibrated) {
     setStep(0);
-    console.log("webgazer not calibrated");
     return;
   }
 
