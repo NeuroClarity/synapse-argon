@@ -118,6 +118,7 @@ const WatchVideo = ({
     return () => {
       clearInterval(interval);
     };
+  // eslint-disable-next-line 
   }, []);
 
   if (!calibrated) {
