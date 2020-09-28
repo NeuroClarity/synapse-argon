@@ -2,8 +2,9 @@ import React, { useState, useEffect } from "react";
 
 // reactstrap components
 import {
-  Button,
+  Spinner,
   Card,
+  CardTitle,
   CardHeader,
   CardBody,
   Container,
@@ -18,7 +19,7 @@ import { useApi } from "../../utils/request.js";
 import { useAuth0 } from "@auth0/auth0-react";
 import { loadStripe } from "@stripe/stripe-js";
 const stripePromise = loadStripe(
-"pk_test_51HVnxVGiBsqPJo7o92hW7puu4vzNzS6U1nhavXQdgniCpr8dvywsWgUGbl2Awx4tQrkC4pHhZOlEdyq3QBQbixis00svnlsyLg"
+  "pk_test_51HVnxVGiBsqPJo7o92hW7puu4vzNzS6U1nhavXQdgniCpr8dvywsWgUGbl2Awx4tQrkC4pHhZOlEdyq3QBQbixis00svnlsyLg"
 );
 
 const Profile = () => {
@@ -27,25 +28,31 @@ const Profile = () => {
   const [totalReviews, setTotalReviews] = useState();
   const [desiredReviews, setDesiredReviews] = useState();
   const [accessToken, setAccessToken] = useState();
+  const [tier, setTier] = useState();
 
-  const stripeClick = async event => {
+  const stripeClick = async tier => {
     // Get Stripe.js instance
     const stripe = await stripePromise;
 
     // Call your backend to create the Checkout Session
-    const response = await fetch(process.env.REACT_APP_AXON_DOMAIN + "/api/creator/create-checkout-session", {
-      method: "POST",
-			headers: {
-			Authorization: `Bearer ${accessToken}`,
-			"Content-Type": "application/json",
-			},
-			body: JSON.stringify({
-				"CreatorId": user.sub,
-			})
-    });
+    const response = await fetch(
+      process.env.REACT_APP_AXON_DOMAIN +
+        "/api/creator/create-checkout-session",
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          CreatorId: user.sub,
+          Tier: tier
+        })
+      }
+    );
 
     const session = await response.json();
-		console.log("SESSION: ", session);
+    console.log("SESSION: ", session);
 
     // When the customer clicks on the button, redirect them to Checkout.
     const result = await stripe.redirectToCheckout({
@@ -83,6 +90,13 @@ const Profile = () => {
     accessToken
   );
 
+  useEffect(() => {
+    console.log("profile: ", profileData);
+    if (profileData) {
+      setTier(profileData.Tier);
+    }
+  }, [profileData]);
+
   const { data: listData } = useApi(
     "/api/creator/list",
     opts,
@@ -114,6 +128,119 @@ const Profile = () => {
       {/* Page content */}
       <Container className="mt--6" fluid>
         <Row className="justify-content-center">
+          {!profileData ? (
+            <Col
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center"
+              }}
+              className="order-xl-2 mb-5 mb-xl-0"
+              xl="2"
+            >
+              <Spinner
+                style={{ width: "3rem", height: "3rem" }}
+                color="primary"
+                type="grow"
+              />
+            </Col>
+          ) : (
+            <Col className="order-xl-2 mb-5 mb-xl-0" xl="2">
+              <Row>
+                <Card className="card-stats mt-4 mb-4 mb-xl-0">
+                  <CardBody>
+                    <Row>
+                      <div className="col">
+                        <CardTitle
+                          tag="h5"
+                          className="text-uppercase text-muted mb-0"
+                        >
+                          Basic
+                        </CardTitle>
+                        <span className="h2 font-weight-bold mb-0">
+                          $0 /month
+                        </span>
+                      </div>
+                      <Col className="col-auto">
+                        <div className="icon icon-shape bg-success text-white rounded-circle shadow">
+                          <a href={"#"} onClick={stripeClick("Standard")}>
+                            <i className="ni ni-check-bold" />
+                          </a>
+                        </div>
+                      </Col>
+                    </Row>
+                    <p className="mt-3 mb-0 text-muted text-sm">
+                      <span className="mr-2">
+                        <i className="ni ni-circle-08" /> 3 per study
+                      </span>{" "}
+                    </p>
+                  </CardBody>
+                </Card>
+              </Row>
+              <Row>
+                <Card className="card-stats mt-4 mb-4 mb-xl-0">
+                  <CardBody>
+                    <Row>
+                      <div className="col">
+                        <CardTitle
+                          tag="h5"
+                          className="text-uppercase text-muted mb-0"
+                        >
+                          Standard
+                        </CardTitle>
+                        <span className="h2 font-weight-bold mb-0">
+                          $99 /month
+                        </span>
+                      </div>
+                      <Col className="col-auto">
+                        <div className="icon icon-shape bg-info text-white rounded-circle shadow">
+                          <a href={"#"} onClick={stripeClick("Standard")}>
+                            <i className="ni ni-key-25" />
+                          </a>
+                        </div>
+                      </Col>
+                    </Row>
+                    <p className="mt-3 mb-0 text-muted text-sm">
+                      <span className="mr-2">
+                        <i className="ni ni-circle-08" /> 30 per study
+                      </span>
+                    </p>
+                  </CardBody>
+                </Card>
+              </Row>
+              <Row>
+                <Card className="card-stats mt-4 mb-4 mb-xl-0">
+                  <CardBody>
+                    <Row>
+                      <div className="col">
+                        <CardTitle
+                          tag="h5"
+                          className="text-uppercase text-muted mb-0"
+                        >
+                          Enterprise
+                        </CardTitle>
+                        <span className="h2 font-weight-bold mb-0">
+                          $499 /month
+                        </span>
+                      </div>
+                      <Col className="col-auto">
+                        <div className="icon icon-shape bg-info text-white rounded-circle shadow">
+                          <a href={"#"} onClick={stripeClick("Enterprise")}>
+                            <i className="ni ni-key-25" />
+                          </a>
+                        </div>
+                      </Col>
+                    </Row>
+                    <p className="mt-3 mb-0 text-muted text-sm">
+                      <span className="mr-2">
+                        <i className="ni ni-circle-08" /> 300 per study
+                      </span>{" "}
+                    </p>
+                  </CardBody>
+                </Card>
+              </Row>
+            </Col>
+          )}
           <Col className="order-xl-2 mb-5 mb-xl-0" xl="4">
             <Card className="card-profile shadow">
               <Row className="justify-content-center">
@@ -130,17 +257,7 @@ const Profile = () => {
                 </Col>
               </Row>
               <CardHeader className="text-center border-0 pt-8 pt-md-4 pb-0 pb-md-4">
-                <div className="d-flex justify-content-between">
-                  <Button
-                    className="mr-4"
-                    color="info"
-                    href="#pablo"
-                    onClick={e => e.preventDefault()}
-                    size="sm"
-                  >
-                    Edit Picture
-                  </Button>
-                </div>
+                <div className="d-flex justify-content-between"></div>
               </CardHeader>
               <CardBody className="pt-0 pt-md-4">
                 <Row>
@@ -178,9 +295,9 @@ const Profile = () => {
                     {profileData ? profileData.Company : ""}
                   </div>
                   <hr className="my-4" />
-                  <p>You are currently using the basic plan.</p>
-                  <a href="#pablo" onClick={stripeClick}>
-                    Upgrade Plan
+                  <p>You are currently using the {tier} plan.</p>
+                  <a href="#pablo" onClick={() => {}}>
+                    Cancel Subscription
                   </a>
                 </div>
               </CardBody>
