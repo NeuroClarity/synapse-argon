@@ -166,9 +166,9 @@ const ReviewResult = ({ setStep, step, surveyQuestion, eyeData, facialData }) =>
     setQ4(resp.target.value)
   }
 
-  if (eyeData == null || facialData == null) {
-    setStep(0)
-  }
+  //if (eyeData == null || facialData == null) {
+    //setStep(0)
+  //}
 
   if (!submitted) {
     return (
@@ -185,14 +185,21 @@ const ReviewResult = ({ setStep, step, surveyQuestion, eyeData, facialData }) =>
                 {(surveyStep === 0 && 
                   <DemographicForm 
                     setAge={ setAgeForm }
+                    age={age}
                     setGender={ setGenderForm }
+                    gender={gender}
                     setRace={ setRaceForm }
+                    race={race}
                   />) || 
                   <SurveyForm 
                     setQ1={ setQ1Form }
+                    q1={q1}
                     setQ2={ setQ2Form }
+                    q2={q2}
                     setQ3={ setQ3Form }
+                    q3={q3}
                     setQ4={ setQ4Form }
+                    q4={q4}
                     surveyQuestion={surveyQuestion}
                   />}
                 <div className="text-center">
@@ -201,7 +208,7 @@ const ReviewResult = ({ setStep, step, surveyQuestion, eyeData, facialData }) =>
                     Back
                   </Button>
                 )}
-                  <Button className="mt-4" color="primary" type="button" onClick={ processData }>
+                  <Button className="mt-4" color="primary" type="button" onClick={ processData } disabled={surveyStep === 0 ? !(age && gender && race) : !(q1 && q2 && q3)}>
                     { surveyStep < 1 ? "Next" : "Submit" }
                   </Button>
                 </div>

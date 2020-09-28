@@ -41,6 +41,7 @@ class DemographicForm extends React.Component {
             type="number"
             step="1"
             min={0}
+            value={this.props.age}
             onChange={e => this.props.setAge(e)}
           />
         </FormGroup>
@@ -49,7 +50,12 @@ class DemographicForm extends React.Component {
           <div>
             <p>Gender</p>
           </div>
-          <Input type="select" name="select" onChange={e => this.props.setGender(e)}>
+          <Input 
+            type="select" 
+            name="select" 
+            value={this.props.gender}
+            onChange={e => this.props.setGender(e)}
+          >
             <option disabled selected value> Gender </option>
             <option>Male</option>
             <option>Female</option>
@@ -61,7 +67,12 @@ class DemographicForm extends React.Component {
           <div>
             <p>Ethnicity</p>
           </div>
-          <Input type="select" name="select" onChange={e => this.props.setRace(e)}>
+          <Input 
+            type="select" 
+            name="select" 
+            value={this.props.race}
+            onChange={e => this.props.setRace(e)}
+          >
             <option disabled selected value> Ethnicity </option>
             <option>White</option>
             <option>Black</option>

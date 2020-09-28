@@ -19,7 +19,7 @@ const Review = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [metadata, setMetadata] = useState();
-  const [step, setStep] = useState(0);
+  const [step, setStep] = useState(4);
   const [webgazerLoaded, setWebgazerLoaded] = useState(false);
   const [video, setVideo] = useState();
   const [surveyQuestion, setSurveyQuestion] = useState();
