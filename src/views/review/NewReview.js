@@ -41,21 +41,28 @@ const NewReview = ({ step, setStep, loading, error, data }) => {
                     className="mt-4 mb-4"
                   />
                 ) : ( !error ? (
-                  <div>
-                    <div className="text-center mb-4">
-                      { (data.CreatorName ? data.CreatorName : "A creator") + " has invited you to review a video." }
-                    </div>
-                    <div className="mb-4 font-weight-bold">
-                      { data.StudyName ? data.StudyName : "" }
-                    </div>
-                    <div className="text-center">
-                      <Button color="primary" type="button" 
-                        onClick={ () => { setStep(step + 1) } }
-                      >
-                        Get Started
-                      </Button>
-                    </div>
-                  </div>
+                      data.Valid ? 
+                        (
+                        <div>
+                          <div className="text-center mb-4">
+                            { (data.CreatorName ? data.CreatorName : "A creator") + " has invited you to review a video." }
+                          </div>
+                          <div className="mb-4 font-weight-bold">
+                            { data.StudyName }
+                          </div>
+                          <div className="text-center">
+                            <Button color="primary" type="button" 
+                              onClick={ () => { setStep(step + 1) } }
+                            >
+                              Get Started
+                            </Button>
+                          </div>
+                        </div>
+                        ) : (
+                          <div>
+                            Unfortunately, the creator that invited you to watch this video has reached their subscription limit. 
+                          </div>
+                        )
                   ) : (
                     <div>
                       Thanks for visiting the neuroclarity.ai video reviewer page. It looks like the link you provided has a typo or is invalid.

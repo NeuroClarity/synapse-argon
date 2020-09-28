@@ -45,9 +45,7 @@ class SurveyForm extends React.Component {
           <h4>Rate your agreement with the following statements:</h4>
         </div>
         <FormGroup>
-          <div>
-            <p>After watching this video, I am more likely to purchase/use this product in the future.</p>
-          </div>
+          <p>After watching this video, I am more likely to purchase/use this product in the future.</p>
           <SurveyRating ratingKey={"PurchaseIntent"} onChange={ this.props.setQ2 }/>
         </FormGroup>
         <FormGroup>
@@ -57,9 +55,7 @@ class SurveyForm extends React.Component {
           </div>
         </FormGroup>
         <FormGroup>
-          <div>
-            <p>I would recommend this product to a friend.</p>
-          </div>
+          <p>I would recommend this product to a friend.</p>
           <SurveyRating ratingKey={"Recommend"} onChange={ this.props.setQ1 }/>
         </FormGroup>
         <FormGroup>
@@ -69,6 +65,7 @@ class SurveyForm extends React.Component {
           <InputGroup className="input-group-alternative mb-3">
             <Input 
               type="textarea" 
+              value={this.props.q4}
               onChange={e => this.props.setQ4(e)}
             />
           </InputGroup>
