@@ -163,9 +163,7 @@ const Profile = () => {
                       </div>
                       <Col className="col-auto">
                         <div className="icon icon-shape bg-success text-white rounded-circle shadow">
-                          <a href={"#"} onClick={stripeClick("Standard")}>
-                            <i className="ni ni-check-bold" />
-                          </a>
+                          <i className="ni ni-check-bold" />
                         </div>
                       </Col>
                     </Row>
@@ -193,11 +191,22 @@ const Profile = () => {
                         </span>
                       </div>
                       <Col className="col-auto">
-                        <div className="icon icon-shape bg-info text-white rounded-circle shadow">
-                          <a href={"#"} onClick={stripeClick("Standard")}>
-                            <i className="ni ni-key-25" />
-                          </a>
-                        </div>
+                        {tier !== "Standard" ? (
+                          <div className="icon icon-shape bg-info text-white rounded-circle shadow">
+                            <a
+                              href={"#"}
+                              onClick={() => {
+                                stripeClick("Standard");
+                              }}
+                            >
+                              <i className="ni ni-key-25" />
+                            </a>
+                          </div>
+                        ) : (
+                          <div className="icon icon-shape bg-success text-white rounded-circle shadow">
+                            <i className="ni ni-check-bold" />
+                          </div>
+                        )}
                       </Col>
                     </Row>
                     <p className="mt-3 mb-0 text-muted text-sm">
@@ -224,11 +233,22 @@ const Profile = () => {
                         </span>
                       </div>
                       <Col className="col-auto">
-                        <div className="icon icon-shape bg-info text-white rounded-circle shadow">
-                          <a href={"#"} onClick={stripeClick("Enterprise")}>
-                            <i className="ni ni-key-25" />
-                          </a>
-                        </div>
+                        {tier !== "Enterprise" ? (
+                          <div className="icon icon-shape bg-info text-white rounded-circle shadow">
+                            <a
+                              href={"#"}
+                              onClick={() => {
+                                stripeClick("Enterprise");
+                              }}
+                            >
+                              <i className="ni ni-key-25" />
+                            </a>
+                          </div>
+                        ) : (
+                          <div className="icon icon-shape bg-success text-white rounded-circle shadow">
+                            <i className="ni ni-check-bold" />
+                          </div>
+                        )}
                       </Col>
                     </Row>
                     <p className="mt-3 mb-0 text-muted text-sm">
