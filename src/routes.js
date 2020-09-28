@@ -20,6 +20,7 @@ import Login from "views/auth/Login.js";
 
 import Dashboard from "views/creator/Dashboard.js";
 import Profile from "views/creator/Profile.js";
+import Success from "views/creator/Success.js";
 import StudyManager from "views/creator/StudyManager.js";
 import NewStudy from "views/creator/NewStudy.js";
 
@@ -36,6 +37,13 @@ var routes = [
     name: "User Profile",
     icon: "ni ni-single-02 text-yellow",
     component: Profile,
+    layout: "/admin"
+  },
+  {
+    path: "/success",
+    name: "Success",
+    icon: "ni ni-single-02 text-yellow",
+    component: Success,
     layout: "/admin"
   },
   {

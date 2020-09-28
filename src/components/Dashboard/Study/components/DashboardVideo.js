@@ -10,7 +10,14 @@ import {
 } from "reactstrap";
 import { useClipboard } from "use-clipboard-copy";
 
-const DashboardVideo = ({ studyId, name, video, heatmap, globalTime }) => {
+const DashboardVideo = ({
+  studyId,
+  name,
+  video,
+  heatmap,
+  globalTime,
+  disabled
+}) => {
   const [localTime, setLocalTime] = useState(0);
   const [videoPlayer, setVideoPlayer] = useState();
   const [heatmapToggle, setHeatmapToggle] = useState(false);
@@ -70,27 +77,57 @@ const DashboardVideo = ({ studyId, name, video, heatmap, globalTime }) => {
           </div>
           <Row>
             <h3 style={{ marginRight: "18px" }} className="mb-0">
-              Share your video with reviewers...
+              {disabled
+                ? "You are out of reviewers..."
+                : "Share your video with reviewers..."}
             </h3>
-            <h6
-              style={{ marginTop: "5px" }}
-              className="text-uppercase text-muted ls-1 mb-1"
-            >
-              Copy Link
-            </h6>
-            <div style={{ marginTop: "-5px" }} className="avatar-group col">
-              <a
-                className="avatar avatar-sm"
-                href="#pablo"
-                id="tooltip742438047"
-                onClick={e => copyLink(e)}
-              >
-                <i className={"ni ni-single-copy-04"} />
-              </a>
-              <UncontrolledTooltip delay={0} target="tooltip742438047">
-                Click to copy your reviewer link
-              </UncontrolledTooltip>
-            </div>
+            {disabled ? (
+              <>
+                <h6
+                  style={{ marginTop: "5px" }}
+                  className="text-uppercase text-muted ls-1 mb-1"
+                >
+                  Upgrade
+                </h6>
+                <div style={{ marginTop: "-5px" }} className="avatar-group col">
+                  <a
+                    className="avatar avatar-sm"
+                    href={
+                      window.location.pathname.split("/")[0] + "/admin/profile"
+                    }
+                    id="tooltip742438047"
+                    onClick={e => copyLink(e)}
+                  >
+                    <i className={"ni ni-key-25"} />
+                  </a>
+                  <UncontrolledTooltip delay={0} target="tooltip742438047">
+                    Upgrade your subscription to process more reviewers
+                  </UncontrolledTooltip>
+                </div>
+              </>
+            ) : (
+              <>
+                <h6
+                  style={{ marginTop: "5px" }}
+                  className="text-uppercase text-muted ls-1 mb-1"
+                >
+                  Copy Link
+                </h6>
+                <div style={{ marginTop: "-5px" }} className="avatar-group col">
+                  <a
+                    className="avatar avatar-sm"
+                    href="#"
+                    id="tooltip742438047"
+                    onClick={e => copyLink(e)}
+                  >
+                    <i className={"ni ni-single-copy-04"} />
+                  </a>
+                  <UncontrolledTooltip delay={0} target="tooltip742438047">
+                    Click to copy your reviewer link
+                  </UncontrolledTooltip>
+                </div>
+              </>
+            )}
             <div style={{ marginRight: "12px" }} className="col">
               <Button
                 color="primary"

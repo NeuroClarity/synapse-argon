@@ -17,6 +17,7 @@
 */
 import Dashboard from "views/creator/Dashboard.js";
 import Profile from "views/creator/Profile.js";
+import Success from "views/creator/Success.js";
 import NewStudy from "views/creator/NewStudy.js";
 import StudyManager from "views/creator/StudyManager.js";
 
@@ -42,7 +43,14 @@ var routes = [
     component: Profile,
     layout: "/admin"
   },
- {
+  {
+    path: "/success",
+    name: "Success",
+    icon: "ni ni-single-02 text-yellow",
+    component: Success,
+    layout: "/admin"
+  },
+  {
     path: "/new",
     name: "New Study",
     icon: "ni ni-fat-add",

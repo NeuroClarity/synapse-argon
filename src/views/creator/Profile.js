@@ -1,20 +1,3 @@
-/*!
-
-=========================================================
-* Argon Dashboard React - v1.1.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/argon-dashboard-react
-* Copyright 2019 Creative Tim (https://www.creative-tim.com)
-* Licensed under MIT (https://github.com/creativetimofficial/argon-dashboard-react/blob/master/LICENSE.md)
-
-* Coded by Creative Tim
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-*/
 import React, { useState, useEffect } from "react";
 
 // reactstrap components
@@ -23,20 +6,20 @@ import {
   Card,
   CardHeader,
   CardBody,
-  FormGroup,
-  Form,
-  Input,
   Container,
   Row,
   Col
 } from "reactstrap";
 // core components
 import DashboardHeader from "components/Headers/DashboardHeader.js";
-import AdminNavbar from "components/Navbars/AdminNavbar.js";
 
 // Api fetch utility
 import { useApi } from "../../utils/request.js";
 import { useAuth0 } from "@auth0/auth0-react";
+import { loadStripe } from "@stripe/stripe-js";
+const stripePromise = loadStripe(
+"pk_test_51HVnxVGiBsqPJo7o92hW7puu4vzNzS6U1nhavXQdgniCpr8dvywsWgUGbl2Awx4tQrkC4pHhZOlEdyq3QBQbixis00svnlsyLg"
+);
 
 const Profile = () => {
   const { user, getAccessTokenSilently } = useAuth0();
@@ -44,6 +27,37 @@ const Profile = () => {
   const [totalReviews, setTotalReviews] = useState();
   const [desiredReviews, setDesiredReviews] = useState();
   const [accessToken, setAccessToken] = useState();
+
+  const stripeClick = async event => {
+    // Get Stripe.js instance
+    const stripe = await stripePromise;
+
+    // Call your backend to create the Checkout Session
+    const response = await fetch(process.env.REACT_APP_AXON_DOMAIN + "/api/creator/create-checkout-session", {
+      method: "POST",
+			headers: {
+			Authorization: `Bearer ${accessToken}`,
+			"Content-Type": "application/json",
+			},
+			body: JSON.stringify({
+				"CreatorId": user.sub,
+			})
+    });
+
+    const session = await response.json();
+		console.log("SESSION: ", session);
+
+    // When the customer clicks on the button, redirect them to Checkout.
+    const result = await stripe.redirectToCheckout({
+      sessionId: session.SessionID
+    });
+
+    if (result.error) {
+      // If `redirectToCheckout` fails due to a browser or network
+      // error, display the localized error message to your customer
+      // using `result.error.message`.
+    }
+  };
 
   React.useEffect(() => {
     async function asyncWrapper() {
@@ -164,6 +178,10 @@ const Profile = () => {
                     {profileData ? profileData.Company : ""}
                   </div>
                   <hr className="my-4" />
+                  <p>You are currently using the basic plan.</p>
+                  <a href="#pablo" onClick={stripeClick}>
+                    Upgrade Plan
+                  </a>
                 </div>
               </CardBody>
             </Card>

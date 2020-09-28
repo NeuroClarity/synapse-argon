@@ -1,11 +1,13 @@
 import React from "react";
 
-import { Spinner, Container, Row, Col } from "reactstrap";
+import { Container, Row, Col } from "reactstrap";
 
 import { ABDashboardVideo } from "./components/ABDashboardVideo.js";
 import { DashboardChart } from "./components/DashboardChart.js";
+import DemographicFilter from "./components/DemographicFilter.js";
+import SurveyResults from "./components/SurveyResults.js";
 
-export const ABStudy = ({ data, loading }) => {
+export const ABStudy = ({ data }) => {
   const [globalTime, setGlobalTime] = React.useState(0);
   return (
     <Container className="mt--8" fluid>
@@ -18,6 +20,7 @@ export const ABStudy = ({ data, loading }) => {
             video={data ? data.Insights.VideoUrl : undefined}
             heatmap={data ? data.Insights.HeatmapUrl : undefined}
             globalTime={globalTime}
+            disabled={data ? data.Disabled : false}
           />
         </Col>
         <Col className="mb-5 mb-xl-0" xl="6">
@@ -28,6 +31,7 @@ export const ABStudy = ({ data, loading }) => {
             video={data ? data.SecondInsights.VideoUrl : undefined}
             heatmap={data ? data.SecondInsights.HeatmapUrl : undefined}
             globalTime={globalTime}
+            disabled={data ? data.SecondDisabled : false}
           />
         </Col>
       </Row>
@@ -46,6 +50,42 @@ export const ABStudy = ({ data, loading }) => {
               data && data.SecondInsights.EngagementResults.Result
             }
             setGlobalTime={setGlobalTime}
+          />
+        </Col>
+      </Row>
+      <Row className="mt-5">
+        <Col className="mb-5 mb-xl-0" xl="6">
+          <DemographicFilter
+            demographics={data ? data.Insights.Demographics : undefined}
+          />
+        </Col>
+        <Col className="mb-5 mb-xl-0" xl="6">
+          <DemographicFilter
+            demographics={data ? data.SecondInsights.Demographics : undefined}
+          />
+        </Col>
+      </Row>
+      <Row className="mt-5">
+        <Col className="mb-5 mb-xl-0" xl="6">
+          <SurveyResults
+            desired={
+              data && data.Demographics
+                ? data.Demographics.Groups[0].Reviewers
+                : undefined
+            }
+            surveyQuestion={data ? data.SurveyQuestion : undefined}
+            surveyResults={data ? data.Insights.SurveyResults : undefined}
+          />
+        </Col>
+        <Col className="mb-5 mb-xl-0" xl="6">
+          <SurveyResults
+            desired={
+              data && data.Demographics
+                ? data.Demographics.Groups[0].Reviewers
+                : undefined
+            }
+            surveyQuestion={data ? data.SurveyQuestion : undefined}
+            surveyResults={data ? data.Insights.SurveyResults : undefined}
           />
         </Col>
       </Row>

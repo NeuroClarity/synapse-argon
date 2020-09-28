@@ -20,6 +20,8 @@ import React, { useState, useEffect } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { withRouter } from "react-router";
 
+import { Spinner, Row, Col } from "reactstrap";
+
 // core components
 import DashboardHeader from "components/Headers/DashboardHeader.js";
 import { Study } from "components/Dashboard/Study/Study.js";
@@ -65,11 +67,25 @@ const Dashboard = () => {
   return (
     <>
       <DashboardHeader />
-      {data && data.SecondStudyID ? (
-        <ABStudy data={data} loading={loading} />
+			{loading || !data ? (
+							<Row>
+						<Col sm="12" md={{ size: 6, offset: 3 }}>
+							<div style={{display:"flex", justifyContent: "center", alignItems: "center"}}>
+              <Spinner
+                style={{ width: "3rem", height: "3rem" }}
+                color="primary"
+                type="grow"
+              />
+							</div >
+							</Col>
+							</Row>
+
+			) :
+      (data && data.SecondStudyID ? (
+        <ABStudy data={data}/>
       ) : (
-        <Study data={data} loading={loading} />
-      )}
+        <Study data={data}/>
+      ))}
       {/* Page content */}
     </>
   );

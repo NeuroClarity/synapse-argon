@@ -7,28 +7,21 @@ import DemographicFilter from "./components/DemographicFilter.js";
 import DashboardChart from "./components/DashboardChart.js";
 import SurveyResults from "./components/SurveyResults.js";
 
-export const Study = ({ data, loading }) => {
+export const Study = ({ data }) => {
   const [globalTime, setGlobalTime] = React.useState(0);
   return (
     <Container className="mt--8" fluid>
       <Row>
         <>
           <Col className="mb-5 mb-xl-0" xl="8">
-            {loading ? (
-              <Spinner
-                style={{ width: "3rem", height: "3rem" }}
-                color="primary"
-                type="grow"
-              />
-            ) : (
-              <DashboardVideo
-                studyId={data ? data.StudyID : ""}
-                name={data ? data.Name : ""}
-                video={data ? data.Insights.VideoUrl : undefined}
-                heatmap={data ? data.Insights.HeatmapUrl : undefined}
-                globalTime={globalTime}
-              />
-            )}
+            <DashboardVideo
+              studyId={data ? data.StudyID : ""}
+              name={data ? data.Name : ""}
+              video={data ? data.Insights.VideoUrl : undefined}
+              heatmap={data ? data.Insights.HeatmapUrl : undefined}
+              globalTime={globalTime}
+              disabled={data ? data.Disabled : false}
+            />
           </Col>
           <Col xl="4">
             <SurveyResults
