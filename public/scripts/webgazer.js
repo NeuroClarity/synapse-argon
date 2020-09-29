@@ -45119,8 +45119,6 @@ function store_points(x, y, k) {
             // Is it because other trackers need a canvas instead of an img/video element?
             paintCurrentFrame(videoElementCanvas, videoElementCanvas.width, videoElementCanvas.height);
 
-          /**
-            
             // Get gaze prediction (ask clm to track; pass the data to the regressor; get back a prediction)
             latestGazeData = getPrediction();
             // Count time
@@ -45179,7 +45177,6 @@ function store_points(x, y, k) {
                 gazeDot.style.display = 'none';
             }
 
-            **/
             requestAnimationFrame(loop);
         }
     }

@@ -30,6 +30,33 @@ const Profile = () => {
   const [accessToken, setAccessToken] = useState();
   const [tier, setTier] = useState();
 
+  const cancelSubsciption = () => {
+    fetch(process.env.REACT_APP_AXON_DOMAIN +
+        "/api/creator/cancel",
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          CreatorId: user.sub,
+        })
+      }
+    )
+      .then(res => {
+        return res.json();
+      })
+      .then(() => {
+          refresh();
+        },
+        () => {
+          alert("Failed to cancel subscription. Please reach out via our homepage (http://neuroclarity.ai) if this error persists.")
+        }
+      );
+
+  }
+
   const stripeClick = async tier => {
     // Get Stripe.js instance
     const stripe = await stripePromise;
@@ -83,7 +110,7 @@ const Profile = () => {
     CreatorId: user.sub
   };
 
-  const { data: profileData } = useApi(
+  const { refresh, data: profileData } = useApi(
     "/api/creator/profile",
     opts,
     body,
@@ -325,8 +352,8 @@ const Profile = () => {
                   </div>
                   <hr className="my-4" />
                   <p>You are currently using the {tier} plan.</p>
-                  <a href="#pablo" onClick={() => {}}>
-                    Cancel Subscription
+                  <a href="#pablo" onClick={tier !== "Basic" ? cancelSubsciption : () => stripeClick("Standard") }>
+                    { tier !== "Basic" ? "Cancel Subscription" : "Upgrade"}
                   </a>
                 </div>
               </CardBody>
