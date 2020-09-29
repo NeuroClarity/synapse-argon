@@ -166,9 +166,9 @@ const ReviewResult = ({ setStep, step, surveyQuestion, eyeData, facialData }) =>
     setQ4(resp.target.value)
   }
 
-  //if (eyeData == null || facialData == null) {
-    //setStep(0)
-  //}
+  if (eyeData == null || facialData == null) {
+    setStep(0)
+  }
 
   if (!submitted) {
     return (
