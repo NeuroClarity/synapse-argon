@@ -51,6 +51,15 @@ class Footer extends React.Component {
                   About Us
                 </NavLink>
               </NavItem>
+              <NavItem>
+                <NavLink
+                  href="https://neuroclarity.ai#contact"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Contact Us
+                </NavLink>
+              </NavItem>
 
               <NavItem>
                 <NavLink
