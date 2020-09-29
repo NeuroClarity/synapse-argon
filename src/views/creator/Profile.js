@@ -31,31 +31,30 @@ const Profile = () => {
   const [tier, setTier] = useState();
 
   const cancelSubsciption = () => {
-    fetch(process.env.REACT_APP_AXON_DOMAIN +
-        "/api/creator/cancel",
-      {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          CreatorId: user.sub,
-        })
-      }
-    )
+    fetch(process.env.REACT_APP_AXON_DOMAIN + "/api/creator/cancel", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        CreatorId: user.sub
+      })
+    })
       .then(res => {
         return res.json();
       })
-      .then(() => {
+      .then(
+        () => {
           refresh();
         },
         () => {
-          alert("Failed to cancel subscription. Please email us at andere@berkeley.edu if this error persists.")
+          alert(
+            "Failed to cancel subscription. Please email us at andere@berkeley.edu if this error persists."
+          );
         }
       );
-
-  }
+  };
 
   const stripeClick = async tier => {
     // Get Stripe.js instance
@@ -200,7 +199,7 @@ const Profile = () => {
                     </Row>
                     <p className="mt-3 mb-0 text-muted text-sm">
                       <span className="mr-2">
-                        <i className="ni ni-circle-08" /> 3 per study
+                        <i className="ni ni-circle-08" /> 3 reviewers per study
                       </span>{" "}
                     </p>
                   </CardBody>
@@ -242,7 +241,7 @@ const Profile = () => {
                     </Row>
                     <p className="mt-3 mb-0 text-muted text-sm">
                       <span className="mr-2">
-                        <i className="ni ni-circle-08" /> 30 per study
+                        <i className="ni ni-circle-08" /> 30 reviewers per study
                       </span>
                     </p>
                   </CardBody>
@@ -284,7 +283,8 @@ const Profile = () => {
                     </Row>
                     <p className="mt-3 mb-0 text-muted text-sm">
                       <span className="mr-2">
-                        <i className="ni ni-circle-08" /> 300 per study
+                        <i className="ni ni-circle-08" /> 300 reviewers per
+                        study
                       </span>{" "}
                     </p>
                   </CardBody>
@@ -352,8 +352,15 @@ const Profile = () => {
                   </div>
                   <hr className="my-4" />
                   <p>You are currently using the {tier} plan.</p>
-                  <a href="#pablo" onClick={tier !== "Basic" ? cancelSubsciption : () => stripeClick("Standard") }>
-                    { tier !== "Basic" ? "Cancel Subscription" : "Upgrade"}
+                  <a
+                    href="#pablo"
+                    onClick={
+                      tier !== "Basic"
+                        ? cancelSubsciption
+                        : () => stripeClick("Standard")
+                    }
+                  >
+                    {tier !== "Basic" ? "Cancel Subscription" : "Upgrade"}
                   </a>
                 </div>
               </CardBody>

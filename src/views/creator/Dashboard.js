@@ -35,6 +35,7 @@ const Dashboard = () => {
     window.location.pathname.split("/").pop()
   );
   const [accessToken, setAccessToken] = useState();
+  const [refreshIndex, setRefreshIndex] = React.useState(0);
   const { user, getAccessTokenSilently } = useAuth0();
   const opts = {
     method: "POST"
@@ -63,6 +64,20 @@ const Dashboard = () => {
     body,
     accessToken
   );
+
+  // Refresh call to video every second if no data
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setRefreshIndex(refreshIndex => refreshIndex + 1);
+      if (!data) {
+        refresh();
+      }
+    }, 1000);
+
+    return () => {
+      clearInterval(interval);
+    };
+  });
 
   return (
     <>

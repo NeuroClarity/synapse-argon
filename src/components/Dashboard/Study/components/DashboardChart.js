@@ -47,6 +47,9 @@ const DashboardChart = ({
     setActiveChartData(
       activeInsight === "Emotion" ? filteredEmotionChart : engagementChartData
     );
+    if (activeInsight !== "Emotion") {
+      setActiveEmotion("Engagment");
+    }
   }, [activeInsight, filteredEmotionChart, engagementChartData]);
 
   // Massage raw data into chart.js amenable format.
