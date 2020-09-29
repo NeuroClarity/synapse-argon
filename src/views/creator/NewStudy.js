@@ -57,6 +57,15 @@ const NewStudy = () => {
             <Row className="justify-content-center">
               <Col className="order-xl-2 mb-5 mb-xl-0" xl="4">
                 <Card body>
+                  <CardTitle>Classic Study</CardTitle>
+                  <CardText>Upload any single video</CardText>
+                  <Button color="primary" onClick={handleClassicSelection}>
+                    Create
+                  </Button>
+                </Card>
+              </Col>
+              <Col className="order-xl-2 mb-5 mb-xl-0" xl="4">
+                <Card body>
                   <CardTitle>A/B Study</CardTitle>
                   <CardText>You already know what this is</CardText>
                   <Button color="primary" onClick={handleABSelection}>
@@ -66,17 +75,10 @@ const NewStudy = () => {
               </Col>
               <Col className="order-xl-2 mb-5 mb-xl-0" xl="4">
                 <Card body>
-                  <CardTitle>Classic Study</CardTitle>
-                  <CardText>Gimme your vanilla video</CardText>
-                  <Button color="primary" onClick={handleClassicSelection}>
-                    Create
-                  </Button>
-                </Card>
-              </Col>
-              <Col className="order-xl-2 mb-5 mb-xl-0" xl="4">
-                <Card body>
                   <CardTitle>Static Study</CardTitle>
-                  <CardText>Pictures, posters, and billboards...</CardText>
+                  <CardText>
+                    Pictures and posters and billboards, oh my!
+                  </CardText>
                   <Button color="primary" onClick={handleStaticSelection}>
                     Create
                   </Button>
