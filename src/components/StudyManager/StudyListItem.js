@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 
 import { Link } from "react-router-dom";
 import { useClipboard } from "use-clipboard-copy";
+import { useAuth0 } from "@auth0/auth0-react";
 
 import {
   Progress,
@@ -24,6 +25,7 @@ import {
 } from "reactstrap";
 
 const StudyListItem = ({ studyId, studyName, desired, completed, refresh }) => {
+  const { getAccessTokenSilently } = useAuth0();
   const [percent, setPercent] = useState(100);
   const [link, setLink] = useState();
   const [statusBadge, setStatusBadge] = useState(
@@ -35,8 +37,17 @@ const StudyListItem = ({ studyId, studyName, desired, completed, refresh }) => {
   const [deleteModal, setDeleteModal] = useState(false);
   const [changeNameModal, setChangeNameModal] = useState(false);
   const [newStudyName, setNewStudyName] = useState();
+  const [accessToken, setAccessToken] = React.useState();
 
   const clipboard = useClipboard();
+
+  React.useEffect(() => {
+    async function asyncWrapper() {
+      const token = await getAccessTokenSilently();
+      setAccessToken(token);
+    }
+    asyncWrapper();
+  }, [getAccessTokenSilently]);
 
   useEffect(() => {
     setLink(window.location.origin + "/review/" + studyId);
@@ -77,7 +88,7 @@ const StudyListItem = ({ studyId, studyName, desired, completed, refresh }) => {
     fetch(process.env.REACT_APP_AXON_DOMAIN + "/api/creator/delete", {
       method: "POST",
       headers: {
-        // TODO: access token
+        Authorization: `Bearer ${accessToken}`,
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
@@ -91,7 +102,7 @@ const StudyListItem = ({ studyId, studyName, desired, completed, refresh }) => {
     fetch(process.env.REACT_APP_AXON_DOMAIN + "/api/creator/studyName", {
       method: "POST",
       headers: {
-        // TODO: access token
+        Authorization: `Bearer ${accessToken}`,
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
