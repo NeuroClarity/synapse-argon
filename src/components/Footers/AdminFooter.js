@@ -54,7 +54,7 @@ class Footer extends React.Component {
 
               <NavItem>
                 <NavLink
-                  href="http://neuroclarity.ai"
+                  href="http://neuroclarity.ai/privacy"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
