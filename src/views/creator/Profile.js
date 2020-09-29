@@ -124,30 +124,34 @@ const Profile = () => {
 
   return (
     <>
-      <DashboardHeader />
-      {/* Page content */}
-      <Container className="mt--6" fluid>
-        <Row className="justify-content-center">
+      <div
+        style={{
+          backgroundColor: "#38b6ff",
+          backgroundImage: `url('/bg.png')`
+        }}
+        className="header pb-9 pt-md-6"
+      >
+        <Row>
           {!profileData ? (
             <Col
               style={{
                 display: "flex",
-                flexDirection: "column",
+                alignItems: "flex-start",
                 justifyContent: "center"
               }}
-              className="order-xl-2 mb-5 mb-xl-0"
-              xl="2"
+              sm="12"
+              md={{ size: 6, offset: 3 }}
             >
               <Spinner
-                style={{ width: "3rem", height: "3rem" }}
+                style={{ width: "10rem", height: "10rem" }}
                 color="primary"
                 type="grow"
               />
             </Col>
           ) : (
-            <Col className="order-xl-2 mb-5 mb-xl-0" xl="2">
-              <Row>
-                <Card className="mb-4 mb-xl-0">
+            <>
+              <Col lg="6" xl="4">
+                <Card className="card-stats ml-4 mb-4 mb-xl-0">
                   <CardBody>
                     <Row>
                       <div className="col">
@@ -174,9 +178,9 @@ const Profile = () => {
                     </p>
                   </CardBody>
                 </Card>
-              </Row>
-              <Row>
-                <Card className="mt-2 mb-4 mb-xl-0">
+              </Col>
+              <Col lg="6" xl="4">
+                <Card className="card-stats mb-4 mb-xl-0">
                   <CardBody>
                     <Row>
                       <div className="col">
@@ -216,9 +220,9 @@ const Profile = () => {
                     </p>
                   </CardBody>
                 </Card>
-              </Row>
-              <Row>
-                <Card className="mt-2 mb-4 mb-xl-0">
+              </Col>
+              <Col lg="6" xl="4">
+                <Card className="card-stats mr-4 mb-4 mb-xl-0">
                   <CardBody>
                     <Row>
                       <div className="col">
@@ -258,9 +262,14 @@ const Profile = () => {
                     </p>
                   </CardBody>
                 </Card>
-              </Row>
-            </Col>
+              </Col>
+            </>
           )}
+        </Row>
+      </div>
+      {/* Page content */}
+      <Container className="mt--8" fluid>
+        <Row className="justify-content-center">
           <Col className="order-xl-2 mb-5 mb-xl-0" xl="4">
             <Card className="card-profile shadow">
               <Row className="justify-content-center">
