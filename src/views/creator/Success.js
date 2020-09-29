@@ -18,7 +18,7 @@ import { useApi } from "../../utils/request.js";
 import { useAuth0 } from "@auth0/auth0-react";
 import { loadStripe } from "@stripe/stripe-js";
 const stripePromise = loadStripe(
-  "pk_test_51HUQ3PDS7JGrvRSDbGdWsvGUZujialoKNXpQX6U7sRJNoJU23qmYsamTg3V6btbBljI1McdpqBcznfR9puQfTLRX00OTl3Bnol"
+  "pk_test_51HPz7AD4ZrLJJTQP7EOKaPYp62xS4V2GFk2zNmMPmq2KOLJOGSyiDv9FauH7mNdiGrsUTsIaDR6MHrqljYG7xi0f00RsH8PqYZ"
 );
 
 const Success = () => {
@@ -36,8 +36,8 @@ const Success = () => {
                   <p>
                     We appreciate your business! If you have any questions,
                     please email
-                    <a href="mailto:kyle@neuroclarity.ai">
-                      kyle@neuroclarity.ai
+                    <a href="mailto:andere@berkeley.edu">
+                      andere@berkeley.edu
                     </a>
                     . It may take a few minutes for your subscription updates to
                     process.

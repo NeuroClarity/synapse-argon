@@ -9,6 +9,7 @@ import SurveyResults from "./components/SurveyResults.js";
 
 export const ABStudy = ({ data }) => {
   const [globalTime, setGlobalTime] = React.useState(0);
+  console.log(data)
   return (
     <Container className="mt--8" fluid>
       <Row>
@@ -85,7 +86,7 @@ export const ABStudy = ({ data }) => {
                 : undefined
             }
             surveyQuestion={data ? data.SurveyQuestion : undefined}
-            surveyResults={data ? data.Insights.SurveyResults : undefined}
+            surveyResults={data ? data.SecondInsights.SurveyResults : undefined}
           />
         </Col>
       </Row>
