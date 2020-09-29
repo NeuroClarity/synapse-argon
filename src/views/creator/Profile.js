@@ -19,7 +19,7 @@ import { useApi } from "../../utils/request.js";
 import { useAuth0 } from "@auth0/auth0-react";
 import { loadStripe } from "@stripe/stripe-js";
 const stripePromise = loadStripe(
-  "pk_test_51HVnxVGiBsqPJo7o92hW7puu4vzNzS6U1nhavXQdgniCpr8dvywsWgUGbl2Awx4tQrkC4pHhZOlEdyq3QBQbixis00svnlsyLg"
+  "pk_test_51HPz7AD4ZrLJJTQP7EOKaPYp62xS4V2GFk2zNmMPmq2KOLJOGSyiDv9FauH7mNdiGrsUTsIaDR6MHrqljYG7xi0f00RsH8PqYZ"
 );
 
 const Profile = () => {

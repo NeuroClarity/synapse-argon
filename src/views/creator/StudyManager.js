@@ -34,6 +34,7 @@ import {
   PaginationItem,
   PaginationLink,
   Progress,
+  Spinner,
   Table,
   Container,
   Row,
@@ -137,6 +138,21 @@ const StudyManager = () => {
                     ))}
                 </tbody>
               </Table>
+              <div
+                style={{
+                  width: "100%",
+                  display: "flex",
+                  justifyContent: "center"
+                }}
+              >
+                {!data && (
+                  <Spinner
+                    style={{ width: "5rem", height: "5rem" }}
+                    color="primary"
+                    type="grow"
+                  />
+                )}
+              </div>
             </Card>
           </div>
         </Row>
