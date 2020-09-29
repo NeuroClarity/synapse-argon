@@ -7,6 +7,10 @@ import {
   CardTitle,
   CardHeader,
   CardBody,
+  Button,
+  Modal,
+  ModalBody,
+  ModalFooter,
   Container,
   Row,
   Col
@@ -28,6 +32,7 @@ const Profile = () => {
   const [totalReviews, setTotalReviews] = useState();
   const [desiredReviews, setDesiredReviews] = useState();
   const [accessToken, setAccessToken] = useState();
+  const [cancelModal, setCancelModal] = useState(false);
   const [tier, setTier] = useState();
 
   const cancelSubsciption = () => {
@@ -54,7 +59,9 @@ const Profile = () => {
           );
         }
       );
-  };
+      setCancelModal(false);
+
+  }
 
   const stripeClick = async tier => {
     // Get Stripe.js instance
@@ -157,6 +164,22 @@ const Profile = () => {
         }}
         className="header pb-9 pt-md-6"
       >
+        <Modal isOpen={cancelModal}>
+          <ModalBody>
+            Are you sure you want to cancel your subscription?
+          </ModalBody>
+          <ModalFooter>
+            <Button color="primary" onClick={cancelSubsciption}>
+              Confirm
+            </Button>
+            <Button
+              color="secondary"
+              onClick={() => setCancelModal(!cancelModal)}
+            >
+              Nope
+            </Button>
+          </ModalFooter>
+        </Modal>
         <Row>
           {!profileData ? (
             <Col
@@ -352,12 +375,12 @@ const Profile = () => {
                   </div>
                   <hr className="my-4" />
                   <p>You are currently using the {tier} plan.</p>
-                  <a
-                    href="#pablo"
+                  <a 
+                    href="#pablo" 
                     onClick={
-                      tier !== "Basic"
-                        ? cancelSubsciption
-                        : () => stripeClick("Standard")
+                      tier !== "Basic" 
+                      ? () => setCancelModal(true) 
+                      : () => stripeClick("Standard") 
                     }
                   >
                     {tier !== "Basic" ? "Cancel Subscription" : "Upgrade"}
