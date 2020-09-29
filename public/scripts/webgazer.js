@@ -44824,7 +44824,6 @@ function store_points(x, y, k) {
  * @module webgazer
  */
 (function(window, undefined) {
-    console.log('initializing webgazer');
     //strict mode for type safety
     'use strict';
 
@@ -45119,6 +45118,8 @@ function store_points(x, y, k) {
             // [20180729 JT] Why do we need to do this? clmTracker does this itself _already_, which is just duplicating the work.
             // Is it because other trackers need a canvas instead of an img/video element?
             paintCurrentFrame(videoElementCanvas, videoElementCanvas.width, videoElementCanvas.height);
+
+          /**
             
             // Get gaze prediction (ask clm to track; pass the data to the regressor; get back a prediction)
             latestGazeData = getPrediction();
@@ -45127,18 +45128,18 @@ function store_points(x, y, k) {
 
 
             // Draw face overlay
-            if( webgazer.params.showFaceOverlay )
-            {
-                // Get tracker object
-                var tracker = webgazer.getTracker();
-                faceOverlay.getContext('2d').clearRect( 0, 0, videoElement.videoWidth, videoElement.videoHeight);
-                tracker.drawFaceOverlay(faceOverlay.getContext('2d'), tracker.getPositions());
-            }
+            //if( webgazer.params.showFaceOverlay )
+            //{
+                //// Get tracker object
+                //var tracker = webgazer.getTracker();
+                //faceOverlay.getContext('2d').clearRect( 0, 0, videoElement.videoWidth, videoElement.videoHeight);
+                //tracker.drawFaceOverlay(faceOverlay.getContext('2d'), tracker.getPositions());
+            //}
 
             // Feedback box
             // Check that the eyes are inside of the validation box
-            if( webgazer.params.showFaceFeedbackBox )
-                checkEyesInValidationBox();
+            //if( webgazer.params.showFaceFeedbackBox )
+                //checkEyesInValidationBox();
 
             latestGazeData = await latestGazeData;
 
@@ -45178,6 +45179,7 @@ function store_points(x, y, k) {
                 gazeDot.style.display = 'none';
             }
 
+            **/
             requestAnimationFrame(loop);
         }
     }
@@ -45450,7 +45452,6 @@ function store_points(x, y, k) {
 
         // Load model data stored in localforage.
         if (window.saveDataAcrossSessions) {
-            console.log("Loading global webgazer data")
             loadGlobalData();
         }
 
