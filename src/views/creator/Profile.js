@@ -147,7 +147,7 @@ const Profile = () => {
           ) : (
             <Col className="order-xl-2 mb-5 mb-xl-0" xl="2">
               <Row>
-                <Card className="card-stats mt-4 mb-4 mb-xl-0">
+                <Card className="mb-4 mb-xl-0">
                   <CardBody>
                     <Row>
                       <div className="col">
@@ -176,7 +176,7 @@ const Profile = () => {
                 </Card>
               </Row>
               <Row>
-                <Card className="card-stats mt-4 mb-4 mb-xl-0">
+                <Card className="mt-2 mb-4 mb-xl-0">
                   <CardBody>
                     <Row>
                       <div className="col">
@@ -218,7 +218,7 @@ const Profile = () => {
                 </Card>
               </Row>
               <Row>
-                <Card className="card-stats mt-4 mb-4 mb-xl-0">
+                <Card className="mt-2 mb-4 mb-xl-0">
                   <CardBody>
                     <Row>
                       <div className="col">

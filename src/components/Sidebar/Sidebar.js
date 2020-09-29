@@ -82,7 +82,7 @@ class Sidebar extends React.Component {
   createLinks = routes => {
     return routes.map((prop, key) => {
       // Bad hack
-      if (prop.name != "Dashboard") {
+      if (prop.name != "Dashboard" && prop.name != "Success") {
         return (
           <NavItem key={key}>
             <NavLink

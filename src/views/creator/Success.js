@@ -35,11 +35,12 @@ const Success = () => {
                   <h1>Thanks for your order!</h1>
                   <p>
                     We appreciate your business! If you have any questions,
-                    please email 
+                    please email
                     <a href="mailto:kyle@neuroclarity.ai">
                       kyle@neuroclarity.ai
                     </a>
-                    .
+                    . It may take a few minutes for your subscription updates to
+                    process.
                   </p>
                 </div>
               </CardBody>
