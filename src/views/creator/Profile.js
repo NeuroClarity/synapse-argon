@@ -352,8 +352,8 @@ const Profile = () => {
                   </div>
                   <hr className="my-4" />
                   <p>You are currently using the {tier} plan.</p>
-                  <a href="#pablo" onClick={cancelSubsciption}>
-                    Cancel Subscription
+                  <a href="#pablo" onClick={tier !== "Basic" ? cancelSubsciption : () => stripeClick("Standard") }>
+                    { tier !== "Basic" ? "Cancel Subscription" : "Upgrade"}
                   </a>
                 </div>
               </CardBody>
