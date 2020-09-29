@@ -124,15 +124,17 @@ const DashboardChart = ({
       labels: emotionChartData.labels,
       datasets: []
     };
-    emotionChartData.datasets.forEach(dataset => {
-      if (dataset.label === activeEmotion) {
-        filteredEmotionChart.datasets.push({
-          label: dataset.label,
-          data: dataset.data
-        });
-        setFilteredEmotionChart(filteredEmotionChart);
-      }
-    });
+    if (emotionChartData.labels && emotionChartData.datasets) {
+      emotionChartData.datasets.forEach(dataset => {
+        if (dataset.label === activeEmotion) {
+          filteredEmotionChart.datasets.push({
+            label: dataset.label,
+            data: dataset.data
+          });
+          setFilteredEmotionChart(filteredEmotionChart);
+        }
+      });
+    }
   };
 
   const createEmotionButtons = emotionData => {

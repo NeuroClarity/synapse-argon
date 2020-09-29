@@ -67,25 +67,29 @@ const Dashboard = () => {
   return (
     <>
       <DashboardHeader />
-			{loading || !data ? (
-							<Row>
-						<Col sm="12" md={{ size: 6, offset: 3 }}>
-							<div style={{display:"flex", justifyContent: "center", alignItems: "center"}}>
+      {loading || !data ? (
+        <Row>
+          <Col sm="12" md={{ size: 6, offset: 3 }}>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center"
+              }}
+            >
               <Spinner
                 style={{ width: "3rem", height: "3rem" }}
                 color="primary"
                 type="grow"
               />
-							</div >
-							</Col>
-							</Row>
-
-			) :
-      (data && data.SecondStudyID ? (
-        <ABStudy data={data}/>
+            </div>
+          </Col>
+        </Row>
+      ) : data && data.SecondStudyID ? (
+        <ABStudy data={data} />
       ) : (
-        <Study data={data}/>
-      ))}
+        <Study data={data} />
+      )}
       {/* Page content */}
     </>
   );
