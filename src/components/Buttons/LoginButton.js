@@ -13,7 +13,7 @@ const LoginButton = () => {
       type="button"
       onClick={() => loginWithRedirect()}
     >
-      Sign in
+      Sign Up or Login
     </Button>
   );
 };
