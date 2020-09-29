@@ -106,6 +106,15 @@ export function chartOptions() {
     }
   };
 
+  // yAxes
+  Chart.scaleService.updateScaleDefaults("linear", {
+    ticks: {
+      beginAtZero: true,
+      min: 0,
+      max: 1
+    }
+  });
+
   // xAxes
   Chart.scaleService.updateScaleDefaults("category", {
     gridLines: {
