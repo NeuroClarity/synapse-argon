@@ -51,7 +51,7 @@ const Profile = () => {
           refresh();
         },
         () => {
-          alert("Failed to cancel subscription. Please reach out via our homepage (http://neuroclarity.ai) if this error persists.")
+          alert("Failed to cancel subscription. Please email us at andere@berkeley.edu if this error persists.")
         }
       );
 
