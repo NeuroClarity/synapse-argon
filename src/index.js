@@ -24,35 +24,47 @@ import "assets/plugins/nucleo/css/nucleo.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import "assets/scss/argon-dashboard-react.scss";
 
+import UnsupportedBrowser from "./components/Unsupported/UnsupportedBrowser.js";
+
 import AdminLayout from "layouts/Admin.js";
 import AuthLayout from "layouts/Auth.js";
 import ReviewLayout from "layouts/Review.js";
 
 import PrivateRoute from "./components/Routes/PrivateRoute.js";
 
-ReactDOM.render(
-  <Auth0Provider
-    domain={process.env.REACT_APP_AUTH_DOMAIN}
-    clientId={process.env.REACT_APP_AUTH_CLIENT_ID}
-    redirectUri={window.location.origin + "/admin/studies"}
-    audience={process.env.REACT_APP_AUTH_AUDIENCE}
-  >
-    <BrowserRouter>
-      <Switch>
-        <PrivateRoute
-          component={AdminLayout}
-          path="/admin"
-          render={props => <AdminLayout {...props} />}
-        />
-        <Route path="/auth" render={props => <AuthLayout {...props} />} />
-        <Route
-          component={ReviewLayout}
-          path="/review/:studyid"
-          render={props => <ReviewLayout {...props} />}
-        />
-        <Redirect from="/*" to="/auth/login" />
-      </Switch>
-    </BrowserRouter>
-  </Auth0Provider>,
-  document.getElementById("root")
-);
+var isChrome = !!window.chrome && (!!window.chrome.webstore || !!window.chrome.runtime);
+
+if (!isChrome) {
+  ReactDOM.render(
+    <UnsupportedBrowser />,
+    document.getElementById("root")
+  );
+} else {
+  ReactDOM.render(
+    <Auth0Provider
+      domain={process.env.REACT_APP_AUTH_DOMAIN}
+      clientId={process.env.REACT_APP_AUTH_CLIENT_ID}
+      redirectUri={window.location.origin + "/admin/studies"}
+      audience={process.env.REACT_APP_AUTH_AUDIENCE}
+    >
+      <BrowserRouter>
+        <Switch>
+          <PrivateRoute
+            component={AdminLayout}
+            path="/admin"
+            render={props => <AdminLayout {...props} />}
+          />
+          <Route path="/auth" render={props => <AuthLayout {...props} />} />
+          <Route
+            component={ReviewLayout}
+            path="/review/:studyid"
+            render={props => <ReviewLayout {...props} />}
+          />
+          <Redirect from="/*" to="/auth/login" />
+        </Switch>
+      </BrowserRouter>
+    </Auth0Provider>,
+    document.getElementById("root")
+  );
+}
+
