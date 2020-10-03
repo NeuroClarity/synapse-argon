@@ -60,11 +60,14 @@ const FaceCalibrate = () => {
 
   return (
     <div>
-      <div className="text-center my-4" 
+      <div className="text-center mb-4" 
           style={{
             display: !loaded ? 'block' : 'none',
           }}
       >
+        <div className="text-muted mb-4">
+          Note: This may take up to 15 seconds to load.
+        </div>
         <Spinner 
           animation="border" 
           size="xl" 

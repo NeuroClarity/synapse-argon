@@ -10,7 +10,7 @@ const buttons = [
   },
   {
     title: "Setup",
-    description: "Quick steps to ensure the best viewing experience",
+    description: "Quick setup to ensure the best viewing experience",
   },
   {
     title: "Calibrate",
