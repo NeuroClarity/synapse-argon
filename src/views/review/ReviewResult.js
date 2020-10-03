@@ -28,11 +28,11 @@ import {
   CardHeader,
   CardBody,
   Form,
-  Col
+  Col,
+  Spinner,
 } from "reactstrap";
 
 const ReviewResult = ({ setStep, step, surveyQuestion, eyeData, facialData }) => {
-  const [ submitted, setSubmitted ] = useState(false)
   const [ surveyStep, setSurveyStep ] = useState(0)
   const [ age, setAge ] = useState()
   const [ gender, setGender ] = useState()
@@ -41,6 +41,8 @@ const ReviewResult = ({ setStep, step, surveyQuestion, eyeData, facialData }) =>
   const [ q2, setQ2 ] = useState()
   const [ q3, setQ3 ] = useState()
   const [ q4, setQ4 ] = useState()
+  const [ loading, setLoading ] = useState(false)
+  const [ submitted, setSubmitted ] = useState(false)
 
   const { studyid } = useParams();
 
@@ -55,19 +57,20 @@ const ReviewResult = ({ setStep, step, surveyQuestion, eyeData, facialData }) =>
       return 
     }
 
-    async function f() {
-      let formattedEyeData= JSON.stringify({
-        screenWidth: window.innerWidth,
-        screenHeight: window.innerHeight,
-        coordinates: eyeData
-      })
+    let formattedEyeData= JSON.stringify({
+      screenWidth: window.innerWidth,
+      screenHeight: window.innerHeight,
+      coordinates: eyeData
+    })
 
-      await sendData(formattedEyeData, facialData).then((reviewId) => {
-        submitAnalyticsJob(reviewId);
+    sendData(formattedEyeData, facialData).then((reviewId) => {
+      submitAnalyticsJob(reviewId).then(() => {
+        setLoading(false);
       });
-    }
-    f();
-    setSubmitted(true)
+    });
+
+    setLoading(true);
+    setSubmitted(true);
   }
 
   const sendData = async function(eyeData, facialData) {
@@ -218,31 +221,54 @@ const ReviewResult = ({ setStep, step, surveyQuestion, eyeData, facialData }) =>
         </Col>
       </>
     )
+  
   } else {
     return (
       <>
         <Col lg="5" md="7">
           <Card className="bg-secondary shadow border-0 mt-3">
             <CardBody className="px-lg-5 py-lg-4">
-              <div className="text-center mb-4">
-                <h2>Thank you for participating in this study!</h2>
-              </div>
-              <div className="text-center mb-4">
-                <p>Want to learn more about NeuroClarity?</p>
-              </div>
-              <div className="text-center">
-                <a href="https://neuroclarity.ai">
-                  <Button color="primary" type="button">
-                    Click here!
-                  </Button>
-                </a>
-              </div>
+              { loading ? (
+                <>
+                  <div className="text-center mb-4">
+                    <h2>Thank you for participating in this study!</h2>
+                  </div>
+                  <div className="text-center mb-4">
+                    <p>Please keep this tab open while we process your results...</p>
+                  </div>
+                  <div className="text-center my-4">
+                    <Spinner 
+                      animation="border" 
+                      size="xl" 
+                      variant="primary" 
+                      style={{
+                      }}
+                    />
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div className="text-center mb-4">
+                    <h2>All Done!</h2>
+                  </div>
+                  <div className="text-center mb-4">
+                    <p>Want to learn more about NeuroClarity?</p>
+                  </div>
+                  <div className="text-center">
+                    <a href="https://neuroclarity.ai">
+                      <Button color="primary" type="button">
+                        Click here!
+                      </Button>
+                    </a>
+                  </div>
+                </>
+              )}
             </CardBody>
           </Card>
         </Col>
       </>
     );
-  }
+  } 
 }
 
 export default ReviewResult;
