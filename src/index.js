@@ -34,37 +34,37 @@ import PrivateRoute from "./components/Routes/PrivateRoute.js";
 
 var isChrome = !!window.chrome && (!!window.chrome.webstore || !!window.chrome.runtime);
 
-if (!isChrome) {
-  ReactDOM.render(
-    <UnsupportedBrowser />,
-    document.getElementById("root")
-  );
-} else {
-  ReactDOM.render(
-    <Auth0Provider
-      domain={process.env.REACT_APP_AUTH_DOMAIN}
-      clientId={process.env.REACT_APP_AUTH_CLIENT_ID}
-      redirectUri={window.location.origin + "/admin/studies"}
-      audience={process.env.REACT_APP_AUTH_AUDIENCE}
-    >
-      <BrowserRouter>
-        <Switch>
-          <PrivateRoute
-            component={AdminLayout}
-            path="/admin"
-            render={props => <AdminLayout {...props} />}
+ReactDOM.render(
+  <Auth0Provider
+    domain={process.env.REACT_APP_AUTH_DOMAIN}
+    clientId={process.env.REACT_APP_AUTH_CLIENT_ID}
+    redirectUri={window.location.origin + "/admin/studies"}
+    audience={process.env.REACT_APP_AUTH_AUDIENCE}
+  >
+    <BrowserRouter>
+      <Switch>
+        <PrivateRoute
+          component={AdminLayout}
+          path="/admin"
+          render={props => <AdminLayout {...props} />}
+        />
+        <Route path="/auth" render={props => <AuthLayout {...props} />} />
+        {!isChrome ? (
+          <Route
+            component={UnsupportedBrowser}
+            path="/review/:studyid"
           />
-          <Route path="/auth" render={props => <AuthLayout {...props} />} />
+        ) : (
           <Route
             component={ReviewLayout}
             path="/review/:studyid"
             render={props => <ReviewLayout {...props} />}
           />
-          <Redirect from="/*" to="/auth/login" />
-        </Switch>
-      </BrowserRouter>
-    </Auth0Provider>,
-    document.getElementById("root")
-  );
-}
+        )}
+        <Redirect from="/*" to="/auth/login" />
+      </Switch>
+    </BrowserRouter>
+  </Auth0Provider>,
+  document.getElementById("root")
+);
 
