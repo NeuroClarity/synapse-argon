@@ -64,9 +64,7 @@ const ReviewResult = ({ setStep, step, surveyQuestion, eyeData, facialData }) =>
     })
 
     sendData(formattedEyeData, facialData).then((reviewId) => {
-      submitAnalyticsJob(reviewId).then(() => {
-        setLoading(false);
-      });
+      submitAnalyticsJob(reviewId).then(() => setLoading(false), () => setLoading(false))
     });
 
     setLoading(true);

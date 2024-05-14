@@ -17,7 +17,6 @@
 */
 import React from "react";
 
-import ReactStars from "react-rating-stars-component";
 import SurveyRating from "../../components/Forms/SurveyRating.js"
 // reactstrap components
 import {
